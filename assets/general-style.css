@@ -184,7 +184,7 @@ header.sticky {
 
 /*--------------------MAIN-------------------*/
 /*--------------------BANNER-------------------*/
-.contenedor-main-banner {
+/* .contenedor-main-banner {
     position: relative;
     text-shadow: 1px 1px 6px #000;
     height: 870px;
@@ -217,8 +217,42 @@ header.sticky {
 .contenido-main-banner h1 {
     font-weight: 900;
     font-size: 60px;
+} */
+
+.contenedor-main-banner {
+    position: relative;
+    text-shadow: 1px 1px 6px #000;
+    max-width: 1100px;
+    height: 750px;
+    margin-bottom: 100px;
 }
 
+.contenido-main-banner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    color: #E8E8E8;
+    width: 100%;
+    bottom: 150px;
+    left: 80px;
+    gap: 30px;
+    z-index: 10;
+}
+
+.contenedor-texto-main-banner {
+    position: relative;
+    z-index: 11;
+}
+
+.contenedor-texto-main-banner p{
+    font-size: 1.5rem;
+}
+
+.contenido-main-banner h1 {
+    font-weight: 900;
+    font-size: 3rem;
+}
 
 .contenido-main-banner h2 {
     font-weight: 400;
@@ -260,14 +294,14 @@ header.sticky {
     background: #1a5979;
 }
 
-.main-banner-animation svg {
+/* .main-banner-animation svg {
     position: absolute;
     top: -100px;
     left: -60px;
     height: 1100px;
     opacity: 0.7;
     fill: #1a5979;
-}
+} */
 
 #carouselExampleAutoplaying {
     position: absolute;
@@ -277,7 +311,7 @@ header.sticky {
 
 .carousel-item {
     width: 100%;
-    max-height: 870px;
+    max-height: 815px;
 }
 
 /* .carousel-item::before {
@@ -323,6 +357,8 @@ section>div > h2 {
     border-bottom: 0.25rem solid #003da5;
     content: '';
 }
+
+/*--------------------NOVEDADES GRID-------------------*/
 
 .contenedor-novedades-grid {
     position: relative;
@@ -445,7 +481,7 @@ section>div > h2 {
     background: #e7f8fb;
 }
 
-/* CARRERAS DESTACADAS*/
+/*--------------------CARRERAS DESTACADAS-------------------*/
 /* .grid-carreras-destacadas {  display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -562,7 +598,7 @@ section>div > h2 {
     z-index: 0;
 }
 
-/* CARRUSEL FOTOGALERIA */
+/*--------------------CARRUSEL FOTOGALERIA-------------------*/
 .carrusel {
     max-width: 100%;
 }
@@ -663,7 +699,7 @@ section>div > h2 {
     transform: scale(1.1);
 }
 
-/* FAQ */
+/*--------------------FAQ-------------------*/
 /* Estilos básicos */
 .acordeon {
     /* border: 1px solid #ccc; */
@@ -740,7 +776,6 @@ section>div > h2 {
     width: 100%;
 }
 
-
 #mensaje {
     width: 100%;
 }
@@ -805,7 +840,6 @@ textarea::placeholder {
     transition: all 0.3s ease;
 }
 
-
 input[type="radio"] {
     display: none;
 }
@@ -837,7 +871,7 @@ input[type="radio"] {
     color: #fff;
 }
 
-/*  */
+/*--------------------TESTIMONIOS-------------------*/
 
 /* TESTIMONIOS ALUMNOS */
 .escondido {
@@ -887,15 +921,12 @@ input[type="radio"] {
     z-index: -1;
 }
 
-
-
-
 .contenedor-bkg-testimonios-alumnos img {
     width: 100%;
     height: 100%;
 }
 
-/*TOMA EL SIGUIENTE PASO SECTION*/
+/*--------------------EL SIGUIENTE PASO-------------------*/
 .contenedor-next-step {
     display: flex;
     align-content: center;
@@ -942,7 +973,7 @@ input[type="radio"] {
     object-fit: cover;
 }
 
-/* FOOTER */
+/*--------------------FOOTER-------------------*/
 
 footer {
     position: relative;
