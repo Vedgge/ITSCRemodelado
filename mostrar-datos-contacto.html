@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar datos de contacto</title>
+</head>
+<body>
+    <h1>Datos del Formulario enviados correctamente</h1>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(location.search);
+            const asunto = params.get("asuntoFormContacto");
+            const nombre = params.get("nombre");
+            const email = params.get("email");
+            const telefono = params.get("telefono");
+            const motivoContacto = params.get("select");
+            const mensaje = params.get("mensaje");
+
+            const datosContainer = document.createElement("div");
+            datosContainer.innerHTML = `
+                <p>Asunto: ${asunto}</p>
+                <p>Nombre: ${nombre}</p>
+                <p>Email: ${email}</p>
+                <p>Teléfono: ${telefono}</p>
+                <p>Motivo de contacto: ${motivoContacto}</p>
+                <p>Mensaje: ${mensaje}</p>
+            `;
+
+            document.body.appendChild(datosContainer);
+        });
+    </script>
+
+    <a href="index.html">Volver al inicio</a>
+</body>
+</html>

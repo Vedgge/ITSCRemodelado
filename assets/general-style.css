@@ -15,7 +15,6 @@ body {
 header {
     position: relative;
     z-index: 11;
-    /* Make the header appear above the SVG */
     width: 100%;
 }
 
@@ -554,9 +553,9 @@ section>div > h2 {
 .contenedor-text-carreras-index ul li a {
     color: #000;
     text-decoration: none;
-    display: inline-block; /* Set the display to inline-block */
-    position: relative; /* Create a relative context for the ::after element */
-    min-width: auto; /* Set the minimum width to auto */
+    display: inline-block;
+    position: relative; 
+    min-width: auto; 
 }
 
 .contenedor-text-carreras-index ul li a::after {
@@ -575,20 +574,20 @@ section>div > h2 {
 .contenedor-img-carreras {
     max-height: 400px;
     position: relative;
-    z-index: 1; /* Add a z-index value greater than 0 for the container */
+    z-index: 1; 
 }
 
 .contenedor-img-carreras img {
     max-height: 400px;
     position: relative;
-    z-index: 2; /* Set a higher z-index value than the container */
+    z-index: 2; 
 }
 
 .contenedor-img-carreras #dot-blue-1 {
     position: absolute;
     top: -60px;
     right: 520px;
-    z-index: 0; /* Set a lower z-index value than the background image */
+    z-index: 0; 
 }
 
 .contenedor-img-carreras #dot-blue-2 {
@@ -702,7 +701,6 @@ section>div > h2 {
 /*--------------------FAQ-------------------*/
 /* Estilos básicos */
 .acordeon {
-    /* border: 1px solid #ccc; */
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -725,7 +723,6 @@ section>div > h2 {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s;
-    border-top: 1px solid #ccc;
 }
 
 /* Estilos de botón activo */
@@ -736,6 +733,15 @@ section>div > h2 {
 
 .acordeon.active .acordeon-content {
     max-height: 500px;
+}
+
+.acordeon.active .acordeon-button i {
+    transition: 0.3s ease;
+    transform: rotate(90deg);
+}
+
+.acordeon .acordeon-button i {
+    transition: 0.3s ease;
 }
 
 .faq-contacto {
@@ -762,7 +768,6 @@ section>div > h2 {
     display: flex;
     flex-direction: column;
     align-items: baseline;
-
 }
 
 .line-form {
@@ -872,7 +877,6 @@ input[type="radio"] {
 }
 
 /*--------------------TESTIMONIOS-------------------*/
-
 /* TESTIMONIOS ALUMNOS */
 .escondido {
     /* hidden -> aparece*/
@@ -964,9 +968,9 @@ input[type="radio"] {
     height: 500px;
     width: 70%;
     clip-path: polygon(30% 0, 100% 0%, 100% 100%, 0% 100%);
-    display: flex; /* Add this */
-    justify-content: center; /* Horizontally center the image */
-    align-items: center; /* Vertically center the image */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
 }
 
 .img-next-step img {
@@ -991,10 +995,10 @@ footer .icono-itsc-footer a img {
 }
 
 .icono-itsc-footer a {
-    display: inline-block; /* Add this to make <a> elements expand to fit content */
+    display: inline-block;
     text-decoration: none;
     color: #afc8d3;
-    white-space: nowrap; /* Prevent text from wrapping */
+    white-space: nowrap; 
 }
 
 .icono-itsc-footer a:hover {
@@ -1028,14 +1032,6 @@ footer .icono-itsc-footer a img {
     gap: 30px;
 }
 
-/* .circulo-red-social{
-    position: relative;
-    border: 1px solid gold;
-    border-radius: 50%;
-    width: 3.25rem;
-    height: 3.25rem;
-} */
-
 .contenedor-redes-sociales a {
     text-decoration: none;
     font-size: 20px;
@@ -1068,4 +1064,10 @@ footer .icono-itsc-footer a img {
 .volver-inicio a {
     color: #FFF;
     text-decoration: none;
+}
+
+/*--------------------MEDIA QUERIES-------------------*/
+
+@media (width <= 1380px) {
+    
 }
