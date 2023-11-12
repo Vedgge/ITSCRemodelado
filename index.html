@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inicio ITSC</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="./img/fav-icon-itsc.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/img/fav-icon-itsc.png" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +24,9 @@
 
     <!-- Custom JS -->
     <script src="./assets/general-script.js" defer></script>
+
+    <!-- Validación JS -->
+    <script src="/assets/validacion-index.js"></script>
 
 </head>
 
@@ -167,6 +170,7 @@
             <div class="contenedor-novedades contenedor-main-default">
                 <h2>Novedades de la institución</h2>
                 <div class="contenedor-novedades-grid">
+                    <!-- <h3>Novedades destacadas</h3> -->
                     <div class="novedad-mas-reciente novedad-1">
                         <img src="/img/consejo institucional.jpg" alt="">
                         <div class="footer-novedad panel panel-default">
@@ -223,8 +227,7 @@
                             </div>
                             <div class="contenedor-panel-body">
                                 <div class="panel-body">
-                                    <a href="enlace_carrera.html" class="mas-informacion-link" tabindex="-1"><span>Más
-                                            información </span><i class="fa-solid fa-chevron-right"></i></a>
+                                    <a href="enlace_carrera.html" class="mas-informacion-link" tabindex="-1"><span>Más información </span><i class="fa-solid fa-chevron-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -238,8 +241,7 @@
                             </div>
                             <div class="contenedor-panel-body">
                                 <div class="panel-body">
-                                    <a href="enlace_carrera.html" class="mas-informacion-link" tabindex="-1"><span>Más
-                                            información </span><i class="fa-solid fa-chevron-right"></i></a>
+                                    <a href="enlace_carrera.html" class="mas-informacion-link" tabindex="-1"><span>Más información </span><i class="fa-solid fa-chevron-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -247,6 +249,15 @@
                     <img src="/img/do2t.png" alt="" id="dot-blue-1">
                     <img src="/img/do2t.png" alt="" id="dot-blue-2">
                 </div>
+                <!-- <div class="contenedor-novedades-recientes">
+                    <h3>Novedades más recientes</h3>
+                    <div class="novedades-recientes">
+                        <div class="novedad-reciente"></div>
+                        <div class="novedad-reciente"></div>
+                        <div class="novedad-reciente"></div>
+                        <div class="novedad-reciente"></div>
+                    </div>
+                </div> -->
                 <button class="btn-estilo" style="margin-top: 20px;">Ver todas las novedades y calendario</button>
             </div>
         </section>
@@ -452,10 +463,10 @@
                     <div class="contacto-faq">
                         <h4 style="font-weight: 500;">Hacé tus propias consultas</h4>
                         <p>Utiliza este formulario si la respuesta a tu consulta no está en preguntas frecuentes</p>
-                        <form action="" class="contact-form">
+                        <form action="mostrar-datos-contacto.html" class="contact-form">
                             <div class="line-form">
                                 <div class="form-label-style">
-                                    <input type="text" name="text" id="asuntoFormContacto" placeholder="Asunto">
+                                    <input type="text" name="asuntoFormContacto" id="asuntoFormContacto" placeholder="Asunto">
                                     <p id="textFormContacto" class="error-message"></p>
                                 </div>
 
@@ -484,12 +495,12 @@
                                     <div class="switch-preferencia">
                                         <input type="radio" name="select" id="option-1"
                                             value="Boleto Educativo Gratuito" checked>
-                                        <input type="radio" name="select" id="option-2">
+                                        <input type="radio" name="select" id="option-2" value="Cooperadora">
                                         <label for="option-1" class="option option-1">
                                             <div class="dot"></div>
                                             <span>Boleto Educativo Gratuito</span>
                                         </label>
-                                        <label for="option-2" class="option option-2" value="Cooperadora">
+                                        <label for="option-2" class="option option-2">
                                             <div class="dot"></div>
                                             <span>Cooperadora</span>
                                         </label>
@@ -613,8 +624,7 @@
                     <p style="font-size: 20px;"><i><i class="fa-solid fa-quote-left"></i><span> Lorem ipsum, dolor sit
                                 amet consectetur adipisicing elit. Qui, fuga reprehenderit. Aliquid possimus
                                 quis saepe mollitia vitae exercitationem. Asperiores exercitationem error maxime rerum
-                                perspiciatis
-                                tempore odit libero? Quae, harum sapiente? </span><i
+                                perspiciatis tempore odit libero? Quae, harum sapiente? </span><i
                                 class="fa-solid fa-quote-right"></i></i></p>
                     <h4 style="font-size: 25px;"><i>— Valentina González</i></h4>
                     <h4 style="font-size: 20px;"><a href="#" style="text-decoration: underline; color: #FFF;"><span>Ver más testiomnios</span> <i class="fa-solid fa-chevron-right" style="font-size: 16px;"></i></a></h4>
@@ -653,6 +663,12 @@
             <div class="contenedor-footer-sections">
                 <div class="footer-sections">
                     <h5>Navegación de la página</h5>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur sapiente iure fugiat optio
+                        officia, sunt sed itaque, quibusdam deserunt nobis fugit dolor veniam at in sit molestiae
+                        provident nostrum nisi.</p>
+                </div>
+                <div class="footer-sections">
+                    <h5>Lorem</h5>
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur sapiente iure fugiat optio
                         officia, sunt sed itaque, quibusdam deserunt nobis fugit dolor veniam at in sit molestiae
                         provident nostrum nisi.</p>

@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-
   const carrusels = document.querySelectorAll(".carrusel");
   // Si el usuario no opto por recuded motion, agregamos la animación
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
