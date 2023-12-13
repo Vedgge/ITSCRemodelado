@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Novedad</title>
+</head>
+<body>
+    <h1>Modificar novedad</h1>
+    <div id="app">
+        <form @submit.prevent="obtenerNovedad">
+            <label for="codigo">Código:</label>
+            <input type="number" v-model="codigo" required><br>
+            <button type="submit">Modificar Producto</button> <a href="index.html">Menu principal</a>
+        </form>
+
+        <div v-if="mostrarDatosNovedad">
+            <h2>Datos del Producto</h2>
+            <form @submit.prevent="guardarCambios">
+                <label for="tituloModificar">Título:</label>
+                <input type="text" step="0.01" id="tituloModificar" v-model="titulo" required><br>
+                
+                <label for="descripcionModificar">Descripción:</label>
+                <input type="text" id="descripcionModificar" v-model="descripcion" required><br>
+
+                <label for="cantidadModificar">Cantidad:</label>
+                <input type="number" id="cantidadModificar" v-model="cantidad" required><br>
+
+                <!-- Imagen actual de la novedad -->
+                <img v-if="imagen_url && !imagenSeleccionada" :src="'./static/imagenes-novedades/' + imagen_url"
+                    alt="Imagen novedad" style="max-width: 200px;"> 
+
+                <!-- Vista previa de la nueva novedad seleccionada -->
+                <img v-if="imagenSeleccionada" :src="imagenUrlTemp" alt="Vista previa de la nueva imagen"
+                    style="max-width: 200px;"> -
+
+                <!-- Input para nueva imagen -->
+                <label for="nuevaImagen">Nueva Imagen:</label>
+                <input type="file" id="nuevaImagen" @change="seleccionarImagen"><br>
+
+                <button type="submit">Guardar Cambios</button>
+                <a href="#">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const URL = "http://127.0.0.1:5000/"
+        //const URL = "https://arielfsp.pythonanywhere.com/"
+        // const URL = "https://prueba23513.pythonanywhere.com/"
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    codigo: '',
+                    titulo: '',
+                    descripcion: '',
+                    imagen_url: '',
+                    imagenUrlTemp: null,
+                    mostrarDatosNovedad: false,
+                };
+            },
+            methods: {
+                obtenerNovedad() {
+                    console.log(URL + 'novedades/' + this.codigo)
+                    fetch(URL + 'novedades/' + this.codigo)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.titulo = data.titulo;
+                            this.descripcion = data.descripcion;
+                            this.imagen_url = data.imagen_url;
+                            this.mostrarDatosNovedad = true;
+                        })
+                        .catch(error => console.error('Error:', error));
+                },
+                seleccionarImagen(event) {
+                    const file = event.target.files[0];
+                    this.imagenSeleccionada = file;
+                    this.imagenUrlTemp = URL.createObjectURL(file); // Crea una URL temporal para la vista previa
+                },
+                guardarCambios() {
+                    const formData = new FormData();
+                    formData.append('codigo', this.codigo);
+                    formData.append('titulo', this.titulo);
+                    formData.append('descripcion', this.descripcion);
+
+                    if (this.imagenSeleccionada) {
+                        formData.append('imagen', this.imagenSeleccionada, this.imagenSeleccionada.name);
+                    }
+
+                    fetch(URL + 'novedades/' + this.codigo, {
+                        method: 'PUT',
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert('Novedad actualizada correctamente');
+                            this.limpiarFormulario();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error al actualizar la novedad');
+                        });
+                },
+                limpiarFormulario() {
+                    this.codigo = '';
+                    this.titulo = '';
+                    this.descripcion = '';
+                    this.imagen_url = '';
+                    this.imagenSeleccionada = null;
+                    this.imagenUrlTemp = null;
+                    this.mostrarDatosNovedad = false;
+                }
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>

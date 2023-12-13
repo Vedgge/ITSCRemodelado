@@ -36,7 +36,7 @@ class centroNovedades:
             codigo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
             titulo VARCHAR(25) NOT NULL,
             descripcion TEXT NOT NULL,
-            imagen VARCHAR(255) NOT NULL,
+            imagen_url VARCHAR(255) NOT NULL,
             fechaCreacion DATETIME NOT NULL)''')
         self.conn.commit()
         
@@ -51,7 +51,7 @@ class centroNovedades:
         if novedad_existe:
             return False
         
-        sql = "INSERT INTO novedades (codigo, titulo, descripcion, imagen, fechaCreacion) VALUES (%s, %s, %s, %s, %s)"
+        sql = "INSERT INTO novedades (codigo, titulo, descripcion, imagen_url, fechaCreacion) VALUES (%s, %s, %s, %s, %s)"
         
         valores = (codigo, titulo, descripcion, imagen, fechaCreacion)
         
