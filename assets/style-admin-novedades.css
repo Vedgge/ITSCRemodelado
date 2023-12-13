@@ -1,0 +1,20 @@
+.articulo-agregar-novedad {
+    display: flex;
+    justify-content: center;
+    /* margin-top: 80px; */
+}
+
+.contenedor-main-agregar-novedad{
+    display: flex;
+    flex-direction: column;
+    width: 1040px;
+    margin: 32px 0;
+    padding: 32px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.3);
+    background-color: #FFF;
+}
+
+.contenedor-title-main {
+    display: flex;
+    justify-content: center;
+}
