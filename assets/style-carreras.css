@@ -1,0 +1,60 @@
+.grid-carreras {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 20px 20px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "carrera-1 carrera-2 carrera-3"
+        "carrera-4 carrera-5 carrera-6"
+        "carrera-7 carrera-8 carrera-9"
+        "carrera-10 carrera-11 carrera-12";
+}
+
+.carrera-1 {
+    grid-area: carrera-1;
+}
+
+.carrera-2 {
+    grid-area: carrera-2;
+}
+
+.carrera-3 {
+    grid-area: carrera-3;
+}
+
+.carrera-4 {
+    grid-area: carrera-4;
+}
+
+.carrera-5 {
+    grid-area: carrera-5;
+}
+
+.carrera-6 {
+    grid-area: carrera-6;
+}
+
+.carrera-7 {
+    grid-area: carrera-7;
+}
+
+.carrera-8 {
+    grid-area: carrera-8;
+}
+
+.carrera-9 {
+    grid-area: carrera-9;
+}
+
+.carrera-10 {
+    grid-area: carrera-10;
+}
+
+.carrera-11 {
+    grid-area: carrera-11;
+}
+
+.carrera-12 {
+    grid-area: carrera-12;
+}
