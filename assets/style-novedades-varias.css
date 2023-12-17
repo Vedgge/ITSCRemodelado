@@ -1,0 +1,231 @@
+p {
+    margin: 0 !important;
+}
+
+.container-title {
+    display: flex;
+    justify-content: center;
+}
+.hero-content{
+    display: flex;
+    justify-content: flex-start;
+    width: 1300px;
+}
+
+.title-hero h1 {
+    font-size: 2.875rem;
+    letter-spacing: 1.14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: rgb(49, 136, 181);
+}
+
+.row{
+    /* padding-left: 3.5%; */
+    padding-right: 8.3333333333%;
+    padding-top: 70px;
+}
+
+.hero-bg-image {
+    background-image: url(/img/hero-novedades-bg.jpg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 150px;
+    z-index: -1;
+}
+
+.columna-main {
+    /* max-width: 952px; */
+    width: 952px;
+}
+
+.contenedor-novedades-varias {
+    display: flex;
+    /* max-width: 1300px; */
+    width: 1300px;
+    gap: 50px;
+    justify-content: space-between;
+}
+
+.listing-novedades{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.contenedor-novedades-recientes {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 70px;
+}
+
+.col-hor-1 {
+    display: flex;
+    gap: 30px;
+}
+
+.col-hor-1 > a{
+    display: flex;
+    width: 50%;
+    height: 366px;
+    /* background-color: red; */
+    padding: 30px;
+}
+
+.col-hor-1 > a {
+    position: relative;
+    background-image: url(/static/imagenes-novedades/item-tienda-2_1702433590.webp);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0 0.8125rem 1rem rgba(0,0,0,.2);
+    overflow: hidden;
+    width: 100%;
+}
+
+.col-hor-1 > a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.062), rgba(0, 0, 0, .9));
+    transition: 0.3s ease;
+}
+
+.col-hor-1 > a:hover .panel-body{
+    max-height: 1000px;
+}
+
+.panel-body {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1s ease-in-out;
+}
+
+.panel-heading h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+.panel-body p {
+    margin-bottom: 0.5rem !important;
+}
+
+.panel-heading h3, .panel-heading span, .panel-body p {
+    color: #fff;
+}
+
+.footer-novedad-col-hor-1 {
+    position: absolute;
+    padding: 20px;
+    left: 0;
+    bottom: 0px;
+}
+
+.col-hor-2 {
+    display: flex;
+    gap: 30px;
+}
+
+.col-hor-2 > a{
+    width: 35%;
+    display: flex;
+    height: 174px;
+    background-color: red;
+    padding: 30px;
+}
+
+.novedades-viejas-contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.novedad-vieja {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    min-height: 150px;
+}
+
+.ref-img-novedad-vieja {
+    width: 100%;
+    max-width: 25%;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.ref-img-novedad-vieja:hover .img-novedad-vieja{
+    transform: scale(1.1);
+}
+
+.img-novedad-vieja {
+    position: relative;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+}
+
+.article-viejo-listing {
+    flex-grow: 1;
+}
+
+.article-viejo-listing h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+    line-height: 1.5;
+    color: #3188B5;
+}
+
+.article-viejo-listing a {
+    text-decoration: none;
+}
+
+.article-viejo-listing a:hover h2{
+    color: #2a7296;
+}
+
+.article-viejo-listing p {
+    font-size: 1rem;
+    line-height: 1.2; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Máximo de dos líneas */
+    -webkit-box-orient: vertical;
+    max-height: 2.4em; 
+}
+
+.ver-todas-novedades {
+    display: flex;
+    justify-content: center;
+}
+
+.row-news-years {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

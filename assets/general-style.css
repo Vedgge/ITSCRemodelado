@@ -328,15 +328,6 @@ header.sticky {
     height: auto;
 }
 
-section>div {
-    width: 1400px;
-    margin: 0 auto;
-}
-
-section>div > h2 {
-    margin-top: 20px;
-}
-
 .contenedor-main-default h2 {
     font-weight: bold;
     position: relative;

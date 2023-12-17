@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   
     const elEscondidos = document.querySelectorAll('.escondido'); //Selecciono todos los elemtnos que tengan la clase escondido
-    elEscondidos.forEach((el) => observador.observe(el)); //Acá le decimos que observar al observador, loopea sobre todos los elementos escondidos
+    elEscondidos.forEach((elemento) => observador.observe(elemento)); //Acá le decimos que observar al observador, loopea sobre todos los elementos escondidos
 
     const observador2 = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -66,5 +66,5 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
     const elEscondidos2 = document.querySelectorAll('.escondido-blur');
-    elEscondidos2.forEach((el) => observador2.observe(el));
+    elEscondidos2.forEach((elemento) => observador2.observe(elemento));
 });
