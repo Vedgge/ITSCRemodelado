@@ -116,8 +116,8 @@
                         <form id="formulario" action="" method="POST" enctype="multipart/form-data">
                             <label for="titulo">Título de la novedad:</label>
                             <input type="text" id="titulo" name="titulo" required>
-                            <label for="codigo">Código:</label>
-                            <input type="number" id="codigo" name="codigo" minlength="5" maxlength="6" required><br>
+                            <!-- <label for="codigo">Código:</label>
+                            <input type="number" id="codigo" name="codigo" minlength="5" maxlength="6" required><br> -->
                             <!-- <label for="tiponovedad">Tipo de novedad:</label>
                             <select id="tiponovedad" name="tiponovedad">
                                 <option value="Noticia">Noticia</option>
@@ -132,7 +132,7 @@
                             <label for="imagenNovedad">Imagen adjunta (opcional)</label>
                             <input type="file" name="imagen" id="imagenNovedad">
                             <!-- <input type="text" name="urlImagen" id="urlImagen" placeholder="Pegá el URL de la imagen"> -->
-                            <p style="margin: 0;">Usa formato JPEG o PNG. Debe ser al menos 960 x 960. Tamaño max: 30MB
+                            <p style="margin: 0;">Usa formato JPEG, JPG o PNG. Debe ser al menos 960 x 960. Tamaño max: 30MB
                             </p>
 
                             <!-- <label for="archivo">Archivo adjunto opcional (.pdf, .docx) :</label>
@@ -145,7 +145,7 @@
                                 event.preventDefault(); //Evita que se envie el form
 
                                 var formData = new FormData();
-                                formData.append('codigo', document.getElementById('codigo').value);
+                                // formData.append('codigo', document.getElementById('codigo').value);
                                 formData.append('titulo', document.getElementById('titulo').value);
                                 formData.append('descripcion', document.getElementById('descripcion').value);
                                 formData.append('imagen', document.getElementById('imagenNovedad').files[0]);
@@ -161,7 +161,7 @@
                                     .then(function (data) {
                                         alert('Novedad agregada correctamente.');
                                         // Limpiar el formulario para el proximo producto
-                                        document.getElementById('codigo').value = "";
+                                        // document.getElementById('codigo').value = "";
                                         document.getElementById('titulo').value = "";
                                         document.getElementById('descripcion').value = "";
                                         document.getElementById('imagen').value = "";

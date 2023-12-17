@@ -1,13 +1,14 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+from datetime import datetime
+
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
 app.config['encoding'] = 'UTF-8'
 
 from werkzeug.utils import secure_filename
 
-import mysql.connector, os, hashlib, time
-from datetime import datetime
+import mysql.connector, os, time
 
 class centroNovedades:
     #Constructor de la clase centroNovedades
@@ -45,26 +46,25 @@ class centroNovedades:
         self.cursor = self.conn.cursor(dictionary=True)
         
     #----------------------------------------------------------------
-    def agregar_novedad(self, codigo, titulo, descripcion, imagen, fechaCreacion):
-        self.cursor.execute(f"SELECT * FROM novedades WHERE codigo = {codigo}")
-        novedad_existe = self.cursor.fetchone()
-        if novedad_existe:
-            return False
-        
-        sql = "INSERT INTO novedades (codigo, titulo, descripcion, imagen_url, fechaCreacion) VALUES (%s, %s, %s, %s, %s)"
-        
-        valores = (codigo, titulo, descripcion, imagen, fechaCreacion)
-        
+    def agregar_novedad(self, titulo, descripcion, imagen, fechaCreacion):  
+        sql = "INSERT INTO novedades (titulo, descripcion, imagen_url, fechaCreacion) VALUES (%s, %s, %s, %s)"
+        valores = (titulo, descripcion, imagen, fechaCreacion)
         
         self.cursor.execute(sql, valores)
         self.conn.commit()
         return True
     #----------------------------------------------------------------
+    # def consultar_novedad(self, codigo):
+    #     # Consulta una novedad a partir de su código
+    #     self.cursor.execute(f"SELECT * FROM novedades WHERE codigo = {codigo}")
+    #     return self.cursor.fetchone()
+    
     def consultar_novedad(self, codigo):
-        # Consulta una novedad a partir de su código
-        self.cursor.execute(f"SELECT * FROM novedades WHERE codigo = {codigo}")
-        return self.cursor.fetchone()
-
+        if codigo is not None:
+            self.cursor.execute(f"SELECT * FROM novedades WHERE codigo = {codigo}")
+            return self.cursor.fetchone()
+        else:
+            return None
     #----------------------------------------------------------------
     def modificar_novedad(self, codigo, nuevo_titulo, nueva_descripcion, nueva_imagen):
         sql = "UPDATE novedades SET titulo = %s, descripcion = %s, imagen_url = %s WHERE codigo = %s"
@@ -143,7 +143,7 @@ def agregar_novedad():
         # Obtiene la fecha actual
         fecha_creacion = datetime.now()
     
-    if catalogoNovedades.agregar_novedad(codigo, titulo, descripcion, nombre_imagen, fecha_creacion):
+    if catalogoNovedades.agregar_novedad(titulo, descripcion, nombre_imagen, fecha_creacion):
         imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
         return jsonify({"mensaje": "Novedad agregada"}), 201
     else:
