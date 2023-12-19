@@ -18,3 +18,39 @@
     display: flex;
     justify-content: center;
 }
+
+#descripcion, #titulo {
+    width: 100% !important;
+    margin: 10px 0;
+}
+
+#titulo { 
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid;
+}
+
+input[type="file"]::file-selector-button {
+    opacity: 0;
+    width: 224px;
+    height: 224px;
+    cursor: pointer;
+}
+
+.contenedor-img-up-novedad {
+    position: relative;
+    background: url(/img/img-upload.jpg);
+    background-size: cover;
+    width: 224px;
+    height: 224px;
+    cursor: pointer;
+}
+
+.contenedor-enviar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.contenedor-enviar button {
+    padding: 5px 60px;
+}
