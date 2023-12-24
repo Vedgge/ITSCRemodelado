@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Novedades</title>
+    <title>Administración Novedades</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/img/fav-icon-itsc.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./img/fav-icon-itsc.png" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,9 +15,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300;1,400&display=swap"
         rel="stylesheet">
-
-    <!-- CSS CUSTOM -->
-    <link rel="stylesheet" href="./assets/style-admin-novedades.css">
 
     <!-- CSS GENERAL -->
     <link rel="stylesheet" href="./assets/general-style.css">
@@ -107,78 +104,8 @@
 
     <main>
         <section>
-            <article class="articulo-agregar-novedad">
-                <div class="contenedor-main-agregar-novedad">
-                    <div class="contenedor-title-main">
-                        <h1>Subir una novedad</h1>
-                    </div>
-                    <div class="contenedor-formulario-novedad">
-                        <form id="formulario" action="" method="POST" enctype="multipart/form-data">
-                            <label for="titulo">Título de la novedad:</label><br>
-                            <input type="text" id="titulo" name="titulo" required placeholder="Nombre/Título de la novedad"> <br>
-                            <!-- <label for="codigo">Código:</label>
-                            <input type="number" id="codigo" name="codigo" minlength="5" maxlength="6" required><br> -->
-                            <!-- <label for="tiponovedad">Tipo de novedad:</label>
-                            <select id="tiponovedad" name="tiponovedad">
-                                <option value="Noticia">Noticia</option>
-                                <option value="Evento">Evento</option>
-                                <option value="Proyecto">Proyecto</option>
-                                <option value="Otros">Otros</option>
-                            </select> <br> -->
-
-                            <label for="imagenNovedad">Imagen adjunta (opcional)</label>
-                            <div class="contenedor-img-up-novedad"><input type="file" name="imagen" id="imagenNovedad"></div>
-                            <!-- <input type="text" name="urlImagen" id="urlImagen" placeholder="Pegá el URL de la imagen"> -->
-                            <p style="margin: 0;">Usa formato JPEG, JPG o PNG. Debe ser al menos 960 x 960. Tamaño max: 30MB
-                            </p> <br>
-
-                            <label for="descripcion">Descripcion de la novedad:</label><br>
-                            <textarea id="descripcion" name="descripcion" rows="5" cols="30"></textarea><br>
-
-                            <!-- <label for="archivo">Archivo adjunto opcional (.pdf, .docx) :</label>
-                            <input type="file" accept=".pdf,.docx" id="archivo" name="archivo" required> -->
-                            <div class="contenedor-enviar">
-                                <button type="submit">Enviar</button>
-                            </div>
-                        </form>
-                        <script>
-                            const URL = "http://127.0.0.1:5000/"
-                            document.getElementById('formulario').addEventListener("submit", function (event) {
-                                event.preventDefault(); //Evita que se envie el form
-
-                                var formData = new FormData();
-                                // formData.append('codigo', document.getElementById('codigo').value);
-                                formData.append('titulo', document.getElementById('titulo').value);
-                                formData.append('descripcion', document.getElementById('descripcion').value);
-                                formData.append('imagen', document.getElementById('imagenNovedad').files[0]);
-                                // formData.append('archivo', document.getElementById('archivo').files[0])
-
-                                fetch(URL + 'novedades', {
-                                    method: 'POST',
-                                    body: formData //Enviamos formData en lugar de JSON
-                                })
-                                    .then(function (response) {
-                                        if (!response.ok) { return response.json(); }
-                                    })
-                                    .then(function (data) {
-                                        alert('Novedad agregada correctamente.');
-                                        // Limpiar el formulario para el proximo producto
-                                        // document.getElementById('codigo').value = "";
-                                        document.getElementById('titulo').value = "";
-                                        document.getElementById('descripcion').value = "";
-                                        document.getElementById('imagen').value = "";
-                                        // document.getElementById('urlImagen').value = "";
-                                        // document.getElementById('archivo').value = "";
-                                    })
-                                    .catch(function(error){
-                                        //Muestra error y no limpia el form
-                                        console.error(error)
-                                        alert('Error al agregar la novedad.')
-                                    })
-                            })
-                        </script>
-                    </div>
-                </div>
+            <article>
+                
             </article>
         </section>
     </main>
@@ -234,6 +161,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/4e89c87464.js" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

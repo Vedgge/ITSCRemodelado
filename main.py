@@ -46,10 +46,14 @@ class centroNovedades:
         self.cursor = self.conn.cursor(dictionary=True)
         
     #----------------------------------------------------------------
-    def agregar_novedad(self, titulo, descripcion, imagen, fechaCreacion):  
+    def agregar_novedad(self, titulo, descripcion, imagen, fechaCreacion):
+        # If no image is provided, use a default image name
+        if not imagen:
+            imagen = 'imagen-predeterminada-novedad.jpg'
+
         sql = "INSERT INTO novedades (titulo, descripcion, imagen_url, fechaCreacion) VALUES (%s, %s, %s, %s)"
         valores = (titulo, descripcion, imagen, fechaCreacion)
-        
+
         self.cursor.execute(sql, valores)
         self.conn.commit()
         return True
@@ -124,27 +128,29 @@ def mostrar_novedades(codigo):
 
 @app.route('/novedades', methods=['POST'])
 def agregar_novedad():
-    #Agarra los datos del form
     codigo = request.form.get('codigo')
     titulo = request.form['titulo']
     descripcion = request.form['descripcion']
-    #fechaCreacion = request.form[]
-    imagen = request.files['imagen']
-    nombre_imagen = ""
     
+    #Usamos get en caso de que 'imagen' no este presente
+    imagen = request.files.get('imagen')  
 
-    #Verifica existencia de la novedad
+    # Verifica la existencia de la novedad
     novedad = catalogoNovedades.consultar_novedad(codigo)
-    if not novedad: # Si no existe la novedad
-        # Genera el nombre de la imagen
-        nombre_imagen = secure_filename(imagen.filename)
-        nombre_base, extension = os.path.splitext(nombre_imagen)
-        nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
-        # Obtiene la fecha actual
+    if not novedad:  # Si la novedad no existe
+        # Genera el nombre de la imagen o usa el predeterminado
+        if imagen:
+            nombre_imagen = secure_filename(imagen.filename)
+            nombre_base, extension = os.path.splitext(nombre_imagen)
+            nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
+        else:
+            nombre_imagen = 'imagen-predeterminada-novedad.jpg'
+        # Obtiene la fecha y hora actual
         fecha_creacion = datetime.now()
-    
+
     if catalogoNovedades.agregar_novedad(titulo, descripcion, nombre_imagen, fecha_creacion):
-        imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
+        if imagen:
+            imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
         return jsonify({"mensaje": "Novedad agregada"}), 201
     else:
         return jsonify({"mensaje": "Novedad ya existe"}), 400
