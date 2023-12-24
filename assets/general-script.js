@@ -24,10 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   const carrusels = document.querySelectorAll(".carrusel");
-  // Si el usuario no opto por recuded motion, agregamos la animación
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    agregarAnimacion();
-  }
+
   function agregarAnimacion() {
     carrusels.forEach((carrusel) => {
       // Agregar data-animated="true" a  c/.carrusel en la pag
@@ -47,6 +44,13 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   }
+
+  // Si el usuario no opto por recuded motion, agregamos la animación
+  // if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  //   agregarAnimacion();
+  // }
+
+  agregarAnimacion(); // Siempre agrega la animación para que se vea más bonito, por ahora, la mayoría de netbooks tienen prefers-reduced-motion: reduce, por lo que tengo que agregar estilos en este caso.
 
     //ANIMACIÓN SCROLL SLIDE ABAJO -> CENTRO
     const observador = new IntersectionObserver((entries) => { //Creo una clase llamada IntersectionObserver que toma una función callback en su constructor, observa varias entrys

@@ -11,7 +11,7 @@
     margin: 32px 0;
     padding: 32px;
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.3);
-    background-color: #FFF;
+    background-color: #E8E8E8;
 }
 
 .contenedor-title-main {
@@ -19,7 +19,7 @@
     justify-content: center;
 }
 
-#descripcion, #titulo {
+#descripcion, #titulo, #imagenNovedad {
     width: 100% !important;
     margin: 10px 0;
 }
@@ -39,10 +39,11 @@ input[type="file"]::file-selector-button {
 
 .contenedor-img-up-novedad {
     position: relative;
-    background: url(/img/img-upload.jpg);
-    background-size: cover;
-    width: 224px;
-    height: 224px;
+    background: url(/img/upload-img.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
 }
 
@@ -53,4 +54,8 @@ input[type="file"]::file-selector-button {
 
 .contenedor-enviar button {
     padding: 5px 60px;
+}
+
+#descripcion{
+    height: 500px;
 }
