@@ -1,8 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 CORS(app)
 app.config['encoding'] = 'UTF-8'
 
@@ -35,7 +35,7 @@ class centroNovedades:
         # Si la tabla 'novedades' no existe, la crea
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS novedades (
             codigo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            titulo VARCHAR(25) NOT NULL,
+            titulo VARCHAR(255) NOT NULL,
             descripcion TEXT NOT NULL,
             imagen_url VARCHAR(255) NOT NULL,
             fechaCreacion DATETIME NOT NULL)''')
@@ -91,7 +91,7 @@ class centroNovedades:
         return self.cursor.rowcount > 0
 
     #----------------------------------------------------------------
-    def mostrar_novedades(self, codigo):
+    def mostrar_novedad(self, codigo):
         # Muestra los datos de un novedad a partir de su código
         novedad = self.consultar_novedad(codigo)
         if novedad:
@@ -119,10 +119,11 @@ def listar_novedades():
     return jsonify(novedades)
 
 @app.route("/novedades/<int:codigo>", methods=["GET"])
-def mostrar_novedades(codigo):
+def mostrar_novedad(codigo):
     novedad = catalogoNovedades.consultar_novedad(codigo)
+    print("Novedad object:", novedad)  # Add this line to print the contents of novedad
     if novedad:
-        return jsonify(novedad), 201
+        return render_template("mostrar-novedad.html", novedad=novedad)
     else:
         return "Novedad no encontrada", 404
 
@@ -132,7 +133,7 @@ def agregar_novedad():
     titulo = request.form['titulo']
     descripcion = request.form['descripcion']
     
-    #Usamos get en caso de que 'imagen' no este presente
+    # Usamos get en caso de que 'imagen' no este presente
     imagen = request.files.get('imagen')  
 
     # Verifica la existencia de la novedad
@@ -157,7 +158,7 @@ def agregar_novedad():
 #--------------------------------------------------------------------
 @app.route("/novedades/<int:codigo>", methods=["PUT"])
 def modificar_novedad(codigo):
-    #Agarra los datos del form
+    # Agarra los datos del form
     nuevo_titulo = request.form.get("titulo")
     nueva_descripcion = request.form.get("descripcion")
     imagen = request.files['imagen']

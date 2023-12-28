@@ -27,7 +27,7 @@ p {
 }
 
 .hero-bg-image {
-    background-image: url(/img/hero-novedades-bg.jpg);
+    background-image: url(/static/img/hero-novedades-bg.jpg);
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -179,9 +179,9 @@ p {
 
 .img-novedad-vieja {
     position: relative;
-    background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center; 
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -196,7 +196,7 @@ p {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: .5px;
-    line-height: 1.5;
+    /* line-height: 1.5; */
     color: #3188B5;
 }
 

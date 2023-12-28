@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Novedades</title>
+    <title>Administración Novedades</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/img/fav-icon-itsc.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./img/fav-icon-itsc.png" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,9 +15,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300;1,400&display=swap"
         rel="stylesheet">
-
-    <!-- CSS CUSTOM -->
-    <link rel="stylesheet" href="./assets/style-agregar-novedades.css">
 
     <!-- CSS GENERAL -->
     <link rel="stylesheet" href="./assets/general-style.css">
@@ -27,7 +24,6 @@
 
     <!-- JS GENERAL -->
     <script src="./assets/general-script.js" defer></script>
-
 </head>
 
 <body>
@@ -108,45 +104,8 @@
 
     <main>
         <section>
-            <article class="articulo-agregar-novedad">
-                <div class="contenedor-main-agregar-novedad">
-                    <div class="contenedor-title-main">
-                        <h1>Subir una novedad</h1>
-                    </div>
-                    <div class="contenedor-formulario-novedad">
-                        <form id="formulario" action="" method="POST" enctype="multipart/form-data">
-                            <label for="titulo">Título de la novedad:</label><br>
-                            <input type="text" id="titulo" name="titulo" required
-                                placeholder="Nombre/Título de la novedad"> <br>
-                            <!-- <label for="codigo">Código:</label>
-                            <input type="number" id="codigo" name="codigo" minlength="5" maxlength="6" required><br> -->
-                            <!-- <label for="tiponovedad">Tipo de novedad:</label>
-                            <select id="tiponovedad" name="tiponovedad">
-                                <option value="Noticia">Noticia</option>
-                                <option value="Evento">Evento</option>
-                                <option value="Proyecto">Proyecto</option>
-                                <option value="Otros">Otros</option>
-                            </select> <br> -->
-
-                            <label for="imagenNovedad">Imagen adjunta (opcional)</label>
-                            <div class="contenedor-img-up-novedad"><input type="file" name="imagen" id="imagenNovedad">
-                            </div>
-                            <!-- <input type="text" name="urlImagen" id="urlImagen" placeholder="Pegá el URL de la imagen"> -->
-                            <p style="margin: 0; color: rgb(94, 93, 93);">Usa formato JPEG, JPG o PNG. Debe ser al menos
-                                960 x 960. Tamaño max: 30MB
-                            </p> <br>
-
-                            <label for="descripcion">Descripcion de la novedad:</label><br>
-                            <textarea id="descripcion" name="descripcion" rows="5" cols="30"></textarea><br>
-
-                            <!-- <label for="archivo">Archivo adjunto opcional (.pdf, .docx) :</label>
-                            <input type="file" accept=".pdf,.docx" id="archivo" name="archivo" required> -->
-                            <div class="contenedor-enviar">
-                                <button type="submit" class="btn-estilo">Enviar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <article>
+                
             </article>
         </section>
     </main>
@@ -202,42 +161,84 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/4e89c87464.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@next"></script>
     <script>
-        const URL = "http://127.0.0.1:5000/";
+        document.getElementById('main-nov').addEventListener("submit", function(evento){
+            const URL = "http://127.0.0.1:5000/";
+            const app = Vue.createApp({
+            data() {
+                return {
+                    codigo: '',
+                    descripcion: '',
+                    cantidad: '',
+                    precio: '',
+                    proveedor: '',
+                    imagen_url: '',
+                    imagenUrlTemp: null,
+                    mostrarDatosProducto: false,
+                };
+            },
+            methods: {
+                obtenerProducto() {
+                    console.log(URL + 'productos/' + this.codigo)
+                    fetch(URL + 'productos/' + this.codigo)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.descripcion = data.descripcion;
+                            this.cantidad = data.cantidad;
+                            this.precio = data.precio;
+                            this.proveedor = data.proveedor;
+                            this.imagen_url =  "" //data.imagen_url;
+                            this.mostrarDatosProducto = true;
+                        })
+                        .catch(error => console.error('Error:', error));
+                },
+                seleccionarImagen(event) {
+                    //const file = event.target.files[0];
+                    //this.imagenSeleccionada = file;
+                    //this.imagenUrlTemp = URL.createObjectURL(file); // Crea una URL temporal para la vista previa
+                },
+                guardarCambios() {
+                    const formData = new FormData();
+                    formData.append('codigo', this.codigo);
+                    formData.append('descripcion', this.descripcion);
+                    formData.append('cantidad', this.cantidad);
+                    formData.append('proveedor', this.proveedor);
+                    formData.append('precio', this.precio);
 
-        document.getElementById('formulario').addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevents the form from being submitted
+                    //if (this.imagenSeleccionada) {
+                    //    formData.append('imagen', this.imagenSeleccionada, this.imagenSeleccionada.name);
+                    //}
 
-            var formData = new FormData();
-            formData.append('titulo', document.getElementById('titulo').value);
-            formData.append('descripcion', document.getElementById('descripcion').value);
-
-            // Check if an image file is selected
-            const imagenInput = document.getElementById('imagenNovedad');
-            if (imagenInput.files.length > 0) {
-                formData.append('imagen', imagenInput.files[0]);
+                    fetch(URL + 'productos/' + this.codigo, {
+                        method: 'PUT',
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert('Producto actualizado correctamente');
+                            this.limpiarFormulario();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error al actualizar el producto');
+                        });
+                },
+                limpiarFormulario() {
+                    this.codigo = '';
+                    this.descripcion = '';
+                    this.cantidad = '';
+                    this.precio = '';
+                    this.imagen_url = '';
+                    this.imagenSeleccionada = null;
+                    this.imagenUrlTemp = null;
+                    this.mostrarDatosProducto = false;
+                }
             }
-
-            fetch(URL + 'novedades', {
-                method: 'POST',
-                body: formData
-            })
-                .then(function (response) {
-                    if (!response.ok) { return response.json(); }
-                })
-                .then(function (data) {
-                    alert('Novedad agregada correctamente.');
-                    // Clear the form for the next entry
-                    document.getElementById('titulo').value = "";
-                    document.getElementById('descripcion').value = "";
-                    document.getElementById('imagenNovedad').value = "";
-                })
-                .catch(function (error) {
-                    console.error(error);
-                    alert('Error al agregar la novedad.');
-                });
         });
+        })
     </script>
+
 </body>
 
 </html>

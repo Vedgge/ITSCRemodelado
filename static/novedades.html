@@ -279,10 +279,10 @@
 
                         let divNovedad = document.createElement('div');
                         divNovedad.classList.add('novedad-vieja'); // Agrega la clase "novedad-vieja"
-                        divNovedad.innerHTML = '<a href="#" class="ref-img-novedad-vieja"><div class="img-novedad-vieja" style="background-image: url(./static/imagenes-novedades/' + novedad.imagen_url + ');"></div></a>' +
+                        divNovedad.innerHTML = '<a href="../novedades/'+ novedad.codigo + '" class="ref-img-novedad-vieja"><div class="img-novedad-vieja" style="background-image: url(/static/imagenes-novedades/' + novedad.imagen_url + ');"></div></a>' +
                             '<div class="article-viejo-listing">' +
                             '<p>' + novedad.fechaCreacion + '</p>' +
-                            '<a href="#"><h2>' + novedad.titulo + '</h2></a>' +
+                            '<a href="../novedades/'+ novedad.codigo + '"><h2>' + novedad.titulo + '</h2></a>' +
                             '<p class="description">' + novedad.descripcion + '</p>' +
                             '</div>';
                         novedadesRecientes.appendChild(divNovedad);
