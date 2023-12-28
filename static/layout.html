@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Novedad</title>
+    <!-- Add your CSS styles here -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="./img/fav-icon-itsc.png" type="image/x-icon">
@@ -19,7 +22,7 @@
     <link rel="stylesheet" href="./assets/general-style.css">
 
     <!-- CSS Custom -->
-    <link rel="stylesheet" href="./assets/style-carreras.css">
+    <link rel="stylesheet" href="./assets/style-novedad.css">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
@@ -27,6 +30,7 @@
     <!-- JS GENERAL -->
     <script src="./assets/general-script.js" defer></script>
 </head>
+
 <body>
     <header class="sticky">
         <nav>
@@ -104,63 +108,9 @@
     </header>
 
     <main>
-        <section>
-            <article>
-                <div class="contenedor-main">
-                    <nav class="contenedor-ruta">
-                        <ul>
-                            <li><a href="index.html">Inicio</a></li>
-                            <li class="separator" aria-hidden="true"></li>
-                            <li><a href="#">Carreras</a></li>
-                        </ul>
-                    </nav>
-                    <div class="contenedor-title">
-                        <h1>Carreras</h1>
-                    </div>
-                    <div class="contenedor-carreras-filtro">
-                        <div class="contenedor-filtro">
-                            <div class="filtros">
-                                <h2>Filtros</h2>
-                                <section class="opciones">
-                                    <div class="opcion-nivel">
-                                        <fieldset>
-                                            <legend><h3>Nivel</h3></legend>
-                                            <div class="nivel">
-                                                <input type="checkbox">
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <div class="opcion-area-estudio">
-
-                                    </div>
-                                    <button>Limpiar filtros</button>
-                                </section>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contenedor-resultados-title">
-                        <div class="titulo"><h2>Resultados</h2></div>
-                        <div class="btn-resultados"></div>
-                    </div>
-                    <div class="contenedor-carreras-resultado">
-                        <div class="grid-carreras">
-                            <div class="carrera-1"></div>
-                            <div class="carrera-2"></div>
-                            <div class="carrera-3"></div>
-                            <div class="carrera-4"></div>
-                            <div class="carrera-5"></div>
-                            <div class="carrera-6"></div>
-                            <div class="carrera-7"></div>
-                            <div class="carrera-8"></div>
-                            <div class="carrera-9"></div>
-                            <div class="carrera-10"></div>
-                            <div class="carrera-11"></div>
-                            <div class="carrera-12"></div>
-                          </div>
-                    </div>
-                </div>
-            </article>
-        </section>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </main>
 
     <footer>
@@ -194,11 +144,13 @@
                     <h5>Encontrános en nuestras redes sociales</h5>
                     <div class="contenedor-redes-sociales">
                         <a href="https://www.instagram.com/itscordoba.ok/"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://www.facebook.com/pages/Instituto-T%C3%A9cnico-Superior-C%C3%B3rdoba/443175482521454"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://www.linkedin.com/company/instituto-t%C3%A9cnico-superior-c%C3%B3rdoba/"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a
+                            href="https://www.facebook.com/pages/Instituto-T%C3%A9cnico-Superior-C%C3%B3rdoba/443175482521454"><i
+                                class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.linkedin.com/company/instituto-t%C3%A9cnico-superior-c%C3%B3rdoba/"><i
+                                class="fa-brands fa-linkedin-in"></i></a>
                     </div>
                 </div>
-
             </div>
         </div>
         <p style="margin-bottom: 0 !important; margin: 0 10%; padding-bottom: 10px; color: #FFF; font-size: 12px;">
@@ -206,9 +158,12 @@
         <div class="volver-inicio"><a href="#top"><span>Volver al inicio </span><i class="fa-solid fa-arrow-up"></i></a>
         </div>
     </footer>
-        <!-- Bootstrap bundle JS & JQuery & Font Awesome-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="https://kit.fontawesome.com/4e89c87464.js" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap bundle JS & JQuery & Font Awesome-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/4e89c87464.js" crossorigin="anonymous"></script>
+
 </body>
+
 </html>
