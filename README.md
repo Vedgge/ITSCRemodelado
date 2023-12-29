@@ -48,13 +48,13 @@ El repositorio contiene los siguientes archivos y carpetas:
 
 ## Check List
 
-[x] Implementar un diseño completamente responsivo en al menos 4 documentos HTML.
+[ ] Implementar un diseño completamente responsivo en al menos 4 documentos HTML.
 
-[x] Desarrollar e implementar el método DELETE del CRUD en el documento HTML "admin-novedades.html".
+[o] Desarrollar e implementar el método DELETE del CRUD en el documento HTML "admin-novedades.html".
 
-[x] Desarrollar e implementar el método UPDATE del CRUD en el documento HTML "admin-novedades.html" y "editar-novedad.html".
+[ ] Desarrollar e implementar el método UPDATE del CRUD en el documento HTML "admin-novedades.html" y "editar-novedad.html".
 
-[x] Agregar un motor de busqueda que despliegue las novedades deseadas para su posterior edición o eliminación.
+[ ] Agregar un motor de busqueda que despliegue las novedades deseadas para su posterior edición o eliminación.
 
 ### Notas Check List
 - "x" Completado 
