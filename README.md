@@ -2,6 +2,7 @@
 Este repositorio contiene un experimetno de remodelado de ITSC que tiene un website que parece al menos 20 años viejo. Su fecha de inicio fue alrededor de los primeros días de Octubre. Es un proyecto pasional mediante el cuál tengo como objetivo afianzar mis conocimientos tanto de Front-End como Back-End.
 
 ## Objetivo
+
 Remodelar un sitio web de una institución académica que sea atractivo, funcional y fácil de usar.
 &emsp; 
 
@@ -45,7 +46,8 @@ El repositorio contiene los siguientes archivos y carpetas:
 
 ¡Espero que hayas disfrutado navegar por esta institución académica y hayas podido encontrar la carrera idonea!
 
-# Check List TPO
+## Check List
+
 [x] Implementar un diseño completamente responsivo en al menos 4 documentos HTML.
 
 [x] Desarrollar e implementar el método DELETE del CRUD en el documento HTML "admin-novedades.html".
