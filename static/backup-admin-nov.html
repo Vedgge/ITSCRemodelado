@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración de Novedades</title>
+    <title>Administración de Novedades </title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="./img/fav-icon-itsc.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/img/fav-icon-itsc.png" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
         href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300;1,400&display=swap"
         rel="stylesheet">
 
-    <!-- CSS GENERAL DE DISPLAY NOVEDADES -->
+    <!-- CSS CUSTOM -->
     <link rel="stylesheet" href="./assets/style-novedades-varias.css">
 
     <!-- CSS GENERAL -->
@@ -25,9 +25,6 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-
-    <!-- CSS CUSTOM -->
-    <link rel="stylesheet" href="./assets/style-admin-novedades.css">
 
 </head>
 
@@ -123,9 +120,67 @@
         <div class="listing-novedades">
             <div class="contenedor-novedades-varias">
                 <div class="columna-main">
+                    <!-- <section class="contenedor-novedades-recientes" id="contenedor-novedades-recientes">
+                        <div class="col-hor-1">
+                            <a href="#">
+                                <div class="novedad">
+                                    <div class="footer-novedad-col-hor-1">
+                                        <div class="panel-heading">
+                                            <span><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> 21
+                                                Septiembre</span>
+                                            <h3>Consejo Institucional</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nostrum
+                                                reiciendis ullam cum praesentium facere, amet ducimus, alias soluta
+                                                perferendis architecto consequatur ea sapiente tenetur delectus
+                                                voluptatem illo ut nesciunt.</p>
+                                            <span>Más información <i class="fa-solid fa-chevron-right"
+                                                    aria-hidden="true"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
 
+                            <a href="#">
+                                <div class="novedad">
+                                    <div class="footer-novedad-col-hor-1">
+                                        <div class="panel-heading">
+                                            <span><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> 21
+                                                Septiembre</span>
+                                            <h3>Consejo Institucional</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nostrum
+                                                reiciendis ullam cum praesentium facere, amet ducimus, alias soluta
+                                                perferendis architecto consequatur ea sapiente tenetur delectus
+                                                voluptatem illo ut nesciunt.</p>
+                                            <span>Más información <i class="fa-solid fa-chevron-right"
+                                                    aria-hidden="true"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-hor-2">
+                            <a href="#">
+                                <div class="novedad"></div>
+                            </a>
+                            <a href="#">
+                                <div class="novedad"></div>
+                            </a>
+                            <a href="#">
+                                <div class="novedad"></div>
+                            </a>
+                        </div>
+                    </section> -->
                     <section class="novedades-viejas-contenedor" id="contenedor-novedades-viejas">
-
+                        <!-- <div class="img-novedad-vieja"></div>
+                        <div class="article-viejo-listing">
+                            <p>12 December 2023</p>
+                            <h2>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h2>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta maxime distinctio doloribus. Nihil est, quidem nobis laudantium error exercitationem reprehenderit sit praesentium atque, corrupti cum labore itaque? Eveniet, quo reprehenderit?</p>
+                        </div> -->
                     </section>
                     <div class="ver-todas-novedades">
                         <a href="#" class="btn btn-primary ver-mas">Ver todas las novedades</a>
@@ -144,21 +199,8 @@
                     </section>
                 </aside>
             </div>
-
-            <div class="modal-delete" id="modal-delete">
-                <div class="contenedor-title-delete">
-                    <h3>¿Desea eliminar esta novedad?</h3>
-                </div>
-                <div class="contenedor-text">
-                    <!-- <div class="contenedor-eliminar-btn">
-                        <button class="cancelar-delete">Cancelar</button> -->
-                    <!-- <a href="" class="btn btn-primary confirm-eliminar">Confirmar</a> -->
-                </div>
-            </div>
-        </div>
         </div>
     </main>
-
 
     <footer>
         <div class="contenedor-elementos-footer">
@@ -206,77 +248,46 @@
         <div class="volver-inicio"><a href="#top"><span>Volver al inicio </span><i class="fa-solid fa-arrow-up"></i></a>
         </div>
     </footer>
-    <a href="../templates/editar-novedad.html"></a>
-
+    
     <!-- Bootstrap bundle JS & JQuery & Font Awesome-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/4e89c87464.js" crossorigin="anonymous"></script>
 
+    <script src="https://unpkg.com/vue@next"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const URL = "http://127.0.0.1:5000/";
-            const MAX_NOVEDADES = 9;
-            let contadorNovedades = 0; // Declare contadorNovedades
+        const URL = "http://127.0.0.1:5000/"
 
-            fetch(URL + 'novedades')
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
+        const app = Vue.createApp({
+            data() {
+                return {
+                    novedades: []
+                }
+            },
+            methods: {
+                eliminarNovedad(codigo) {
+                    if (confirm('¿Estás seguro de que quieres eliminar esta novedad?')) {
+                        fetch(URL + `novedades/${codigo}`, { method: 'DELETE' })
+                            .then(response => {
+                                if (response.ok) {
+                                    this.novedades = this.novedades.filter(novedad => novedad.codigo !== codigo);
+                                    alert('Novedad eliminada correctamente.');
+                                }
+                            })
+                            .catch(error => {
+                                alert(error.message);
+                            });
                     }
-                })
-                .then(function (data) {
-                    let novedadesRecientes = document.getElementById('contenedor-novedades-viejas');
-
-                    data.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
-
-                    for (let novedad of data) {
-                        if (contadorNovedades >= MAX_NOVEDADES) {
-                            break;
-                        }
-
-                        let divNovedad = document.createElement('div');
-                        divNovedad.classList.add('novedad-vieja');
-                        divNovedad.innerHTML = '<a href="../novedades/' + novedad.codigo + '" class="ref-img-novedad-vieja"><div class="img-novedad-vieja" style="background-image: url(/static/imagenes-novedades/' + novedad.imagen_url + ');"></div></a>' +
-                            '<div class="article-viejo-listing">' +
-                            '<p>' + novedad.fechaCreacion + '</p>' +
-                            '<a href="../novedades/' + novedad.codigo + '"><h2>' + novedad.titulo + '</h2></a>' +
-                            '<p class="description">' + novedad.descripcion + '</p>' +
-                            '<div><button class="btn btn-primary confirm-eliminar">Eliminar novedad</button></div>' +
-                            '<div><a href="../novedades/' + novedad.codigo + '/editar' + '" class="btn btn-primary confirm-editar">Editar novedad</a></div>'
-                        '</div>';
-                        novedadesRecientes.appendChild(divNovedad);
-
-                        divNovedad.querySelector('.confirm-eliminar').addEventListener('click', function (event) {
-                            event.preventDefault();
-                            if (confirm('¿Estás seguro de que quieres eliminar esta novedad?')) {
-                                fetch(URL + 'novedades/' + novedad.codigo, { method: 'DELETE' })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            divNovedad.remove();
-                                            alert('Novedad eliminada correctamente.');
-                                        }
-                                    })
-                                    .catch(error => {
-                                        alert(error.message);
-                                    });
-                            }
-                        });
-
-                        contadorNovedades++;
-                        // document.dispatchEvent(new Event('btnDeleteCreated'));
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    alert('Error al obtener las novedades.');
-                });
+                }
+            },
+            mounted() {
+                //Al cargar la página, obtenemos la lista de novedades
+                this.obtenerNovedades();
+            }
         });
-    </script>
 
-    <!-- JS CUSTOM -->
-    <!-- <script src="./assets/modal-delete.js" defer></script> -->
-    <!-- MODAL INUTILIZADO PORQ DA PROBLEMAS AL MOMENTO DE EJECUTAR DELETE -->
+        app.mount('body');
+    </script>
 </body>
 
 </html>

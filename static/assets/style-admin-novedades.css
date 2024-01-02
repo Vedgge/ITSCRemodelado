@@ -1,0 +1,21 @@
+
+/* ESTILOS DE UN MODAL INUTILIZADO */
+body {
+    position: relative;
+}
+
+.modal-delete {
+    display: none;
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contenedor-eliminar-btn {
+    display: flex;
+    justify-content: flex-end;
+}

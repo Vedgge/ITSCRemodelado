@@ -84,7 +84,7 @@ class centroNovedades:
         return novedades
 
     #----------------------------------------------------------------
-    def eliminar_novedades(self, codigo):
+    def eliminar_novedad(self, codigo):
         # Elimina una novedad de la tabla a partir de su código
         self.cursor.execute(f"DELETE FROM novedades WHERE codigo = {codigo}")
         self.conn.commit()
@@ -121,7 +121,7 @@ def listar_novedades():
 @app.route("/novedades/<int:codigo>", methods=["GET"])
 def mostrar_novedad(codigo):
     novedad = catalogoNovedades.consultar_novedad(codigo)
-    print("Novedad object:", novedad)  # Add this line to print the contents of novedad
+    print("Novedad object:", novedad)
     if novedad:
         return render_template("mostrar-novedad.html", novedad=novedad)
     else:
@@ -156,55 +156,106 @@ def agregar_novedad():
     else:
         return jsonify({"mensaje": "Novedad ya existe"}), 400
 #--------------------------------------------------------------------
-@app.route("/novedades/<int:codigo>", methods=["PUT"])
-def modificar_novedad(codigo):
-    # Agarra los datos del form
-    nuevo_titulo = request.form.get("titulo")
-    nueva_descripcion = request.form.get("descripcion")
-    imagen = request.files['imagen']
-    nombre_imagen = ""
+@app.route("/novedades/<int:codigo>/editar", methods=["GET", "PUT"])
+def editar_novedad(codigo):
+    print(f'Solicitud PUT recibida para la novedad con código {codigo}')
+    if request.method == "GET":
+        # Muestra la plantilla de edición de novedad con los datos actuales
+        novedad = catalogoNovedades.consultar_novedad(codigo)
+        if novedad:
+            return render_template("editar-novedad.html", novedad=novedad)
+        else:
+            return jsonify({"mensaje": "Novedad no encontrada"}), 403
+    elif request.method == "PUT":
+        # Agarra los datos del formulario
+        nuevo_titulo = request.json.get("titulo")
+        nueva_descripcion = request.json.get("descripcion")
+        imagen = request.files.get('imagen')  # Usa get en lugar de ['imagen']
+        nombre_imagen = ""
 
-    # Procesamiento de la imagen
-    nombre_imagen = secure_filename(imagen.filename)
-    nombre_base, extension = os.path.splitext(nombre_imagen)
-    nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
-    imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
+        # Procesamiento de la imagen
+        if imagen:
+            nombre_imagen = secure_filename(imagen.filename)
+            nombre_base, extension = os.path.splitext(nombre_imagen)
+            nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
+            imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
 
-    # Busca la novedad guardado
-    novedad = novedad = catalogoNovedades.consultar_novedad(codigo)
-    if novedad: # Si existe la novedad
-        imagen_vieja = novedad["imagen_url"]
-        # Arma la ruta a la imagen
-        ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
+        # Busca la novedad guardada
+        novedad = catalogoNovedades.consultar_novedad(codigo)
+        if novedad:  # Si existe la novedad
+            imagen_vieja = novedad["imagen_url"]
+            # Arma la ruta a la imagen
+            ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
 
-        # Y si existe la borra
-        if os.path.exists(ruta_imagen):
-            os.remove(ruta_imagen)
-    
-    if catalogoNovedades.modificar_novedad(codigo, nuevo_titulo, nueva_descripcion, nombre_imagen):
-        return jsonify({"mensaje": "Novedad modificada"}), 200
-    else:
-        return jsonify({"mensaje": "Novedad no encontrada"}), 403
+            # Y si existe, la borra
+            if os.path.exists(ruta_imagen):
+                os.remove(ruta_imagen)
 
+        if catalogoNovedades.modificar_novedad(codigo, nuevo_titulo, nueva_descripcion, nombre_imagen):
+            return jsonify({"mensaje": "Novedad modificada"}), 200
+        else:
+            return jsonify({"mensaje": "Novedad no encontrada"}), 403
+
+    if request.method == "GET":
+        # Muestra la plantilla de edición de novedad con los datos actuales
+        novedad = catalogoNovedades.consultar_novedad(codigo)
+        if novedad:
+            return render_template("editar-novedad.html", novedad=novedad)
+        else:
+            return jsonify({"mensaje": "Novedad no encontrada"}), 403
+    elif request.method == "PUT":
+        # Agarra los datos del formulario
+        nuevo_titulo = request.form.get("titulo")
+        nueva_descripcion = request.form.get("descripcion")
+        imagen = request.files.get('imagen')  # Usa get en lugar de ['imagen']
+        nombre_imagen = ""
+
+        # Procesamiento de la imagen
+        if imagen:
+            nombre_imagen = secure_filename(imagen.filename)
+            nombre_base, extension = os.path.splitext(nombre_imagen)
+            nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
+            imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
+
+        # Busca la novedad guardada
+        novedad = catalogoNovedades.consultar_novedad(codigo)
+        if novedad:  # Si existe la novedad
+            imagen_vieja = novedad["imagen_url"]
+            # Arma la ruta a la imagen
+            ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
+
+            # Y si existe, la borra
+            if os.path.exists(ruta_imagen):
+                os.remove(ruta_imagen)
+
+        if catalogoNovedades.modificar_novedad(codigo, nuevo_titulo, nueva_descripcion, nombre_imagen):
+            return jsonify({"mensaje": "Novedad modificada"}), 200
+        else:
+            return jsonify({"mensaje": "Novedad no encontrada"}), 403
 #--------------------------------------------------------------------
 @app.route("/novedades/<int:codigo>", methods=["DELETE"])
-def eliminar_novedades(codigo):
+def eliminar_novedad(codigo):
     # Busca la novedad guardada
-    novedad = novedad = catalogoNovedades.consultar_novedad(codigo)
+    novedad = catalogoNovedades.consultar_novedad(codigo)
     if novedad: # Si existe la novedad
         imagen_vieja = novedad["imagen_url"]
-        # Arma la ruta a la imagen
-        ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
+        imagen_predeterminada = 'imagen-predeterminada-novedad.jpg'
+        if not imagen_vieja == imagen_predeterminada:
+            # Arma la ruta a la imagen
+            ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
 
-        # Y si existe la borra
-        if os.path.exists(ruta_imagen):
-            os.remove(ruta_imagen)
+            # Y si existe la borra
+            if os.path.exists(ruta_imagen):
+                os.remove(ruta_imagen)
 
-    # Luego, elimina la novedad del catálogo
-    if catalogoNovedades.eliminar_novedades(codigo):
-        return jsonify({"mensaje": "Novedad eliminada"}), 200
+        # Luego, elimina la novedad del catálogo
+        if catalogoNovedades.eliminar_novedad(codigo):
+            return jsonify({"mensaje": "Novedad eliminada"}), 200
+        else:
+            return jsonify({"mensaje": "Error al eliminar la novedad"}), 500
     else:
-        return jsonify({"mensaje": "Error al eliminar la novedad"}), 500
+        return jsonify({"mensaje": "Novedad no encontrada"}), 404
+
     
 #--------------------------------------------------------------------
 if __name__ == "__main__":
