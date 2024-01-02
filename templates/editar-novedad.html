@@ -1,0 +1,99 @@
+{% extends 'template-novedad.html' %}
+{% block content %}
+<section class="first-section">
+    <article>
+        <div class="contenedor-ruta">
+            <nav class="ruta-nav">
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><i class="fa-solid fa-chevron-right"></i></li>
+                    <li><a href="#">Todas las novedades</a></li>
+                    <li><i class="fa-solid fa-chevron-right"></i></li>
+                    <li>
+                        <a href="#" class="active">{{ novedad.titulo }}</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </article>
+    <article>
+        <div class="contenedor-title">
+            <h1><input type="text" name="titulo" value="{{ novedad.titulo }}"></h1>
+        </div>
+        <div class="contenedor-info">
+            <div class="contenedor-fecha">
+                <div class="fecha">
+                    <span>Publicada el día: {{ novedad.fechaCreacion }}</span>
+                </div>
+            </div>
+            <div class="btn_wrap">
+                <span>Compartir<i class="fa-solid fa-share" style="margin-left: 10px;"></i></span>
+                <div class="contenedor-redes">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="contenedor-main">
+            <div class="texto-principal">
+                <figure>
+                    <div class="imagen-novedad-esp">
+                        <img src="{{ url_for('static', filename='imagenes-novedades/' + novedad.imagen_url) }}"
+                            alt="Imagen de una novedad por la institucion">
+                    </div>
+                </figure>
+                <textarea name="descripcion">{{ novedad.descripcion }}</textarea>
+                <!-- DESCRIPCION -->
+                <button class="confirm-modificacion btn btn-primary" data-codigo="{{ novedad.codigo }}">Modificar
+                    Novedad</button>
+            </div>
+        </div>
+    </article>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const URL = "http://127.0.0.1:5000/";
+
+        const confirmModificacion = document.querySelector('.confirm-modificacion');
+        console.log(confirmModificacion)
+        const codigoNovedad = confirmModificacion.getAttribute('data-codigo');
+
+        confirmModificacion.addEventListener('click', function (event) {
+            event.preventDefault();
+            console.log('Botón de modificación clickeado');
+            if (confirm('¿Estás seguro de que quieres modificar esta novedad?')) {
+                const titulo = document.querySelector('input[name="titulo"]').value;
+                const descripcion = document.querySelector('textarea[name="descripcion"]').value;
+                console.log('Titulo:', titulo);
+                console.log('Descripcion:', descripcion);
+
+                // Método put para UPDATE
+                fetch(URL + 'novedades/' + codigoNovedad, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        titulo: titulo,
+                        descripcion: descripcion
+                    })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Novedad modificada correctamente.');
+                        } else {
+                            alert('Error al modificar la novedad.');
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+            }
+        });
+    });
+
+</script>
+{% endblock %}
