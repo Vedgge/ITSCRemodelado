@@ -36,6 +36,8 @@ El repositorio contiene los siguientes archivos y carpetas:
 - `index.html`: Página principal de la web es completamente responsiva.
 - `assets/`: Carpeta que contiene los archivos de estilo CSS y los scripts JavaScript utilizados.
 - `img/`: Carpeta que contiene las imágenes utilizadas en la página.
+- `imgagenes-novedades/`: Carpeta que contiene las imágenes subidas por el CRUD a la DB.
+- `templates/`: Carpeta que contiene documentos HTML con Jinja2.
 
 ## Desarrollos Futuros y Mejoras Potenciales
 
@@ -48,13 +50,17 @@ El repositorio contiene los siguientes archivos y carpetas:
 
 ## Check List
 
+[ ] Finalizar el desarrollo de otros documentos HTML que contengan únicamente capacidades de Front-End (Ej.: contacto.html)
+
 [ ] Implementar un diseño completamente responsivo en al menos 4 documentos HTML.
 
 [o] Desarrollar e implementar el método DELETE del CRUD en el documento HTML "admin-novedades.html".
 
-[ ] Desarrollar e implementar el método UPDATE del CRUD en el documento HTML "admin-novedades.html" y "editar-novedad.html".
+[o] Desarrollar e implementar el método UPDATE del CRUD en el documento HTML "admin-novedades.html" y "editar-novedad.html".
 
 [ ] Agregar un motor de busqueda que despliegue las novedades deseadas para su posterior edición o eliminación.
+
+[o] Subir el proyecto a un sitio de hosting similar a Netlify.
 
 ### Notas Check List
 - "x" Completado 
