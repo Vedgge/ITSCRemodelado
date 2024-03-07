@@ -229,3 +229,7 @@ p {
     flex-direction: column;
     gap: 10px;
 }
+
+.btn-estilo {
+    padding: 12px 12px !important;
+}

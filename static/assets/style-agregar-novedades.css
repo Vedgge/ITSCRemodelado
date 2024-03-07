@@ -19,6 +19,28 @@
     justify-content: center;
 }
 
+.contenedor-btn-exit {
+    position: absolute;
+    border-radius: 50% !important;
+    padding: 10px !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center ;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contenedor-btn-exit a {
+    text-decoration: none;
+    color: #FFF;
+}
+
+.contenedor-btn-exit i {
+    font-size: 16px !important; 
+}
+
 #descripcion, #titulo, #imagenNovedad {
     width: 100% !important;
     margin: 10px 0;

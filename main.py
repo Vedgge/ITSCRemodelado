@@ -110,6 +110,10 @@ class centroNovedades:
 # Crea una instancia de la clase centroNovedades
 catalogoNovedades = centroNovedades(host='localhost', user='root', password='', database='itsc')
 
+@app.route("/")
+def index():
+    return render_template("index.html")
+
 # Carpeta para guardar las imagenes
 RUTA_DESTINO = './static/imagenes-novedades/'
 
