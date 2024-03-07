@@ -25,7 +25,9 @@ Remodelar un sitio web de una institución académica que sea atractivo, funcion
 - Vía Github:
     1. Descarga todos los archivos de este repositorio.
     2. Abre el archivo "main.py" y ejecutalo con un servidor de XAMP (Apache y MySQL) previamente iniciado.
-    3. Abre el archivo "panel-control.html" en tu navegador web para acceder a las distintas páginas.
+    3. Entra link ip mostrado en la consola luego de la ejecución de "main.py"
+    4. Una vez en la página de inicio podrá acceder al CRUD de la página bajando y clickeando el botón "Ver todas las novedades"
+    5. Dentro de "novedades" podrá editar, eliminar y subir novedades a la base de datos.
 
 - Vía Netlify, abriendo ----
 
