@@ -19,3 +19,7 @@ body {
     display: flex;
     justify-content: flex-end;
 }
+
+.article-viejo-listing div {
+    margin: 10px 0;
+}

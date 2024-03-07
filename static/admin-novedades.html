@@ -56,10 +56,10 @@
             <div class="navheader-bottom">
                 <div class="contenedor-items-navheader-bottom">
                     <div class="icono-itsc">
-                        <a href="index.html"><img src="./img/logo-itsc.png" alt="logo ITSC"></a>
+                        <a href="/"><img src="./img/logo-itsc.png" alt="logo ITSC"></a>
                     </div>
                     <ul class="contenedor-navheader-btm-menus">
-                        <li class="navbar-menus"><a href="index.html">Inicio</a></li>
+                        <li class="navbar-menus"><a href="/">Inicio</a></li>
                         <li class="navbar-menus"><a href="carreras.html">Carreras</a>
                             <ul>
                                 <li class="carreras-items-dropdown"><a href="#">Contacto Carreras</a></li>
@@ -128,7 +128,7 @@
 
                     </section>
                     <div class="ver-todas-novedades">
-                        <a href="#" class="btn btn-primary ver-mas">Ver todas las novedades</a>
+                        <a href="#" class="btn-estilo btn-novedades">Ver todas las novedades</a>
                     </div>
                 </div>
                 <aside class="columna-aside">
@@ -137,9 +137,9 @@
                             <h4>Años de novedades</h4>
                         </div>
                         <div class="row-news-years">
-                            <button class="active btn btn-primary" data-value="2023">2023</button>
-                            <button class="btn btn-primary" data-value="2022">2022</button>
-                            <button class="btn btn-primary" data-value="2021">2021</button>
+                            <button class="active btn-estilo" data-value="2023">2023</button>
+                            <button class="btn-estilo" data-value="2022">2022</button>
+                            <button class="btn-estilo" data-value="2021">2021</button>
                         </div>
                     </section>
                 </aside>
@@ -152,7 +152,7 @@
                 <div class="contenedor-text">
                     <!-- <div class="contenedor-eliminar-btn">
                         <button class="cancelar-delete">Cancelar</button> -->
-                    <!-- <a href="" class="btn btn-primary confirm-eliminar">Confirmar</a> -->
+                    <!-- <a href="" class="btn-estilo confirm-eliminar">Confirmar</a> -->
                 </div>
             </div>
         </div>
@@ -163,7 +163,7 @@
     <footer>
         <div class="contenedor-elementos-footer">
             <div class="icono-itsc-footer">
-                <a href="index.html"><img src="./img/icon-reduced.png" alt="logo ITSC"></a>
+                <a href="/"><img src="./img/icon-reduced.png" alt="logo ITSC"></a>
                 <a href="#"><i class="fa-solid fa-globe"></i><span> www.institutotecnicocordoba.com</span></a>
                 <a href="#"><i class="fa-solid fa-map-location-dot"></i><span> Río Negro 77, Córdoba</span></a>
                 <a href="#"><i class="fa-solid fa-phone"></i><span> (0351) 4337074</span></a>
@@ -242,8 +242,8 @@
                             '<p>' + novedad.fechaCreacion + '</p>' +
                             '<a href="../novedades/' + novedad.codigo + '"><h2>' + novedad.titulo + '</h2></a>' +
                             '<p class="description">' + novedad.descripcion + '</p>' +
-                            '<div><button class="btn btn-primary confirm-eliminar">Eliminar novedad</button></div>' +
-                            '<div><a href="../novedades/' + novedad.codigo + '/editar' + '" class="btn btn-primary confirm-editar">Editar novedad</a></div>'
+                            '<div><button class="btn-estilo confirm-eliminar">Eliminar novedad</button></div>' +
+                            '<div><a href="../novedades/' + novedad.codigo + '/editar' + '" class="btn-estilo confirm-editar">Editar novedad</a></div>'
                         '</div>';
                         novedadesRecientes.appendChild(divNovedad);
 

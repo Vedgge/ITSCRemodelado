@@ -5,9 +5,9 @@
         <div class="contenedor-ruta">
             <nav class="ruta-nav">
                 <ul>
-                    <li><a href="#">Inicio</a></li>
+                    <li><a href="/">Inicio</a></li>
                     <li><i class="fa-solid fa-chevron-right"></i></li>
-                    <li><a href="#">Todas las novedades</a></li>
+                    <li><a href="../static/novedades.html">Todas las novedades</a></li>
                     <li><i class="fa-solid fa-chevron-right"></i></li>
                     <li>
                         <a href="#" class="active">{{ novedad.titulo }}</a>
@@ -71,7 +71,7 @@
                 console.log('Descripcion:', descripcion);
 
                 // Método put para UPDATE
-                fetch(URL + 'novedades/' + codigoNovedad, {
+                fetch(URL + 'novedades/' + codigoNovedad + '/editar', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'

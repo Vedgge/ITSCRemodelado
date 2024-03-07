@@ -55,10 +55,10 @@
             <div class="navheader-bottom">
                 <div class="contenedor-items-navheader-bottom">
                     <div class="icono-itsc">
-                        <a href="index.html"><img src="/static/img/logo-itsc.png" alt="logo ITSC"></a>
+                        <a href="/"><img src="/static/img/logo-itsc.png" alt="logo ITSC"></a>
                     </div>
                     <ul class="contenedor-navheader-btm-menus">
-                        <li class="navbar-menus"><a href="index.html">Inicio</a></li>
+                        <li class="navbar-menus"><a href="/">Inicio</a></li>
                         <li class="navbar-menus"><a href="carreras.html">Carreras</a>
                             <ul>
                                 <li class="carreras-items-dropdown"><a href="#">Contacto Carreras</a></li>
@@ -113,12 +113,14 @@
                     <div class="contenedor-title-main">
                         <h1>Subir una novedad</h1>
                     </div>
+                    <div class="contenedor-btn-exit btn-estilo">
+                        <a href="/static/novedades.html"><i class="fa-solid fa-chevron-left"></i></a>
+                    </div>
                     <div class="contenedor-formulario-novedad">
                         <form id="formulario" action="" method="POST" enctype="multipart/form-data">
                             <label for="titulo">Título de la novedad:</label><br>
                             <input type="text" id="titulo" name="titulo" required
                                 placeholder="Nombre/Título de la novedad"> <br>
-
                             <label for="imagenNovedad">Imagen adjunta (opcional)</label>
                             <div class="contenedor-img-up-novedad"><input type="file" name="imagen" id="imagenNovedad">
                             </div>
@@ -145,7 +147,7 @@
     <footer>
         <div class="contenedor-elementos-footer">
             <div class="icono-itsc-footer">
-                <a href="index.html"><img src="/static/img/icon-reduced.png" alt="logo ITSC"></a>
+                <a href="/"><img src="/static/img/icon-reduced.png" alt="logo ITSC"></a>
                 <a href="#"><i class="fa-solid fa-globe"></i><span> www.institutotecnicocordoba.com</span></a>
                 <a href="#"><i class="fa-solid fa-map-location-dot"></i><span> Río Negro 77, Córdoba</span></a>
                 <a href="#"><i class="fa-solid fa-phone"></i><span> (0351) 4337074</span></a>
