@@ -46,7 +46,7 @@ El repositorio contiene los siguientes archivos y carpetas:
 
 ## Desarrollos Futuros y Mejoras Potenciales
 
-- Estructurado y estilizado de documentos HTML de los demás documentos HTML.
+- Estructurado y estilizado de los demás documentos HTML.
 - Posible registro de usuarios ADMIN.
 
 ## Notas finales
