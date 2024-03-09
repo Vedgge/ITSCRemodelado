@@ -70,9 +70,9 @@ class centroNovedades:
         else:
             return None
     #----------------------------------------------------------------
-    def modificar_novedad(self, codigo, nuevo_titulo, nueva_descripcion, nueva_imagen):
-        sql = "UPDATE novedades SET titulo = %s, descripcion = %s, imagen_url = %s WHERE codigo = %s"
-        valores = (nuevo_titulo, nueva_descripcion, nueva_imagen, codigo)
+    def modificar_novedad(self, codigo, nuevo_titulo, nueva_descripcion):
+        sql = "UPDATE novedades SET titulo = %s, descripcion = %s WHERE codigo = %s"
+        valores = (nuevo_titulo, nueva_descripcion, codigo)
         self.cursor.execute(sql, valores)
         self.conn.commit()
         return self.cursor.rowcount > 0
@@ -174,28 +174,28 @@ def editar_novedad(codigo):
         # Agarra los datos del formulario
         nuevo_titulo = request.json.get("titulo")
         nueva_descripcion = request.json.get("descripcion")
-        imagen = request.files.get('imagen')  # Usa get en lugar de ['imagen']
-        nombre_imagen = ""
+        # imagen = request.files.get('imagen')  # Usa get en lugar de ['imagen']
+        # nombre_imagen = ""
 
-        # Procesamiento de la imagen
-        if imagen:
-            nombre_imagen = secure_filename(imagen.filename)
-            nombre_base, extension = os.path.splitext(nombre_imagen)
-            nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
-            imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
+        # # Procesamiento de la imagen
+        # if imagen:
+        #     nombre_imagen = secure_filename(imagen.filename)
+        #     nombre_base, extension = os.path.splitext(nombre_imagen)
+        #     nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
+        #     imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
 
-        # Busca la novedad guardada
-        novedad = catalogoNovedades.consultar_novedad(codigo)
-        if novedad:  # Si existe la novedad
-            imagen_vieja = novedad["imagen_url"]
-            # Arma la ruta a la imagen
-            ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
+        # # Busca la novedad guardada
+        # novedad = catalogoNovedades.consultar_novedad(codigo)
+        # if novedad:  # Si existe la novedad
+        #     imagen_vieja = novedad["imagen_url"]
+        #     # Arma la ruta a la imagen
+        #     ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
 
-            # Y si existe, la borra
-            if os.path.exists(ruta_imagen):
-                os.remove(ruta_imagen)
+        #     # Y si existe, la borra
+        #     if os.path.exists(ruta_imagen):
+        #         os.remove(ruta_imagen)
 
-        if catalogoNovedades.modificar_novedad(codigo, nuevo_titulo, nueva_descripcion, nombre_imagen):
+        if catalogoNovedades.modificar_novedad(codigo, nuevo_titulo, nueva_descripcion):
             return jsonify({"mensaje": "Novedad modificada"}), 200
         else:
             return jsonify({"mensaje": "Novedad no encontrada"}), 403

@@ -23,3 +23,8 @@ body {
 .article-viejo-listing div {
     margin: 10px 0;
 }
+
+.acciones-novedad {
+    display: flex;
+    gap: 20px;
+}
