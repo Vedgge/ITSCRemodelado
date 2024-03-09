@@ -12,7 +12,7 @@ Remodelar un sitio web de una institución académica que sea atractivo, funcion
 
 ## Características
 
-- Utiliza HTML5, CSS3 y JavaScript (JQuery, VueJS) para la estructura, diseño y funcionalidades de la página.
+- Utiliza HTML5, CSS3 y JavaScript (JQuery) para la estructura, diseño y funcionalidades de la página.
 - Utiliza Python (con POO), Flask, MySQL, XAMPP y JSON para el diseño del back-end y REST API y su implementación.
 - Incluye tipografía Lato de Google Fonts y el uso de mapas embedidos de Google Maps.
 - Incluye el uso de una API pública de generación de usuarios aleatorios.
