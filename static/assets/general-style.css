@@ -274,12 +274,11 @@ header.sticky {
     background: #a1d6e6;
 } 
 
-.btn-estilo {
+/* .btn-estilo {
     padding: 12px 40px;
     border-radius: 8px;
     display: inline-block;
     text-transform: uppercase;
-    font-family: 'Rubik', sans-serif;
     font-weight: 400;
     font-size: 15px;
     color: #FFF;
@@ -291,6 +290,23 @@ header.sticky {
 
 .btn-estilo:hover {
     background: #1a5979;
+} */
+
+.btn-estilo {
+    padding: 12px 40px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    display: inline-block;
+    font-weight: 400;
+    font-size: 15px;
+    color: #FFF;
+    background-color: rgb(49, 136, 181);
+    border: 1px solid rgb(49, 136, 181);
+    transition: all 0.3s ease;
+}
+
+.btn-estilo:hover {
+    transform: scale(1.1);
 }
 
 /* .main-banner-animation svg {

@@ -7,7 +7,7 @@
                 <ul>
                     <li><a href="/">Inicio</a></li>
                     <li><i class="fa-solid fa-chevron-right"></i></li>
-                    <li><a href="../static/novedades.html">Todas las novedades</a></li>
+                    <li><a href="/static/novedades.html">Todas las novedades</a></li>
                     <li><i class="fa-solid fa-chevron-right"></i></li>
                     <li>
                         <a href="#" class="active">{{ novedad.titulo }}</a>
@@ -44,14 +44,54 @@
                             alt="Imagen de una novedad por la institucion">
                     </div>
                 </figure>
-                <textarea name="descripcion">{{ novedad.descripcion }}</textarea>
-                <!-- DESCRIPCION -->
-                <button class="confirm-modificacion btn btn-primary" data-codigo="{{ novedad.codigo }}">Modificar
-                    Novedad</button>
+                <div class="btn-text-container"> 
+                    <textarea name="descripcion">{{ novedad.descripcion }}</textarea>
+                    <!-- DESCRIPCION -->
+                    <button class="confirm-modificacion btn-estilo" data-codigo="{{ novedad.codigo }}">Modificar Novedad</button>
+                </div>
+
             </div>
         </div>
     </article>
 </section>
+
+<style>
+    .contenedor-title>h1>input {
+        width: 100%;
+    }
+    .contenedor-main {
+        margin-top: 20px !important;
+    }
+    figure {
+        margin: 0 !important;
+    }
+    
+    .btn-text-container {
+        display: flex !important;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 20px;
+    }
+
+    .btn-estilo {
+        width: fit-content;
+    }
+
+    .btn-text-container>textarea {
+        height: 500px;
+        width: 100%;
+    }
+
+    .imagen-novedad-esp {
+        margin-left: 20px;
+    }
+
+    .imagen-novedad-esp>img {
+        height: 100%;
+        width: 100%;
+    }
+
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

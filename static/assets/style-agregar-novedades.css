@@ -35,11 +35,17 @@
 .contenedor-btn-exit a {
     text-decoration: none;
     color: #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .contenedor-btn-exit i {
-    font-size: 16px !important; 
+    font-size: 16px !important;
 }
+
 
 #descripcion, #titulo, #imagenNovedad {
     width: 100% !important;

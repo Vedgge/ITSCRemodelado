@@ -123,13 +123,8 @@
         <div class="listing-novedades">
             <div class="contenedor-novedades-varias">
                 <div class="columna-main">
-
                     <section class="novedades-viejas-contenedor" id="contenedor-novedades-viejas">
-
                     </section>
-                    <div class="ver-todas-novedades">
-                        <a href="#" class="btn-estilo btn-novedades">Ver todas las novedades</a>
-                    </div>
                 </div>
                 <aside class="columna-aside">
                     <section class="years-news-index">
@@ -142,19 +137,23 @@
                             <button class="btn-estilo" data-value="2021">2021</button>
                         </div>
                     </section>
+                    <section class="btn-novedades">
+                        <h4>Acciones administración</h4>
+                        <a href="/agregar-novedad.html" class="btn-estilo" style="text-decoration: none;">Agregar novedad</a>
+                    </section>
                 </aside>
             </div>
 
-            <div class="modal-delete" id="modal-delete">
+            <!-- <div class="modal-delete" id="modal-delete">
                 <div class="contenedor-title-delete">
                     <h3>¿Desea eliminar esta novedad?</h3>
                 </div>
                 <div class="contenedor-text">
-                    <!-- <div class="contenedor-eliminar-btn">
-                        <button class="cancelar-delete">Cancelar</button> -->
-                    <!-- <a href="" class="btn-estilo confirm-eliminar">Confirmar</a> -->
+                    <div class="contenedor-eliminar-btn">
+                        <button class="cancelar-delete">Cancelar</button> 
+                    <a href="" class="btn-estilo confirm-eliminar">Confirmar</a> 
                 </div>
-            </div>
+            </div> -->
         </div>
         </div>
     </main>
@@ -201,7 +200,7 @@
 
             </div>
         </div>
-        <p style="margin-bottom: 0 !important; margin: 0 10%; padding-bottom: 10px; color: #FFF; font-size: 12px;">
+        <p style="margin-bottom: 0 !important; margin: 0 10% !important; padding-bottom: 10px; color: #FFF; font-size: 12px;">
             Copyright © 2023 Instituto Técnico Superior Córdoba</p>
         <div class="volver-inicio"><a href="#top"><span>Volver al inicio </span><i class="fa-solid fa-arrow-up"></i></a>
         </div>
@@ -242,8 +241,8 @@
                             '<p>' + novedad.fechaCreacion + '</p>' +
                             '<a href="../novedades/' + novedad.codigo + '"><h2>' + novedad.titulo + '</h2></a>' +
                             '<p class="description">' + novedad.descripcion + '</p>' +
-                            '<div><button class="btn-estilo confirm-eliminar">Eliminar novedad</button></div>' +
-                            '<div><a href="../novedades/' + novedad.codigo + '/editar' + '" class="btn-estilo confirm-editar">Editar novedad</a></div>'
+                            '<div class="acciones-novedad"><button class="btn-estilo confirm-eliminar">Eliminar novedad</button>' +
+                            '<a href="../novedades/' + novedad.codigo + '/editar' + '" class="btn-estilo confirm-editar">Editar novedad</a></div>'
                         '</div>';
                         novedadesRecientes.appendChild(divNovedad);
 

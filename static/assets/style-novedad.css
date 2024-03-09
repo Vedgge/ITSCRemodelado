@@ -258,8 +258,8 @@ figure figcaption {
 }
 
 .img-div-bg {
-    width: 400px;
-    height: 400px;
+    /* width: 400px; */
+    height: 300px;
     background-size: cover;
     background-position: center;
 }

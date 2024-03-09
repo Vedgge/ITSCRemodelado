@@ -193,6 +193,7 @@ p {
 }
 
 .article-viejo-listing h2 {
+    width: 100%;
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: .5px;
@@ -224,10 +225,11 @@ p {
     justify-content: center;
 }
 
-.row-news-years {
+.row-news-years, .btn-novedades {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    text-align: center;
 }
 
 .btn-estilo {
