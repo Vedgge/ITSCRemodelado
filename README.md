@@ -6,9 +6,12 @@ Este repositorio contiene un experimetno de remodelado de ITSC que tiene un webs
 Remodelar un sitio web de una institución académica que sea atractivo, funcional y fácil de usar.
 &emsp; 
 
-    Desarrollar un sitio web que sea responsive y se vea bien en diferentes dispositivos.
-    Desarrollar un sitio web que incluya un formulario de contacto que sea fácil de usar y que recopile información pertinente de los visitantes del sitio.
-    Desarrollar un sitio web que incluya una galería de imágenes de las propiedades disponibles.
+    Desarrollar un sitio web que
+        - Sea responsive y sea funcional en diferentes dispositivos.
+        - Incluya un formulario de contacto que sea fácil de usar y que recopile información pertinente de los visitantes del sitio.
+        - Incluya todas las operaciones CRUD desarrolladas en un Back-End con Python.
+        - Incluya el uso de APIs públicas.
+        - Contenga animaciones y estilos en CSS y JS.
 
 ## Características
 
