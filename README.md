@@ -32,7 +32,7 @@ Remodelar un sitio web de una institución académica que sea atractivo, funcion
     4. Una vez en la página de inicio podrá acceder al CRUD de la página bajando y clickeando el botón "Ver todas las novedades"
     5. Dentro de "novedades" podrá editar, eliminar y subir novedades a la base de datos. Recordar que en caso de no subir una imagen se utilizara automaticamente "imagen-predeterminada-novedad.png"
 
-- Vía pythonanywhere, abriendo [----](https://facusav.pythonanywhere.com/)
+- Vía pythonanywhere, abriendo [Instituto Técnico Superior de Córdoba](https://facusav.pythonanywhere.com/)
 
 ## Estructura de archivos
 
