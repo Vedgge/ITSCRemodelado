@@ -47,9 +47,9 @@ class centroNovedades:
         
     #----------------------------------------------------------------
     def agregar_novedad(self, titulo, descripcion, imagen, fechaCreacion):
-        # If no image is provided, use a default image name
+        #En caso de no subirse una imagen, se utiliza una predetemrinada.
         if not imagen:
-            imagen = 'imagen-predeterminada-novedad.jpg'
+            imagen = 'imagen-predeterminada-novedad.png'
 
         sql = "INSERT INTO novedades (titulo, descripcion, imagen_url, fechaCreacion) VALUES (%s, %s, %s, %s)"
         valores = (titulo, descripcion, imagen, fechaCreacion)
@@ -149,7 +149,7 @@ def agregar_novedad():
             nombre_base, extension = os.path.splitext(nombre_imagen)
             nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
         else:
-            nombre_imagen = 'imagen-predeterminada-novedad.jpg'
+            nombre_imagen = 'imagen-predeterminada-novedad.png'
         # Obtiene la fecha y hora actual
         fecha_creacion = datetime.now()
 
@@ -243,8 +243,8 @@ def eliminar_novedad(codigo):
     novedad = catalogoNovedades.consultar_novedad(codigo)
     if novedad: # Si existe la novedad
         imagen_vieja = novedad["imagen_url"]
-        imagen_predeterminada = 'imagen-predeterminada-novedad.jpg'
-        if not imagen_vieja == imagen_predeterminada:
+        imagen_predeterminada = 'imagen-predeterminada-novedad.png'
+        if imagen_vieja != imagen_predeterminada:
             # Arma la ruta a la imagen
             ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
 
