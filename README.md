@@ -71,7 +71,7 @@ El repositorio contiene los siguientes archivos y carpetas:
 
 [ ] Agregar un motor de busqueda que despliegue las novedades deseadas para su posterior edición o eliminación.
 
-[o] Subir el proyecto a un sitio de hosting similar a Netlify.
+[o] Subir el proyecto a un sitio de hosting.
 
 ### Notas Check List
 - "x" Completado 
