@@ -98,3 +98,68 @@ def test_search_finds_a_published_novedad(client, novedad):
 def test_search_with_no_results_is_graceful(client, novedad):
     html = client.get("/buscar", query_string={"q": "zzzzqqqxyz"}).get_data(as_text=True)
     assert "Sin resultados" in html
+
+
+def test_robots_disallows_everything_while_a_portfolio_demo(client, app):
+    """The site reproduces a real institution's branding; it must never
+    compete with their official site in search results."""
+    assert app.config["SITE_IS_PORTFOLIO_DEMO"] is True
+    response = client.get("/robots.txt")
+    assert response.status_code == 200
+    assert response.mimetype == "text/plain"
+    body = response.get_data(as_text=True)
+    assert "Disallow: /" in body
+    assert "no afiliado" in body.lower()
+    assert app.config["SITE_OFFICIAL_URL"] in body
+
+
+def test_robots_allows_crawling_when_not_a_demo(client, app):
+    app.config["SITE_IS_PORTFOLIO_DEMO"] = False
+    try:
+        body = client.get("/robots.txt").get_data(as_text=True)
+        assert "Disallow: /admin/" in body
+        assert "Disallow: /\n" not in body
+        assert "Sitemap:" in body
+    finally:
+        app.config["SITE_IS_PORTFOLIO_DEMO"] = True
+
+
+def test_noindex_meta_is_present_while_a_demo(client):
+    assert 'content="noindex' in client.get("/").get_data(as_text=True)
+
+
+def test_sitemap_lists_pages_and_published_news(client, novedad):
+    response = client.get("/sitemap.xml")
+    assert response.status_code == 200
+    assert response.mimetype == "application/xml"
+    body = response.get_data(as_text=True)
+    assert "<urlset" in body
+    assert novedad.slug in body
+
+
+def test_every_page_declares_a_viewport(client, categories):
+    """The original claimed responsiveness while shipping one media query."""
+    for path in ("/", "/carreras", "/contacto/", "/novedades/"):
+        html = client.get(path).get_data(as_text=True)
+        assert 'name="viewport"' in html
+
+
+def test_pages_expose_a_skip_link_and_landmarks(client):
+    """The nav is ~40 links deep and previously had no keyboard bypass."""
+    html = client.get("/").get_data(as_text=True)
+    assert 'class="skip-link"' in html
+    assert 'href="#contenido"' in html
+    assert '<main id="contenido"' in html
+    assert "<header" in html and "<footer" in html
+
+
+def test_images_declare_dimensions(client):
+    """Explicit width/height reserve layout space; the original used
+    background-image divs, which cannot and caused layout shift."""
+    import re
+
+    html = client.get("/").get_data(as_text=True)
+    imgs = re.findall(r"<img\b[^>]*>", html)
+    assert imgs
+    missing = [i for i in imgs if "width=" not in i or "height=" not in i]
+    assert not missing, f"{len(missing)} img tag(s) without dimensions"

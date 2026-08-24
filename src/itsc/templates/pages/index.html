@@ -8,7 +8,10 @@
 {% block content %}
 <section class="hero">
   <div class="hero__media">
-    {{ picture('main-banner', '', sizes='100vw', cls='hero__img', loading='eager', widths=[400,800,1600]) }}
+    {# width/height match the 1920x825 source aspect ratio, so the browser can
+   reserve the space before the image loads. #}
+    {{ picture('main-banner', '', sizes='100vw', cls='hero__img', loading='eager',
+               widths=[400,800,1600], width=1600, height=687) }}
   </div>
   <div class="hero__content">
     <h1>Instituto Técnico Superior Córdoba</h1>

@@ -7,7 +7,7 @@ copy-pasted nav, no <main>, no footer, and half of them still titled
 
 from __future__ import annotations
 
-from flask import Blueprint, abort, render_template, request
+from flask import Blueprint, Response, abort, current_app, render_template, request, url_for
 
 from itsc.content import CARRERAS, CARRERAS_BY_SLUG, FAQ, FOTOGALERIA, TESTIMONIOS_DEMO
 from itsc.services import documents as doc_service
@@ -109,6 +109,59 @@ def buscar():
         documentos=resultados_documentos,
         total=len(resultados_novedades) + len(resultados_documentos),
     )
+
+
+@bp.get("/robots.txt")
+def robots():
+    """Crawler policy.
+
+    While SITE_IS_PORTFOLIO_DEMO is set this disallows everything: the site
+    reproduces a real institution's name and branding, and must never compete
+    with — or be mistaken for — their official site in search results.
+    """
+    if current_app.config["SITE_IS_PORTFOLIO_DEMO"]:
+        body = (
+            "# Proyecto de portafolio, no afiliado al ITSC.\n"
+            f"# Sitio oficial: {current_app.config['SITE_OFFICIAL_URL']}\n"
+            "User-agent: *\nDisallow: /\n"
+        )
+    else:
+        body = (
+            "User-agent: *\n"
+            "Disallow: /admin/\n"
+            "Disallow: /ingresar\n"
+            "Disallow: /media/\n"
+            f"Sitemap: {url_for('public.sitemap', _external=True)}\n"
+        )
+    return Response(body, mimetype="text/plain")
+
+
+@bp.get("/sitemap.xml")
+def sitemap():
+    """XML sitemap. Only meaningful once the site is indexable."""
+    urls = [
+        url_for(endpoint, _external=True)
+        for endpoint in (
+            "public.index",
+            "public.nosotros",
+            "public.carreras",
+            "public.estudiantes",
+            "public.faq",
+            "public.fotogaleria",
+            "public.cooperadora",
+            "public.ser_tecnico",
+            "public.egresados",
+            "public.examenes",
+            "novedades.list",
+            "contacto.form",
+        )
+    ]
+    urls += [url_for("public.carrera", slug=c.slug, _external=True) for c in CARRERAS]
+    urls += [
+        url_for("novedades.detail", slug=n.slug, _external=True)
+        for n in novedad_service.latest(200)
+    ]
+    return Response(render_template("sitemap.xml", urls=urls), mimetype="application/xml")
 
 
 @bp.get("/mapa-del-sitio")
