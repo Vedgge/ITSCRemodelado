@@ -189,14 +189,12 @@ def _register_static(app: Flask) -> None:
     from flask import send_from_directory
 
     static_dir = Path(__file__).resolve().parent / "static"
-    legacy_dir = _PROJECT_ROOT / "static"
     app.config["STATIC_DIR"] = str(static_dir)
 
     @app.route("/static/<path:filename>", endpoint="static")
     def static_files(filename: str):
-        target = static_dir / filename
-        base = static_dir if target.is_file() else legacy_dir
-        return send_from_directory(base, filename)
+        # send_from_directory rejects traversal outside the root itself.
+        return send_from_directory(static_dir, filename)
 
 
 def _register_blueprints(app: Flask) -> None:
