@@ -44,7 +44,7 @@ def list(categoria: str, vigencia: str | None = None):  # noqa: A001
 
 
 @bp.get(f"/<any({_CATS}):categoria>/doc/<slug>")
-def detail(categoria: str, slug: str):  # type: ignore[no-untyped-def]
+def detail(categoria: str, slug: str):
     document = service.get_document(categoria, slug)
     if document is None:
         abort(404)

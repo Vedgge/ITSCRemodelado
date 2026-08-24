@@ -38,7 +38,7 @@ log = structlog.get_logger("itsc.admin")
 
 @bp.before_request
 @login_required
-def require_login():  # type: ignore[no-untyped-def]
+def require_login():
     """Gate every route in this blueprint, including ones added later."""
     if not current_user.has_role("admin", "editor"):
         abort(403)
@@ -49,7 +49,7 @@ def require_login():  # type: ignore[no-untyped-def]
 # Dashboard
 # --------------------------------------------------------------------------
 @bp.get("/")
-def dashboard():  # type: ignore[no-untyped-def]
+def dashboard():
     stats = {
         "novedades": db.session.scalar(select(func.count()).select_from(Novedad)),
         "publicadas": db.session.scalar(
@@ -70,7 +70,7 @@ def dashboard():  # type: ignore[no-untyped-def]
 # Novedades
 # --------------------------------------------------------------------------
 @bp.get("/novedades")
-def novedad_list():  # type: ignore[no-untyped-def]
+def novedad_list():
     page = request.args.get("page", 1, type=int)
     pagination = db.paginate(
         select(Novedad).order_by(Novedad.created_at.desc()),
@@ -84,7 +84,7 @@ def novedad_list():  # type: ignore[no-untyped-def]
 
 
 @bp.route("/novedades/nueva", methods=["GET", "POST"])
-def novedad_new():  # type: ignore[no-untyped-def]
+def novedad_new():
     form = NovedadForm()
     if form.validate_on_submit():
         novedad = Novedad(
@@ -95,9 +95,13 @@ def novedad_new():  # type: ignore[no-untyped-def]
             author_id=current_user.id,
             slug=unique_slug(
                 form.titulo.data or "",
+                # `or 0`: scalar() is typed Any | None and None > 0 raises.
                 lambda s: (
-                    db.session.scalar(
-                        select(func.count()).select_from(Novedad).where(Novedad.slug == s)
+                    (
+                        db.session.scalar(
+                            select(func.count()).select_from(Novedad).where(Novedad.slug == s)
+                        )
+                        or 0
                     )
                     > 0
                 ),
@@ -121,7 +125,7 @@ def novedad_new():  # type: ignore[no-untyped-def]
 
 
 @bp.route("/novedades/<int:novedad_id>/editar", methods=["GET", "POST"])
-def novedad_edit(novedad_id: int):  # type: ignore[no-untyped-def]
+def novedad_edit(novedad_id: int):
     novedad = db.session.get(Novedad, novedad_id)
     if novedad is None:
         abort(404)
@@ -151,7 +155,7 @@ def novedad_edit(novedad_id: int):  # type: ignore[no-untyped-def]
 
 
 @bp.post("/novedades/<int:novedad_id>/eliminar")
-def novedad_delete(novedad_id: int):  # type: ignore[no-untyped-def]
+def novedad_delete(novedad_id: int):
     """POST only.
 
     A GET-triggered delete can be fired by any <img> tag, a link prefetcher, or
@@ -192,7 +196,7 @@ def _attach_image(novedad: Novedad, form: NovedadForm) -> bool:
 # Documentos
 # --------------------------------------------------------------------------
 @bp.get("/documentos")
-def document_list():  # type: ignore[no-untyped-def]
+def document_list():
     categoria = request.args.get("categoria")
     stmt = select(Document).order_by(Document.fecha_documento.desc())
     if categoria:
@@ -211,7 +215,7 @@ def document_list():  # type: ignore[no-untyped-def]
 
 
 @bp.route("/documentos/nuevo/<categoria>", methods=["GET", "POST"])
-def document_new(categoria: str):  # type: ignore[no-untyped-def]
+def document_new(categoria: str):
     category = db.session.scalars(
         select(DocumentCategory).where(DocumentCategory.slug == categoria)
     ).first()
@@ -233,10 +237,13 @@ def document_new(categoria: str):  # type: ignore[no-untyped-def]
             slug=unique_slug(
                 form.titulo.data or "",
                 lambda s: (
-                    db.session.scalar(
-                        select(func.count())
-                        .select_from(Document)
-                        .where(Document.slug == s, Document.category_id == category.id)
+                    (
+                        db.session.scalar(
+                            select(func.count())
+                            .select_from(Document)
+                            .where(Document.slug == s, Document.category_id == category.id)
+                        )
+                        or 0
                     )
                     > 0
                 ),
@@ -264,7 +271,7 @@ def document_new(categoria: str):  # type: ignore[no-untyped-def]
 
 
 @bp.post("/documentos/<int:document_id>/eliminar")
-def document_delete(document_id: int):  # type: ignore[no-untyped-def]
+def document_delete(document_id: int):
     form = DeleteForm()
     if not form.validate_on_submit():
         abort(400)
@@ -299,7 +306,7 @@ def _attach_pdf(document: Document, form: DocumentForm) -> bool:
 # Contact inbox
 # --------------------------------------------------------------------------
 @bp.get("/mensajes")
-def contacto_list():  # type: ignore[no-untyped-def]
+def contacto_list():
     page = request.args.get("page", 1, type=int)
     pagination = db.paginate(
         select(ContactMessage).order_by(ContactMessage.created_at.desc()),
@@ -311,7 +318,7 @@ def contacto_list():  # type: ignore[no-untyped-def]
 
 
 @bp.get("/mensajes/<int:message_id>")
-def contacto_detail(message_id: int):  # type: ignore[no-untyped-def]
+def contacto_detail(message_id: int):
     message = db.session.get(ContactMessage, message_id)
     if message is None:
         abort(404)

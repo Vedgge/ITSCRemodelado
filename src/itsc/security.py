@@ -95,14 +95,17 @@ def init_security(app: Flask) -> None:
     )
 
 
-def role_required(*roles: str) -> Callable:
+def role_required(*roles: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """Require an authenticated user holding one of *roles*."""
 
-    def decorator(view: Callable) -> Callable:
+    def decorator(view: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(view)
         def wrapped(*args: Any, **kwargs: Any) -> Any:
             if not current_user.is_authenticated:
-                return current_app.login_manager.unauthorized()
+                # Attached to the app by Flask-Login at init time, so it is
+                # not part of Flask's declared attribute set.
+                manager = current_app.login_manager  # type: ignore[attr-defined]
+                return manager.unauthorized()
             if roles and not current_user.has_role(*roles):
                 abort(403)
             return view(*args, **kwargs)

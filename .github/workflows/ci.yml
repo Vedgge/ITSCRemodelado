@@ -1,0 +1,187 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly, so dependency CVEs surface without waiting for a push.
+    - cron: "17 4 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint & format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - run: pip install --require-hashes -r requirements/dev.txt
+      - run: pip install -e . --no-deps
+      # S608 (hardcoded-sql-expression) is the rule that would have caught the
+      # original f-string SQL injection.
+      - name: ruff check
+        run: ruff check src tests scripts
+      - name: ruff format
+        run: ruff format --check src tests scripts
+      - name: djlint templates
+        run: djlint src/itsc/templates --profile=jinja --lint
+
+  types:
+    name: Type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - run: pip install --require-hashes -r requirements/dev.txt
+      - run: pip install -e . --no-deps
+      # strict on models/services/security/config; ratchet up, never down.
+      - run: mypy src/itsc
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: itsc
+          POSTGRES_PASSWORD: itsc
+          POSTGRES_DB: itsc_test
+        ports: ["55432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U itsc"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      FLASK_ENV: testing
+      DATABASE_URL_TEST: postgresql+psycopg://itsc:itsc@localhost:55432/itsc_test
+      REDIS_URL: redis://localhost:6379/0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - run: pip install --require-hashes -r requirements/dev.txt
+      - run: pip install -e . --no-deps
+      # Real PostgreSQL, never SQLite: SQLite would silently skip CITEXT,
+      # generated TSVECTOR columns, partial unique indexes and ON DELETE
+      # RESTRICT, so a green run would prove very little.
+      - name: pytest
+        run: pytest -n auto --cov --cov-report=xml --cov-fail-under=90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage.xml
+
+  security:
+    name: Security scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # gitleaks needs full history
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - run: pip install --require-hashes -r requirements/dev.txt
+      - name: pip-audit (dependency CVEs)
+        run: pip-audit -r requirements/base.txt --strict
+      - name: bandit
+        run: bandit -q -r src/itsc -c pyproject.toml || bandit -q -r src/itsc
+      - name: gitleaks
+        # This is the check that would have caught the Font Awesome kit id
+        # committed across 21 files.
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    name: Image build & scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: docker/web/Dockerfile
+          failure-threshold: warning
+      - uses: docker/setup-buildx-action@v3
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/web/Dockerfile
+          push: false
+          load: true
+          tags: itsc-web:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Trivy scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: itsc-web:ci
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+          ignore-unfixed: true
+
+  smoke:
+    name: End-to-end smoke
+    runs-on: ubuntu-latest
+    needs: [docker]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate throwaway secrets
+        run: |
+          {
+            echo "SECRET_KEY=$(python3 -c 'import secrets;print(secrets.token_urlsafe(64))')"
+            echo "IP_HASH_PEPPER=$(python3 -c 'import secrets;print(secrets.token_urlsafe(64))')"
+            echo "POSTGRES_PASSWORD=$(python3 -c 'import secrets;print(secrets.token_urlsafe(24))')"
+            echo "REDIS_PASSWORD=$(python3 -c 'import secrets;print(secrets.token_urlsafe(24))')"
+            echo "SERVER_NAME=localhost"
+          } >> "$GITHUB_ENV"
+      # Catches the whole class of "green in pytest, broken in the container":
+      # wrong paths once installed, missing runtime libs, unwritable dirs.
+      - name: Start the stack
+        run: docker compose -f docker-compose.yml -f docker-compose.override.yml up -d --build db redis migrate web
+      - name: Wait for readiness
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8000/readyz >/dev/null 2>&1; then
+              echo "ready after ${i}s"; exit 0
+            fi
+            sleep 1
+          done
+          echo "never became ready"; docker compose logs web; exit 1
+      - name: Seed reference data
+        run: docker compose exec -T web flask itsc seed-categories
+      - name: Smoke
+        run: ./scripts/smoke.sh http://localhost:8000
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs
+      - name: Tear down
+        if: always()
+        run: docker compose down -v

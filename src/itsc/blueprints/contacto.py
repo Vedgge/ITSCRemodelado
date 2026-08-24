@@ -16,7 +16,7 @@ log = structlog.get_logger("itsc.contacto")
 
 @bp.route("/", methods=["GET", "POST"], endpoint="form")
 @limiter.limit("3 per hour", methods=["POST"])
-def contact_form():  # type: ignore[no-untyped-def]
+def contact_form():
     form = ContactForm()
 
     if form.validate_on_submit():
@@ -58,7 +58,7 @@ def contact_form():  # type: ignore[no-untyped-def]
 
 
 @bp.get("/gracias")
-def gracias():  # type: ignore[no-untyped-def]
+def gracias():
     """Confirmation page.
 
     Deliberately echoes NOTHING from the query string. Its predecessor,

@@ -17,7 +17,7 @@ bp = Blueprint("public", __name__)
 
 
 @bp.get("/")
-def index():  # type: ignore[no-untyped-def]
+def index():
     return render_template(
         "pages/index.html",
         # Real news from the database. The homepage previously showed five
@@ -32,17 +32,17 @@ def index():  # type: ignore[no-untyped-def]
 
 
 @bp.get("/nosotros")
-def nosotros():  # type: ignore[no-untyped-def]
+def nosotros():
     return render_template("pages/nosotros.html")
 
 
 @bp.get("/carreras")
-def carreras():  # type: ignore[no-untyped-def]
+def carreras():
     return render_template("pages/carreras.html", carreras=CARRERAS)
 
 
 @bp.get("/carreras/<slug>")
-def carrera(slug: str):  # type: ignore[no-untyped-def]
+def carrera(slug: str):
     item = CARRERAS_BY_SLUG.get(slug)
     if item is None:
         abort(404)
@@ -50,12 +50,12 @@ def carrera(slug: str):  # type: ignore[no-untyped-def]
 
 
 @bp.get("/estudiantes")
-def estudiantes():  # type: ignore[no-untyped-def]
+def estudiantes():
     return render_template("pages/estudiantes.html")
 
 
 @bp.get("/estudiantes/examenes")
-def examenes():  # type: ignore[no-untyped-def]
+def examenes():
     """Exam schedules, backed by the documents repository."""
     category = doc_service.get_category("mesas-de-examen")
     pagination = doc_service.list_documents(category, page=1, per_page=25) if category else None
@@ -63,22 +63,22 @@ def examenes():  # type: ignore[no-untyped-def]
 
 
 @bp.get("/estudiantes/egresados")
-def egresados():  # type: ignore[no-untyped-def]
+def egresados():
     return render_template("pages/egresados.html")
 
 
 @bp.get("/estudiantes/ser-tecnico")
-def ser_tecnico():  # type: ignore[no-untyped-def]
+def ser_tecnico():
     return render_template("pages/ser-tecnico.html")
 
 
 @bp.get("/cooperadora")
-def cooperadora():  # type: ignore[no-untyped-def]
+def cooperadora():
     return render_template("pages/cooperadora.html")
 
 
 @bp.get("/preguntas-frecuentes")
-def faq():  # type: ignore[no-untyped-def]
+def faq():
     categorias: dict[str, list] = {}
     for item in FAQ:
         categorias.setdefault(item.categoria, []).append(item)
@@ -86,12 +86,12 @@ def faq():  # type: ignore[no-untyped-def]
 
 
 @bp.get("/fotogaleria")
-def fotogaleria():  # type: ignore[no-untyped-def]
+def fotogaleria():
     return render_template("pages/fotogaleria.html", fotos=FOTOGALERIA)
 
 
 @bp.get("/buscar")
-def buscar():  # type: ignore[no-untyped-def]
+def buscar():
     """Site search.
 
     The header search box existed on all 21 pages with no action, no method and
@@ -112,6 +112,6 @@ def buscar():  # type: ignore[no-untyped-def]
 
 
 @bp.get("/mapa-del-sitio")
-def mapa_del_sitio():  # type: ignore[no-untyped-def]
+def mapa_del_sitio():
     """The header linked "Mapa del sitio" to href="#" on every page."""
     return render_template("pages/mapa-del-sitio.html", categories=doc_service.all_categories())

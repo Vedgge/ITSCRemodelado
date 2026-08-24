@@ -4,14 +4,15 @@ from __future__ import annotations
 
 from typing import Any
 
-from sqlalchemy import func, select
+from sqlalchemy import Select, func, select
 
 from itsc.extensions import db
 from itsc.models import Novedad
 from itsc.models.novedad import STATUS_PUBLISHED
 
 
-def published_query():  # type: ignore[no-untyped-def]
+def published_query() -> Select[tuple[Novedad]]:
+    """Published novedades, newest first."""
     return (
         select(Novedad)
         .where(Novedad.status == STATUS_PUBLISHED)

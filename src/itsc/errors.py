@@ -30,7 +30,7 @@ def _wants_json() -> bool:
     return request.accept_mimetypes.best == "application/json"
 
 
-def _render(code: int, description: str | None = None):  # type: ignore[no-untyped-def]
+def _render(code: int, description: str | None = None):
     title, message = MESSAGES.get(code, MESSAGES[500])
     request_id = getattr(g, "request_id", None)
 
@@ -70,18 +70,18 @@ def register_error_handlers(app: Flask) -> None:
     for code in (400, 403, 404, 405, 413, 429):
 
         @app.errorhandler(code)
-        def _handler(exc, _code=code):  # type: ignore[no-untyped-def]
+        def _handler(exc, _code=code):
             description = getattr(exc, "description", None)
             log.info("http_error", status=_code, detail=description)
             return _render(_code, description)
 
     @app.errorhandler(HTTPException)
-    def _http_exception(exc: HTTPException):  # type: ignore[no-untyped-def]
+    def _http_exception(exc: HTTPException):
         log.info("http_error", status=exc.code, detail=exc.description)
         return _render(exc.code or 500, exc.description)
 
     @app.errorhandler(Exception)
-    def _unhandled(exc: Exception):  # type: ignore[no-untyped-def]
+    def _unhandled(exc: Exception):
         # Every step here is defensive. An exception raised *inside* the error
         # handler escapes to the WSGI server as a bare traceback -- exactly the
         # leak this handler exists to prevent.
@@ -93,6 +93,8 @@ def register_error_handlers(app: Flask) -> None:
             from itsc.extensions import db
 
             db.session.rollback()
-        except Exception:  # noqa: S110
+        # nosec B110 - an exception escaping the error handler becomes a raw
+        # traceback to the user, which is the exact leak this handler prevents.
+        except Exception:  # noqa: S110  # nosec B110
             pass
         return _render(500)

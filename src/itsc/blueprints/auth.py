@@ -50,7 +50,7 @@ def _safe_next(target: str | None) -> str:
 
 @bp.route("/ingresar", methods=["GET", "POST"])
 @limiter.limit("5 per minute; 20 per hour", methods=["POST"])
-def login():  # type: ignore[no-untyped-def]
+def login():
     if current_user.is_authenticated:
         return redirect(url_for("admin.dashboard"))
 
@@ -115,7 +115,7 @@ def login():  # type: ignore[no-untyped-def]
 
 @bp.post("/salir")
 @login_required
-def logout():  # type: ignore[no-untyped-def]
+def logout():
     """POST-only: a GET logout can be triggered by any <img> tag on any site."""
     log.info("logout", user_id=current_user.id)
     logout_user()

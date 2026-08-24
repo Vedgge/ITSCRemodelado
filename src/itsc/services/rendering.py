@@ -76,7 +76,11 @@ def render_markdown(text: str | None) -> Markup:
         link_rel="noopener noreferrer",
         strip_comments=True,
     )
-    return Markup(clean)  # noqa: S704 - nh3.clean output is the audited boundary
+    # nosec B704 - `clean` is the output of nh3.clean() with an explicit tag,
+    # attribute and URL-scheme allowlist (above). This is the single audited
+    # point where HTML bypasses Jinja autoescaping; a test asserts that
+    # `|safe` appears nowhere else in the template tree.
+    return Markup(clean)  # noqa: S704  # nosec B704
 
 
 def excerpt(text: str | None, length: int = 200) -> str:

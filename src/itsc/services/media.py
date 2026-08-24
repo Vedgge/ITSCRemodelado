@@ -121,7 +121,8 @@ def process_image(storage: FileStorage) -> StoredFile:
 
         # Orientation is best-effort: a corrupt EXIF block must not
         # fail an otherwise valid upload.
-        image = ImageOps.exif_transpose(image) or image
+        # exif_transpose returns Image, not the narrower ImageFile.
+        image = ImageOps.exif_transpose(image) or image  # type: ignore[assignment]
 
     # 4. Bound the stored dimensions.
     if max(image.width, image.height) > MAX_DIMENSION:

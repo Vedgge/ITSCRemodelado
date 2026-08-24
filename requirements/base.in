@@ -26,7 +26,7 @@ Flask-Limiter>=3.8,<4
 flask-talisman>=1.1,<2
 
 # Content handling
-Pillow>=11.0,<12
+Pillow>=12.3
 markdown>=3.6,<4
 nh3>=0.2.18
 

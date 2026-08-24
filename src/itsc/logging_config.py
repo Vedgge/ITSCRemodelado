@@ -23,7 +23,7 @@ SENSITIVE_FIELDS = frozenset(
 )
 
 
-def _add_request_context(_logger: Any, _name: str, event: dict) -> dict:
+def _add_request_context(_logger: Any, _name: str, event: dict[str, Any]) -> dict[str, Any]:
     """Attach request metadata to every record emitted inside a request."""
     if request:
         event.setdefault("request_id", getattr(g, "request_id", None))
@@ -71,7 +71,7 @@ def configure_logging(app: Flask) -> None:
         structlog.contextvars.bind_contextvars(request_id=g.request_id)
 
     @app.after_request
-    def _finish_request(response):  # type: ignore[no-untyped-def]
+    def _finish_request(response):
         response.headers["X-Request-ID"] = getattr(g, "request_id", "-")
         # Health checks would otherwise dominate the log volume.
         if request.endpoint not in {"health.healthz", "health.readyz", "static"}:

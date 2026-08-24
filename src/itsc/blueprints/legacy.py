@@ -11,7 +11,7 @@ from flask import Blueprint, redirect, url_for
 bp = Blueprint("legacy", __name__)
 
 #: old filename -> (endpoint, kwargs)
-REDIRECTS: dict[str, tuple[str, dict]] = {
+REDIRECTS: dict[str, tuple[str, dict[str, str]]] = {
     "index.html": ("public.index", {}),
     "nosotros.html": ("public.nosotros", {}),
     "carreras.html": ("public.carreras", {}),
@@ -46,10 +46,10 @@ REDIRECTS: dict[str, tuple[str, dict]] = {
 }
 
 
-def register(app) -> None:  # type: ignore[no-untyped-def]
+def register(app) -> None:
     for filename, (endpoint, kwargs) in REDIRECTS.items():
 
-        def _view(_endpoint=endpoint, _kwargs=kwargs):  # type: ignore[no-untyped-def]
+        def _view(_endpoint=endpoint, _kwargs=kwargs):
             return redirect(url_for(_endpoint, **_kwargs), code=301)
 
         app.add_url_rule(

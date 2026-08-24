@@ -20,7 +20,7 @@ from flask import request, url_for
 class NavItem:
     label: str
     endpoint: str | None = None
-    params: dict = field(default_factory=dict)
+    params: dict[str, object] = field(default_factory=dict)
     children: tuple[NavItem, ...] = ()
     #: Marks sections that have no content yet, so the template can label them
     #: honestly instead of silently linking to a blank page.
@@ -30,7 +30,7 @@ class NavItem:
         if not self.endpoint:
             return "#"
         try:
-            return url_for(self.endpoint, **self.params)
+            return url_for(self.endpoint, **self.params)  # type: ignore[arg-type]
         except Exception:
             return "#"
 
@@ -126,6 +126,6 @@ def footer_nav() -> tuple[NavItem, ...]:
     )
 
 
-def nav_context() -> dict:
+def nav_context() -> dict[str, object]:
     """Injected into every template by the app factory."""
     return {"main_nav": main_nav(), "footer_nav": footer_nav(), "carreras": CARRERAS}

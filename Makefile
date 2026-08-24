@@ -19,8 +19,8 @@ install: venv ## Install all dev dependencies (hash-verified)
 	$(PIP) install -e . --no-deps
 
 lock: ## Recompile pinned requirements from the .in files
-	$(VENV)/bin/pip-compile --generate-hashes --strip-extras -o requirements/base.txt requirements/base.in
-	$(VENV)/bin/pip-compile --generate-hashes --strip-extras -o requirements/dev.txt  requirements/dev.in
+	$(VENV)/bin/pip-compile --generate-hashes --strip-extras --allow-unsafe -o requirements/base.txt requirements/base.in
+	$(VENV)/bin/pip-compile --generate-hashes --strip-extras --allow-unsafe -o requirements/dev.txt  requirements/dev.in
 
 lint: ## Ruff lint (S608 catches f-string SQL)
 	$(VENV)/bin/ruff check src tests scripts

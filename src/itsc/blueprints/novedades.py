@@ -19,7 +19,7 @@ def list():  # noqa: A001 - matches the endpoint name used across templates
 
 
 @bp.get("/<slug>")
-def detail(slug: str):  # type: ignore[no-untyped-def]
+def detail(slug: str):
     novedad = service.get_by_slug(slug)
     if novedad is None:
         abort(404)
@@ -27,7 +27,7 @@ def detail(slug: str):  # type: ignore[no-untyped-def]
 
 
 @bp.get("/feed.xml", endpoint="feed")
-def feed():  # type: ignore[no-untyped-def]
+def feed():
     """RSS. The header linked to an RSS icon that pointed at href="#"."""
     items = service.latest(20)
     xml = render_template("novedades/feed.xml", items=items, now=None)
@@ -35,7 +35,7 @@ def feed():  # type: ignore[no-untyped-def]
 
 
 @bp.get("/<int:codigo>")
-def legacy_numeric(codigo: int):  # type: ignore[no-untyped-def]
+def legacy_numeric(codigo: int):
     """The old integer URLs (/novedades/3) 301 to the slug form."""
     from flask import redirect
 

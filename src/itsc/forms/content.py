@@ -83,7 +83,7 @@ class DocumentForm(FlaskForm):
     )
     submit = SubmitField("Guardar")
 
-    def validate(self, extra_validators=None) -> bool:  # type: ignore[override]
+    def validate(self, extra_validators=None) -> bool:
         if not super().validate(extra_validators):
             return False
         if (

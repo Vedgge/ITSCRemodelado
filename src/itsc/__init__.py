@@ -51,6 +51,7 @@ def _runtime_dir(name: str) -> Path:
     path.mkdir(parents=True, exist_ok=True)
     return path
 
+
 #: Spanish month names. strftime("%B") would emit English unless the
 #: container happens to have an es_AR locale installed.
 _MESES = (
@@ -192,7 +193,7 @@ def _register_static(app: Flask) -> None:
     app.config["STATIC_DIR"] = str(static_dir)
 
     @app.route("/static/<path:filename>", endpoint="static")
-    def static_files(filename: str):  # type: ignore[no-untyped-def]
+    def static_files(filename: str):
         target = static_dir / filename
         base = static_dir if target.is_file() else legacy_dir
         return send_from_directory(base, filename)
@@ -261,7 +262,7 @@ def _register_context(app: Flask) -> None:
     app.jinja_env.filters["excerpt"] = excerpt
 
     @app.template_filter("fecha")
-    def _fecha(value) -> str:  # type: ignore[no-untyped-def]
+    def _fecha(value) -> str:
         """Spanish long date. strftime('%B') would emit an English month name
         unless the container happens to have an es_AR locale installed."""
         if value is None:
@@ -269,7 +270,7 @@ def _register_context(app: Flask) -> None:
         return f"{value.day} de {_MESES[value.month - 1]} de {value.year}"
 
     @app.context_processor
-    def _globals() -> dict:
+    def _globals() -> dict[str, object]:
         return {
             "asset": asset,
             "current_year": datetime.now(UTC).year,

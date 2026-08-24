@@ -17,13 +17,13 @@ bp = Blueprint("health", __name__)
 
 
 @bp.get("/healthz")
-def healthz():  # type: ignore[no-untyped-def]
+def healthz():
     """Liveness: is the process running? No dependency checks, by design."""
     return jsonify({"status": "ok"}), 200
 
 
 @bp.get("/readyz")
-def readyz():  # type: ignore[no-untyped-def]
+def readyz():
     """Readiness: can we actually serve traffic?"""
     checks: dict[str, object] = {}
     healthy = True

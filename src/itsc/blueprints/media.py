@@ -19,7 +19,7 @@ bp = Blueprint("media", __name__, url_prefix="/media")
 
 
 @bp.get("/<uuid:public_id>")
-def serve(public_id: uuid.UUID):  # type: ignore[no-untyped-def]
+def serve(public_id: uuid.UUID):
     asset = db.session.query(MediaAsset).filter_by(public_id=public_id).first()
     if asset is None:
         abort(404)

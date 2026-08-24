@@ -91,7 +91,7 @@ class User(UserMixin, TimestampMixin, db.Model):
 
     # -- flask-login ---------------------------------------------------------
     @property
-    def is_active(self) -> bool:  # type: ignore[override]
+    def is_active(self) -> bool:
         return self.is_active_flag and not self.is_locked
 
     @property

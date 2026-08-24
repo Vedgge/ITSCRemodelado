@@ -62,7 +62,7 @@ class BaseConfig:
     # pool_pre_ping fixes the bug that killed the original app after MySQL's
     # 8-hour wait_timeout: a stale pooled connection is detected and replaced
     # instead of raising on the next request.
-    SQLALCHEMY_ENGINE_OPTIONS: dict = {
+    SQLALCHEMY_ENGINE_OPTIONS: dict[str, object] = {
         "pool_pre_ping": True,
         "pool_recycle": 1800,
         "pool_size": 5,
@@ -120,7 +120,7 @@ class BaseConfig:
     SITE_ADDRESS: str = "Río Negro 77, Córdoba, Argentina"
     SITE_PHONE: str = "(0351) 4337074"
     SITE_PHONE_E164: str = "+543514337074"
-    SITE_SOCIAL: dict = {
+    SITE_SOCIAL: dict[str, str] = {
         "instagram": "https://www.instagram.com/itscordoba.ok/",
         "facebook": "https://www.facebook.com/pages/Instituto-T%C3%A9cnico-Superior-C%C3%B3rdoba/443175482521454",
         "linkedin": "https://www.linkedin.com/company/instituto-t%C3%A9cnico-superior-c%C3%B3rdoba/",
@@ -173,8 +173,8 @@ class TestingConfig(BaseConfig):
         "postgresql+psycopg://itsc:itsc@localhost:55432/itsc_test",
     )
     RATELIMIT_ENABLED = False
-    SECRET_KEY = "testing-key-not-a-secret"
-    IP_HASH_PEPPER = "testing-pepper"
+    SECRET_KEY = "testing-key-not-a-secret"  # nosec B105
+    IP_HASH_PEPPER = "testing-pepper"  # nosec B105
 
 
 class ProductionConfig(BaseConfig):

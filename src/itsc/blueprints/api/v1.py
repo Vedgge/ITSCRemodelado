@@ -15,7 +15,7 @@ from itsc.services import novedades as service
 bp = Blueprint("api_v1", __name__, url_prefix="/api/v1")
 
 
-def _serialize(novedad) -> dict:  # type: ignore[no-untyped-def]
+def _serialize(novedad) -> dict:
     """Explicit field list.
 
     Never `SELECT *` of an ORM row into JSON: a column added later (an internal
@@ -36,7 +36,7 @@ def _serialize(novedad) -> dict:  # type: ignore[no-untyped-def]
 
 
 @bp.get("/novedades")
-def novedades():  # type: ignore[no-untyped-def]
+def novedades():
     page = max(request.args.get("page", 1, type=int), 1)
     per_page = min(
         max(request.args.get("per_page", 20, type=int), 1),
@@ -57,7 +57,7 @@ def novedades():  # type: ignore[no-untyped-def]
 
 
 @bp.get("/novedades/<slug>")
-def novedad_detail(slug: str):  # type: ignore[no-untyped-def]
+def novedad_detail(slug: str):
     from flask import abort
 
     novedad = service.get_by_slug(slug)
