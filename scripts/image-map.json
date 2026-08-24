@@ -1,0 +1,138 @@
+{
+  "img/10th aniversario.jpeg": {
+    "default": "img/10th-aniversario-800.webp",
+    "kind": "content",
+    "slug": "10th-aniversario",
+    "srcset": {
+      "400": "img/10th-aniversario-400.webp",
+      "800": "img/10th-aniversario-800.webp"
+    }
+  },
+  "img/carreras-index.jpg": {
+    "default": "img/carreras-index-800.webp",
+    "kind": "content",
+    "slug": "carreras-index",
+    "srcset": {
+      "400": "img/carreras-index-400.webp",
+      "800": "img/carreras-index-800.webp",
+      "1600": "img/carreras-index-1600.webp"
+    }
+  },
+  "img/centro comunitario.jpg": {
+    "default": "img/centro-comunitario-800.webp",
+    "kind": "content",
+    "slug": "centro-comunitario",
+    "srcset": {
+      "400": "img/centro-comunitario-400.webp",
+      "800": "img/centro-comunitario-800.webp",
+      "1600": "img/centro-comunitario-1600.webp"
+    }
+  },
+  "img/consejo institucional.jpg": {
+    "default": "img/consejo-institucional-800.webp",
+    "kind": "content",
+    "slug": "consejo-institucional",
+    "srcset": {
+      "400": "img/consejo-institucional-400.webp",
+      "800": "img/consejo-institucional-800.webp"
+    }
+  },
+  "img/desarrollo de software.jpg": {
+    "default": "img/desarrollo-de-software-800.webp",
+    "kind": "content",
+    "slug": "desarrollo-de-software",
+    "srcset": {
+      "400": "img/desarrollo-de-software-400.webp",
+      "800": "img/desarrollo-de-software-800.webp",
+      "1600": "img/desarrollo-de-software-1600.webp"
+    }
+  },
+  "img/especializacion enfermeros-2.jpg": {
+    "default": "img/especializacion-enfermeros-2-800.webp",
+    "kind": "content",
+    "slug": "especializacion-enfermeros-2",
+    "srcset": {
+      "400": "img/especializacion-enfermeros-2-400.webp",
+      "800": "img/especializacion-enfermeros-2-800.webp",
+      "1600": "img/especializacion-enfermeros-2-1600.webp"
+    }
+  },
+  "img/fav-icon-itsc.png": {
+    "default": "img/favicon/favicon-32.png",
+    "kind": "favicon",
+    "slug": "favicon",
+    "srcset": {
+      "32": "img/favicon/favicon-32.png",
+      "180": "img/favicon/apple-touch-icon.png",
+      "192": "img/favicon/icon-192.png",
+      "512": "img/favicon/icon-512.png"
+    }
+  },
+  "img/icon-reduced.png": {
+    "default": "img/icon-reduced-800.webp",
+    "kind": "fixed",
+    "slug": "icon-reduced",
+    "srcset": {
+      "400": "img/icon-reduced-400.webp",
+      "800": "img/icon-reduced-800.webp"
+    }
+  },
+  "img/logo-itsc.png": {
+    "default": "img/logo-itsc-1200.webp",
+    "kind": "fixed",
+    "slug": "logo-itsc",
+    "srcset": {
+      "600": "img/logo-itsc-600.webp",
+      "1200": "img/logo-itsc-1200.webp"
+    }
+  },
+  "img/main banner.jpg": {
+    "default": "img/main-banner-800.webp",
+    "kind": "content",
+    "slug": "main-banner",
+    "srcset": {
+      "400": "img/main-banner-400.webp",
+      "800": "img/main-banner-800.webp",
+      "1600": "img/main-banner-1600.webp"
+    }
+  },
+  "img/main-banner-2.jpg": {
+    "default": "img/main-banner-2-800.webp",
+    "kind": "content",
+    "slug": "main-banner-2",
+    "srcset": {
+      "400": "img/main-banner-2-400.webp",
+      "800": "img/main-banner-2-800.webp",
+      "1600": "img/main-banner-2-1600.webp"
+    }
+  },
+  "img/main-banner-3.jpg": {
+    "default": "img/main-banner-3-800.webp",
+    "kind": "content",
+    "slug": "main-banner-3",
+    "srcset": {
+      "400": "img/main-banner-3-400.webp",
+      "800": "img/main-banner-3-800.webp",
+      "1600": "img/main-banner-3-1600.webp"
+    }
+  },
+  "img/next-step.jpg": {
+    "default": "img/next-step-800.webp",
+    "kind": "content",
+    "slug": "next-step",
+    "srcset": {
+      "400": "img/next-step-400.webp",
+      "800": "img/next-step-800.webp"
+    }
+  },
+  "img/testimonio-alumnos.jpg": {
+    "default": "img/testimonio-alumnos-800.webp",
+    "kind": "content",
+    "slug": "testimonio-alumnos",
+    "srcset": {
+      "400": "img/testimonio-alumnos-400.webp",
+      "800": "img/testimonio-alumnos-800.webp",
+      "1600": "img/testimonio-alumnos-1600.webp"
+    }
+  }
+}

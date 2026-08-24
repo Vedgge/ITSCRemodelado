@@ -1,0 +1,53 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.installed.cfg
+
+# ---- Virtualenvs ----
+.venv/
+venv/
+ENV/
+
+# ---- Environment / secrets ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# ---- Test / coverage ----
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# ---- User uploads (never in git; lives on a Docker volume) ----
+/uploads/
+static/imagenes-novedades/
+
+# ---- Build artifacts ----
+node_modules/
+*.log
+
+# ---- Editors / OS ----
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---- Archived image originals (regenerate derivatives from these) ----
+/assets-src/

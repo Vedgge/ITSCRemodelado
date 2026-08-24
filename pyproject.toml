@@ -1,0 +1,107 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "itsc"
+version = "1.0.0"
+description = "Instituto Tecnico Superior Cordoba - sitio institucional (proyecto de portafolio)"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+itsc = ["templates/**/*", "static/**/*"]
+
+# ----------------------------------------------------------------------------
+# Ruff: linting + formatting. `S` is the bandit ruleset; S608 is the rule that
+# would have caught the f-string SQL injection in the original main.py.
+# ----------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",    # pycodestyle
+    "F",         # pyflakes
+    "I",         # isort
+    "N",         # pep8-naming
+    "UP",        # pyupgrade
+    "B",         # flake8-bugbear
+    "A",         # flake8-builtins
+    "C4",        # flake8-comprehensions
+    "S",         # flake8-bandit  <- S608 hardcoded-sql-expression
+    "SIM",       # flake8-simplify
+    "ARG",       # flake8-unused-arguments
+    "PTH",       # flake8-use-pathlib
+    "RUF",       # ruff-specific
+    "DTZ",       # flake8-datetimez (naive datetime.now() was a bug in main.py)
+]
+ignore = [
+    "E501",    # line length is handled by the formatter
+    "B008",    # function call in default arg - normal in Flask/SQLAlchemy
+    "RUF012",  # mutable class attrs need ClassVar - noisy with SQLAlchemy
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "S105", "S106", "ARG001", "ARG002"]  # asserts & fake creds are the point
+"src/itsc/config.py" = ["S105"]
+"migrations/**/*.py" = ["ALL"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["itsc"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+# ----------------------------------------------------------------------------
+# mypy: strict on the security-critical modules, lenient elsewhere.
+# Ratchet up over time, never down.
+# ----------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.12"
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+no_implicit_optional = true
+plugins = []
+
+[[tool.mypy.overrides]]
+module = ["itsc.models.*", "itsc.services.*", "itsc.security", "itsc.config"]
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["flask_wtf.*", "flask_limiter.*", "flask_talisman.*", "flask_session.*", "wtforms.*"]
+ignore_missing_imports = true
+
+# ----------------------------------------------------------------------------
+# pytest + coverage
+# ----------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+markers = [
+    "security: security regression tests, each named for the defect it guards",
+    "slow: tests that hit the network or build images",
+]
+filterwarnings = ["error", "ignore::DeprecationWarning:passlib.*"]
+
+[tool.coverage.run]
+source = ["src/itsc"]
+branch = true
+omit = ["*/migrations/*", "*/__main__.py"]
+
+[tool.coverage.report]
+precision = 1
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
