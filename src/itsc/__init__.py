@@ -126,9 +126,10 @@ def create_app(config_name: str | None = None) -> Flask:
 
 
 def _configure_logging(app: Flask) -> None:
-    from itsc.logging_config import configure_logging
+    from itsc.logging_config import configure_logging, init_sentry
 
     configure_logging(app)
+    app.config["SENTRY_ENABLED"] = init_sentry(app)
 
 
 def _register_extensions(app: Flask) -> None:

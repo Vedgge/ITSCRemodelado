@@ -33,6 +33,48 @@ def _add_request_context(_logger: Any, _name: str, event: dict[str, Any]) -> dic
     return event
 
 
+def init_sentry(app: Flask) -> bool:
+    """Wire Sentry when a DSN is configured and the SDK is installed.
+
+    Kept an optional import rather than a hard dependency: the DSN is
+    meaningless without an account, and structured logs plus an external
+    uptime check already cover a single-node deployment. Returns whether it
+    was enabled, so the caller can log it.
+    """
+    dsn = app.config.get("SENTRY_DSN")
+    if not dsn:
+        return False
+    try:
+        import sentry_sdk
+        from sentry_sdk.integrations.flask import FlaskIntegration
+    except ImportError:
+        app.logger.warning("SENTRY_DSN is set but sentry-sdk is not installed")
+        return False
+
+    def scrub(event: dict, _hint: dict) -> dict:
+        """Strip personal data before anything leaves the process."""
+        request = event.get("request") or {}
+        data = request.get("data")
+        if isinstance(data, dict):
+            for key in list(data):
+                if key.lower() in SENSITIVE_FIELDS:
+                    data[key] = "[filtered]"
+        # The contact form is the main source of personal data, and query
+        # strings were where it used to leak.
+        request.pop("query_string", None)
+        return event
+
+    sentry_sdk.init(
+        dsn=dsn,
+        integrations=[FlaskIntegration()],
+        send_default_pii=False,
+        traces_sample_rate=0.1,
+        before_send=scrub,
+        environment=app.config.get("ENV_NAME", "unknown"),
+    )
+    return True
+
+
 def configure_logging(app: Flask) -> None:
     level = getattr(logging, str(app.config.get("LOG_LEVEL", "INFO")).upper(), logging.INFO)
     as_json = bool(app.config.get("LOG_JSON", False))

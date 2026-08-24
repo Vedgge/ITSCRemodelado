@@ -120,3 +120,32 @@ def test_notification_links_rather_than_quoting_the_message(app, db, monkeypatch
     assert captured["to"] == "staff@example.org"
     assert secret not in captured["body"], "message body must not be emailed"
     assert "/admin/mensajes/" in captured["body"]
+
+
+# --- Sentry -----------------------------------------------------------------
+def test_sentry_is_disabled_without_a_dsn(app):
+    from itsc.logging_config import init_sentry
+
+    app.config["SENTRY_DSN"] = ""
+    assert init_sentry(app) is False
+
+
+def test_sentry_degrades_gracefully_when_the_sdk_is_absent(app, monkeypatch):
+    """The DSN must never be a hard dependency."""
+    import builtins
+
+    from itsc.logging_config import init_sentry
+
+    real_import = builtins.__import__
+
+    def no_sentry(name, *args, **kwargs):
+        if name.startswith("sentry_sdk"):
+            raise ImportError("not installed")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", no_sentry)
+    app.config["SENTRY_DSN"] = "https://example@sentry.invalid/1"
+    try:
+        assert init_sentry(app) is False
+    finally:
+        app.config["SENTRY_DSN"] = ""

@@ -106,8 +106,12 @@ disable_error_code = ["name-defined", "misc"]
 module = [
     "flask_wtf.*", "flask_limiter.*", "flask_talisman.*", "flask_session.*",
     "flask_login.*", "flask_migrate.*", "wtforms.*", "cachelib.*",
+    # Optional at runtime and deliberately not a declared dependency; the code
+    # imports it inside a try/except and degrades to a warning.
+    "sentry_sdk.*",
 ]
 ignore_missing_imports = true
+follow_imports = "skip"
 disallow_subclassing_any = false
 disallow_untyped_decorators = false
 
