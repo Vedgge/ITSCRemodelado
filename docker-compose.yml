@@ -1,0 +1,106 @@
+# Base stack. Compose automatically layers docker-compose.override.yml for
+# local development; production uses:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+name: itsc
+
+x-app-env: &app-env
+  FLASK_ENV: ${FLASK_ENV:-production}
+  SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+  IP_HASH_PEPPER: ${IP_HASH_PEPPER:?IP_HASH_PEPPER is required}
+  DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-itsc}:${POSTGRES_PASSWORD:?required}@db:5432/${POSTGRES_DB:-itsc}
+  REDIS_URL: redis://:${REDIS_PASSWORD:?required}@redis:6379/0
+  UPLOAD_ROOT: /srv/uploads
+  MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-5}
+  SERVER_NAME: ${SERVER_NAME:-localhost}
+  PREFERRED_URL_SCHEME: ${PREFERRED_URL_SCHEME:-https}
+  SITE_IS_PORTFOLIO_DEMO: ${SITE_IS_PORTFOLIO_DEMO:-true}
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+  LOG_JSON: ${LOG_JSON:-true}
+  SENTRY_DSN: ${SENTRY_DSN:-}
+  MAIL_SERVER: ${MAIL_SERVER:-}
+  MAIL_PORT: ${MAIL_PORT:-587}
+  MAIL_USERNAME: ${MAIL_USERNAME:-}
+  MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+  MAIL_DEFAULT_SENDER: ${MAIL_DEFAULT_SENDER:-}
+  CONTACT_NOTIFY_TO: ${CONTACT_NOTIFY_TO:-}
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-itsc}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
+      POSTGRES_DB: ${POSTGRES_DB:-itsc}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-itsc} -d ${POSTGRES_DB:-itsc}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # No published port: the database is reachable only on the compose network.
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: >
+      redis-server --appendonly yes
+      --requirepass ${REDIS_PASSWORD:?required}
+      --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD} ping | grep -q PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # One-shot. `web` waits for this to COMPLETE, so scaling web to two replicas
+  # can never race two `alembic upgrade` runs against the same database.
+  migrate:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    environment: *app-env
+    command: ["flask", "db", "upgrade"]
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    restart: unless-stopped
+    environment: *app-env
+    volumes:
+      - uploads:/srv/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    expose:
+      - "8000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /dev/shm:size=64m
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          pids: 200
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:

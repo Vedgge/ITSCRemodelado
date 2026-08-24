@@ -46,12 +46,23 @@ def _validate_password(password: str) -> list[str]:
 @click.option("--username", prompt=True, help="Nombre de usuario.")
 @click.option("--email", default=None, help="Email (opcional).")
 @click.option("--role", type=click.Choice(["admin", "editor"]), default="admin")
-def create_admin(username: str, email: str | None, role: str) -> None:
+@click.option(
+    "--password-stdin",
+    is_flag=True,
+    help="Leer la contraseña desde stdin (para provisioning automatizado).",
+)
+def create_admin(username: str, email: str | None, role: str, password_stdin: bool) -> None:
     """Create an administrative user.
 
-    The password is prompted for on stdin — never passed as an argument (it
-    would land in shell history and the process table) and never read from an
-    environment variable or a seed file.
+    The password is never accepted as a command-line argument: argv is visible
+    in shell history and in the process table to every other user on the host.
+
+    Interactively it is prompted for with echo disabled. For automated
+    provisioning, --password-stdin reads a single line from stdin, the same
+    pattern `docker login --password-stdin` uses:
+
+        printf '%s' "$ADMIN_PASSWORD" | flask itsc create-admin \
+            --username admin --password-stdin
     """
     from itsc.models import User
 
@@ -59,7 +70,13 @@ def create_admin(username: str, email: str | None, role: str) -> None:
         click.secho(f"El usuario {username!r} ya existe.", fg="red")
         sys.exit(1)
 
-    password = click.prompt("Contraseña", hide_input=True, confirmation_prompt=True)
+    if password_stdin:
+        password = sys.stdin.readline().rstrip("\n")
+        if not password:
+            click.secho("No se recibió ninguna contraseña por stdin.", fg="red")
+            sys.exit(1)
+    else:
+        password = click.prompt("Contraseña", hide_input=True, confirmation_prompt=True)
     if problems := _validate_password(password):
         click.secho("Contraseña rechazada: " + "; ".join(problems), fg="red")
         sys.exit(1)

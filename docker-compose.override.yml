@@ -1,0 +1,45 @@
+# Local development. Compose applies this automatically.
+services:
+  db:
+    ports:
+      - "55434:5432"
+
+  redis:
+    ports:
+      - "63790:6379"
+
+  web:
+    environment:
+      FLASK_ENV: development
+      LOG_JSON: "false"
+      PREFERRED_URL_SCHEME: http
+    ports:
+      - "8000:8000"
+    # Dev needs a writable tree for the reloader and the filesystem session
+    # backend; production keeps read_only: true.
+    read_only: false
+    volumes:
+      # ./src/itsc, not ./src: mounting the parent would shadow the package
+      # directory with one containing an `itsc/` subdirectory instead of
+      # __init__.py, and gunicorn fails with "Failed to find attribute
+      # 'create_app' in 'itsc'".
+      - ./src/itsc:/opt/venv/lib/python3.12/site-packages/itsc:ro
+      - uploads:/srv/uploads
+
+  # A disposable database for the test suite. tmpfs -> nothing to clean up and
+  # it is considerably faster.
+  db-test:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: itsc
+      POSTGRES_PASSWORD: itsc
+      POSTGRES_DB: itsc_test
+    ports:
+      - "55435:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U itsc -d itsc_test"]
+      interval: 5s
+      timeout: 3s
+      retries: 10

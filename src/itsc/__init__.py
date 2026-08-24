@@ -10,13 +10,46 @@ This module exposes exactly one public name: :func:`create_app`.
 from __future__ import annotations
 
 import os
+import tempfile
 from pathlib import Path
 
 from flask import Flask, url_for
 
 __all__ = ["create_app"]
 
+#: Only meaningful for a source checkout. When the package is pip-installed
+#: this resolves inside site-packages, so it must never be used to locate
+#: runtime state -- see _runtime_dir() and _migrations_dir().
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+
+
+def _migrations_dir() -> Path:
+    """Locate the Alembic directory in both a checkout and a container.
+
+    The Docker image copies migrations to the working directory, while a source
+    checkout keeps them beside src/. Deriving this from __file__ alone breaks
+    in the image, where __file__ lives in site-packages.
+    """
+    override = os.environ.get("MIGRATIONS_DIR")
+    if override:
+        return Path(override)
+    candidates = (Path.cwd() / "migrations", _PROJECT_ROOT / "migrations")
+    for candidate in candidates:
+        if (candidate / "env.py").is_file():
+            return candidate
+    return candidates[0]
+
+
+def _runtime_dir(name: str) -> Path:
+    """A writable directory for ephemeral state.
+
+    Never under the package: an installed package lives in a directory the
+    application user cannot write to (and should not be able to).
+    """
+    base = Path(os.environ.get("RUNTIME_DIR") or tempfile.gettempdir())
+    path = base / f"itsc-{name}"
+    path.mkdir(parents=True, exist_ok=True)
+    return path
 
 #: Spanish month names. strftime("%B") would emit English unless the
 #: container happens to have an es_AR locale installed.
@@ -104,7 +137,7 @@ def _register_extensions(app: Flask) -> None:
     migrate.init_app(
         app,
         db,
-        directory=str(_PROJECT_ROOT / "migrations"),
+        directory=str(_migrations_dir()),
         # Detect type and server-default drift, not just added/dropped columns.
         compare_type=True,
         compare_server_default=True,
@@ -122,7 +155,7 @@ def _register_extensions(app: Flask) -> None:
         from cachelib.file import FileSystemCache
 
         app.config["SESSION_CACHELIB"] = FileSystemCache(
-            cache_dir=str(_PROJECT_ROOT / ".flask_session"), threshold=200
+            cache_dir=str(_runtime_dir("sessions")), threshold=200
         )
     server_session.init_app(app)
 
