@@ -16,15 +16,11 @@ VIGENCIA_NO_VIGENTES = "no-vigentes"
 
 
 def get_category(slug: str) -> DocumentCategory | None:
-    return db.session.scalars(
-        select(DocumentCategory).where(DocumentCategory.slug == slug)
-    ).first()
+    return db.session.scalars(select(DocumentCategory).where(DocumentCategory.slug == slug)).first()
 
 
 def all_categories() -> list[DocumentCategory]:
-    return list(
-        db.session.scalars(select(DocumentCategory).order_by(DocumentCategory.orden))
-    )
+    return list(db.session.scalars(select(DocumentCategory).order_by(DocumentCategory.orden)))
 
 
 def list_documents(

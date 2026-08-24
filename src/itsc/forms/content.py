@@ -60,7 +60,8 @@ class DocumentForm(FlaskForm):
         "Título", validators=[DataRequired("El título es obligatorio."), Length(min=3, max=300)]
     )
     numero = StringField(
-        "Número", validators=[Optional(), Length(max=60)],
+        "Número",
+        validators=[Optional(), Length(max=60)],
         description='Por ejemplo "123/2024". Opcional.',
     )
     descripcion = TextAreaField("Descripción", validators=[Optional(), Length(max=5000)])
@@ -85,12 +86,15 @@ class DocumentForm(FlaskForm):
     def validate(self, extra_validators=None) -> bool:  # type: ignore[override]
         if not super().validate(extra_validators):
             return False
-        if self.vigente_desde.data and self.vigente_hasta.data:
-            if self.vigente_hasta.data < self.vigente_desde.data:
-                self.vigente_hasta.errors.append(
-                    "La fecha de fin no puede ser anterior a la de inicio."
-                )
-                return False
+        if (
+            self.vigente_desde.data
+            and self.vigente_hasta.data
+            and self.vigente_hasta.data < self.vigente_desde.data
+        ):
+            self.vigente_hasta.errors.append(
+                "La fecha de fin no puede ser anterior a la de inicio."
+            )
+            return False
         return True
 
 

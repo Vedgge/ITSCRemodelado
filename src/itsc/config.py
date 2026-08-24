@@ -80,7 +80,9 @@ class BaseConfig:
     PERMANENT_SESSION_LIFETIME: timedelta = timedelta(hours=8)
     SESSION_TYPE: str = "redis"
     SESSION_PERMANENT: bool = True
-    SESSION_USE_SIGNER: bool = True
+    # SESSION_USE_SIGNER is deprecated upstream and intentionally unset:
+    # with server-side sessions the cookie carries only a cryptographically
+    # random session id, so signing it adds no meaningful protection.
     SESSION_KEY_PREFIX: str = "itsc:sess:"
 
     # --- CSRF ---------------------------------------------------------------
@@ -95,7 +97,11 @@ class BaseConfig:
     # --- Uploads ------------------------------------------------------------
     # Deliberately OUTSIDE static/: a file served from the app's own origin can
     # execute script against it.  Uploads are served from /media/ with nosniff.
-    UPLOAD_ROOT: Path = Path(os.environ.get("UPLOAD_ROOT", "/tmp/itsc-uploads"))
+    # Default sits inside the project, not /tmp: a world-writable directory
+    # lets any local user drop files into what the app then serves.
+    UPLOAD_ROOT: Path = Path(
+        os.environ.get("UPLOAD_ROOT") or (Path(__file__).resolve().parent.parent.parent / "uploads")
+    )
     MAX_UPLOAD_MB: int = _int("MAX_UPLOAD_MB", 5)
     MAX_CONTENT_LENGTH: int = _int("MAX_UPLOAD_MB", 5) * 1024 * 1024
     ALLOWED_IMAGE_EXTENSIONS: frozenset[str] = frozenset({".jpg", ".jpeg", ".png", ".webp"})
@@ -149,7 +155,7 @@ class DevelopmentConfig(BaseConfig):
     # Without TLS locally a Secure cookie is never stored, and you get locked
     # out of the app you are trying to debug.
     SESSION_COOKIE_SECURE = False
-    SESSION_TYPE = "filesystem"
+    SESSION_TYPE = "cachelib"
     TALISMAN_FORCE_HTTPS = False
 
 
@@ -157,7 +163,7 @@ class TestingConfig(BaseConfig):
     TESTING = True
     DEBUG = False
     SESSION_COOKIE_SECURE = False
-    SESSION_TYPE = "filesystem"
+    SESSION_TYPE = "cachelib"
     TALISMAN_FORCE_HTTPS = False
     # CSRF stays ENABLED in tests.  Suites that disable it are exactly how CSRF
     # regressions reach production; tests scrape the real token instead.
@@ -167,8 +173,8 @@ class TestingConfig(BaseConfig):
         "postgresql+psycopg://itsc:itsc@localhost:55432/itsc_test",
     )
     RATELIMIT_ENABLED = False
-    SECRET_KEY = "testing-key-not-a-secret"  # noqa: S105
-    IP_HASH_PEPPER = "testing-pepper"  # noqa: S105
+    SECRET_KEY = "testing-key-not-a-secret"
+    IP_HASH_PEPPER = "testing-pepper"
 
 
 class ProductionConfig(BaseConfig):
@@ -192,7 +198,7 @@ class ProductionConfig(BaseConfig):
             raise ConfigError(
                 "Refusing to start in production. These environment variables are "
                 f"missing or still hold placeholder values: {', '.join(missing)}. "
-                "Generate secrets with: python -c \"import secrets; "
+                'Generate secrets with: python -c "import secrets; '
                 'print(secrets.token_urlsafe(64))"'
             )
         if _bool("FLASK_DEBUG"):

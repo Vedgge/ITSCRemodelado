@@ -8,9 +8,9 @@ development equivalent and the authoritative access point.
 from __future__ import annotations
 
 import uuid
+from pathlib import Path
 
 from flask import Blueprint, abort, current_app, send_file
-from pathlib import Path
 
 from itsc.extensions import db
 from itsc.models import MediaAsset

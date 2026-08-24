@@ -8,6 +8,7 @@ a user's screenshot maps to a log line.
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import sys
 import uuid
@@ -74,7 +75,9 @@ def configure_logging(app: Flask) -> None:
         response.headers["X-Request-ID"] = getattr(g, "request_id", "-")
         # Health checks would otherwise dominate the log volume.
         if request.endpoint not in {"health.healthz", "health.readyz", "static"}:
-            try:
+            # after_request runs on error responses too; a logging failure here
+            # would replace the user's error page with a traceback.
+            with contextlib.suppress(Exception):
                 log.info(
                     "request",
                     status=response.status_code,
@@ -83,9 +86,5 @@ def configure_logging(app: Flask) -> None:
                     # and logging query strings would reintroduce that leak.
                     bytes=response.content_length,
                 )
-            except Exception:  # noqa: BLE001,S110
-                # after_request runs on error responses too; a logging failure
-                # here would replace the user's error page with a traceback.
-                pass
         structlog.contextvars.clear_contextvars()
         return response

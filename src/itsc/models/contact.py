@@ -68,16 +68,12 @@ class ContactMessage(TimestampMixin, db.Model):
     motivo: Mapped[str] = mapped_column(String(60), nullable=False)
     mensaje: Mapped[str] = mapped_column(Text, nullable=False)
 
-    status: Mapped[str] = mapped_column(
-        String(16), nullable=False, server_default=text(f"'{STATUS_NEW}'")
-    )
+    status: Mapped[str] = mapped_column(String(16), nullable=False, server_default=text("'new'"))
     #: Keyed hash, never the raw address.
     ip_hash: Mapped[str | None] = mapped_column(String(64))
     user_agent: Mapped[str | None] = mapped_column(String(300))
 
-    handled_by_id: Mapped[int | None] = mapped_column(
-        ForeignKey("users.id", ondelete="SET NULL")
-    )
+    handled_by_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
     handled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     handled_by = relationship("User", lazy="joined", foreign_keys=[handled_by_id])

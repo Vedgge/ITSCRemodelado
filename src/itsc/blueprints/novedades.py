@@ -23,9 +23,7 @@ def detail(slug: str):  # type: ignore[no-untyped-def]
     novedad = service.get_by_slug(slug)
     if novedad is None:
         abort(404)
-    return render_template(
-        "novedades/detail.html", novedad=novedad, relacionadas=service.latest(3)
-    )
+    return render_template("novedades/detail.html", novedad=novedad, relacionadas=service.latest(3))
 
 
 @bp.get("/feed.xml", endpoint="feed")

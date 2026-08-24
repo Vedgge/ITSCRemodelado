@@ -58,9 +58,7 @@ def estudiantes():  # type: ignore[no-untyped-def]
 def examenes():  # type: ignore[no-untyped-def]
     """Exam schedules, backed by the documents repository."""
     category = doc_service.get_category("mesas-de-examen")
-    pagination = (
-        doc_service.list_documents(category, page=1, per_page=25) if category else None
-    )
+    pagination = doc_service.list_documents(category, page=1, per_page=25) if category else None
     return render_template("pages/examenes.html", category=category, pagination=pagination)
 
 

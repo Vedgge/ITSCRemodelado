@@ -45,11 +45,20 @@
         <ul class="nav__list">
           {% for item in main_nav %}
           <li class="nav__item {% if item.children %}has-children{% endif %} {% if item.is_active() %}is-active{% endif %}">
+            {% if item.endpoint %}
             <a href="{{ item.url() }}"
                {% if item.is_active() %}aria-current="page"{% endif %}
                {% if item.children %}aria-expanded="false" aria-haspopup="true"{% endif %}>
               {{ item.label }}{% if item.children %}{{ icon('chevron-down', 14, cls='nav__caret') }}{% endif %}
             </a>
+            {% else %}
+            {# A group heading with no page of its own. Rendered as a button,
+               not href="#": an anchor to nowhere is announced as a link by
+               screen readers, does nothing on Enter, and dirties the URL. #}
+            <button type="button" class="nav__group" aria-expanded="false" aria-haspopup="true">
+              {{ item.label }}{{ icon('chevron-down', 14, cls='nav__caret') }}
+            </button>
+            {% endif %}
             {% if item.children %}
             <ul class="nav__submenu">
               {% for child in item.children %}

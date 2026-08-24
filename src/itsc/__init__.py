@@ -18,6 +18,23 @@ __all__ = ["create_app"]
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
+#: Spanish month names. strftime("%B") would emit English unless the
+#: container happens to have an es_AR locale installed.
+_MESES = (
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+)
+
 
 def _load_dotenv(path: Path) -> None:
     """Minimal ``.env`` loader (avoids a dependency for ~15 lines of parsing).
@@ -100,8 +117,12 @@ def _register_extensions(app: Flask) -> None:
 
         app.config["SESSION_REDIS"] = redis.Redis.from_url(app.config["REDIS_URL"])
     else:
-        app.config.setdefault(
-            "SESSION_FILE_DIR", str(_PROJECT_ROOT / ".flask_session")
+        # The "filesystem" backend is deprecated in favour of passing a cachelib
+        # instance directly. Dev/test only -- production always uses Redis.
+        from cachelib.file import FileSystemCache
+
+        app.config["SESSION_CACHELIB"] = FileSystemCache(
+            cache_dir=str(_PROJECT_ROOT / ".flask_session"), threshold=200
         )
     server_session.init_app(app)
 
@@ -206,18 +227,13 @@ def _register_context(app: Flask) -> None:
     app.jinja_env.filters["markdown"] = render_markdown
     app.jinja_env.filters["excerpt"] = excerpt
 
-    MESES = (
-        "enero", "febrero", "marzo", "abril", "mayo", "junio",
-        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
-    )
-
     @app.template_filter("fecha")
     def _fecha(value) -> str:  # type: ignore[no-untyped-def]
         """Spanish long date. strftime('%B') would emit an English month name
         unless the container happens to have an es_AR locale installed."""
         if value is None:
             return ""
-        return f"{value.day} de {MESES[value.month - 1]} de {value.year}"
+        return f"{value.day} de {_MESES[value.month - 1]} de {value.year}"
 
     @app.context_processor
     def _globals() -> dict:

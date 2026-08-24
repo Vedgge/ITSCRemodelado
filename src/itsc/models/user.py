@@ -6,6 +6,7 @@ reachable by anyone on the internet.
 
 from __future__ import annotations
 
+import contextlib
 from datetime import datetime, timedelta
 
 from argon2 import PasswordHasher
@@ -42,9 +43,7 @@ class User(UserMixin, TimestampMixin, db.Model):
     username: Mapped[str] = mapped_column(CITEXT(), unique=True, nullable=False)
     email: Mapped[str | None] = mapped_column(CITEXT(), unique=True)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    role: Mapped[str] = mapped_column(
-        String(16), nullable=False, server_default=text(f"'{ROLE_EDITOR}'")
-    )
+    role: Mapped[str] = mapped_column(String(16), nullable=False, server_default=text("'editor'"))
     is_active_flag: Mapped[bool] = mapped_column(
         "is_active", Boolean, nullable=False, server_default=text("true")
     )
@@ -112,11 +111,11 @@ def dummy_verify() -> None:
     Without this, "no such user" returns measurably faster than "wrong
     password", which turns the login form into a username oracle.
     """
-    try:
+    # The verification is expected to fail; spending the CPU time is the whole
+    # point, so the exception is discarded deliberately.
+    with contextlib.suppress(Exception):
         _hasher.verify(
             "$argon2id$v=19$m=65536,t=3,p=4$"
             "c29tZXNhbHRzb21lc2FsdA$8sQhH0P7yZ0Q1gGKq0m4rN3Kx0z9Yl8vJ2Xq7Wn5Tz0",
             "not-the-password",
         )
-    except Exception:  # noqa: BLE001,S110 - timing side-effect is the only goal
-        pass

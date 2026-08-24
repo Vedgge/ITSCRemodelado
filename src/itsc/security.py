@@ -30,9 +30,12 @@ CSP = {
     "frame-src": "'none'",
 }
 
-PERMISSIONS_POLICY = (
-    "geolocation=(), camera=(), microphone=(), payment=(), usb=(), magnetometer=()"
-)
+#: Applied to uploaded files only. Even if something non-image were ever
+#: stored, "sandbox" with no allow-* tokens denies script execution,
+#: form submission and same-origin access.
+MEDIA_CSP = "default-src 'none'; sandbox; base-uri 'none'; form-action 'none'"
+
+PERMISSIONS_POLICY = "geolocation=(), camera=(), microphone=(), payment=(), usb=(), magnetometer=()"
 
 
 def init_security(app: Flask) -> None:
@@ -51,6 +54,13 @@ def init_security(app: Flask) -> None:
     # say on headers Talisman also sets.
     @app.after_request
     def _extra_headers(response):  # type: ignore[no-untyped-def]
+        from flask import request
+
+        # Uploaded files get a far stricter, sandboxing policy than the site.
+        # It must be applied here rather than in the view: Talisman's own
+        # after_request would otherwise replace it with the site-wide CSP.
+        if request.endpoint == "media.serve":
+            response.headers["Content-Security-Policy"] = MEDIA_CSP
         response.headers.setdefault("X-Content-Type-Options", "nosniff")
         # Assign, do not setdefault: Talisman writes its own minimal
         # Permissions-Policy first, and setdefault would silently keep it.
@@ -92,8 +102,6 @@ def role_required(*roles: str) -> Callable:
         @wraps(view)
         def wrapped(*args: Any, **kwargs: Any) -> Any:
             if not current_user.is_authenticated:
-                from flask_login import login_manager  # noqa: PLC0415
-
                 return current_app.login_manager.unauthorized()
             if roles and not current_user.has_role(*roles):
                 abort(403)

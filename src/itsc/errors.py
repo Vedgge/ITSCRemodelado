@@ -6,10 +6,9 @@ the Werkzeug console), and never let an error page 500 on its own.
 
 from __future__ import annotations
 
+import structlog
 from flask import Flask, g, jsonify, render_template, request
 from werkzeug.exceptions import HTTPException
-
-import structlog
 
 log = structlog.get_logger("itsc.errors")
 
@@ -58,7 +57,7 @@ def _render(code: int, description: str | None = None):  # type: ignore[no-untyp
             message=message,
             request_id=request_id,
         )
-    except Exception:  # noqa: BLE001 - a missing template must not mask the error
+    except Exception:
         html = (
             f"<!doctype html><meta charset='utf-8'><title>{code} {title}</title>"
             f"<h1>{code} — {title}</h1><p>{message}</p>"
@@ -88,12 +87,12 @@ def register_error_handlers(app: Flask) -> None:
         # leak this handler exists to prevent.
         try:
             log.error("unhandled_exception", error=str(exc), exc_info=True)
-        except Exception:  # noqa: BLE001,S110
+        except Exception:
             app.logger.exception("unhandled exception (structlog unavailable)")
         try:
             from itsc.extensions import db
 
             db.session.rollback()
-        except Exception:  # noqa: BLE001,S110
+        except Exception:  # noqa: S110
             pass
         return _render(500)

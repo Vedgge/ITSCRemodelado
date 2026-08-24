@@ -31,7 +31,7 @@ class NavItem:
             return "#"
         try:
             return url_for(self.endpoint, **self.params)
-        except Exception:  # noqa: BLE001 - endpoint not registered yet
+        except Exception:
             return "#"
 
     def is_active(self) -> bool:

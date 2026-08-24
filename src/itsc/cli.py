@@ -16,8 +16,16 @@ itsc_cli = AppGroup("itsc", help="ITSC maintenance commands.")
 #: Rejected outright regardless of length.
 COMMON_PASSWORDS = frozenset(
     {
-        "password", "password123", "12345678", "123456789", "qwertyuiop",
-        "administrador", "contrasena", "itsc1234", "admin1234", "letmein123",
+        "password",
+        "password123",
+        "12345678",
+        "123456789",
+        "qwertyuiop",
+        "administrador",
+        "contrasena",
+        "itsc1234",
+        "admin1234",
+        "letmein123",
     }
 )
 MIN_PASSWORD_LENGTH = 12
@@ -120,7 +128,9 @@ def seed_categories() -> None:
             db.session.add(DocumentCategory(**row))
             created += 1
     db.session.commit()
-    click.secho(f"Categorías listas ({created} nuevas, {len(rows) - created} actualizadas).", fg="green")
+    click.secho(
+        f"Categorías listas ({created} nuevas, {len(rows) - created} actualizadas).", fg="green"
+    )
 
 
 @itsc_cli.command("seed-demo")

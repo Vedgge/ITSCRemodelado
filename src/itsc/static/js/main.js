@@ -29,9 +29,17 @@
 
     /* On touch/narrow layouts a parent link both navigates and opens a
        submenu. Hover cannot express that, so the first tap expands. */
-    nav.querySelectorAll(".nav__item.has-children > a").forEach(function (link) {
+    nav.querySelectorAll(".nav__item.has-children > a, .nav__item.has-children > .nav__group").forEach(function (link) {
       link.addEventListener("click", function (event) {
-        if (!window.matchMedia("(max-width: 900px)").matches) return;
+        var isButton = link.tagName === "BUTTON";
+        /* A group heading has no destination, so it toggles at every width. */
+        if (!isButton && !window.matchMedia("(max-width: 900px)").matches) return;
+        if (isButton) {
+          event.preventDefault();
+          var open = link.parentElement.classList.toggle("is-open");
+          link.setAttribute("aria-expanded", String(open));
+          return;
+        }
         var item = link.parentElement;
         if (!item.classList.contains("is-open")) {
           event.preventDefault();

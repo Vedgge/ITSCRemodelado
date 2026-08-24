@@ -12,6 +12,7 @@ from urllib.parse import urlparse
 import structlog
 from flask import (
     Blueprint,
+    current_app,
     flash,
     redirect,
     render_template,
@@ -87,9 +88,19 @@ def login():  # type: ignore[no-untyped-def]
             flash(GENERIC_FAILURE, "error")
             return render_template("auth/login.html", form=form), 401
 
-        # Rotate the session id before establishing the authenticated session:
-        # otherwise an attacker who fixed the pre-login id keeps a valid one.
-        session.clear()
+        # Session-fixation defence: issue a brand-new session ID before the
+        # session becomes authenticated, so an ID an attacker planted earlier
+        # is worthless.
+        #
+        # Deliberately NOT session.clear(): with a server-side store, clearing
+        # puts the session object into a discard state where every subsequent
+        # write in the request is dropped -- including Flask-WTF's CSRF seed,
+        # which then makes the next POST fail with "CSRF session token is
+        # missing". regenerate() rotates the storage key, which is the actual
+        # protection; an anonymous session holds nothing worth wiping.
+        regenerate = getattr(current_app.session_interface, "regenerate", None)
+        if callable(regenerate):
+            regenerate(session)
         login_user(user, remember=bool(form.remember.data))
         user.register_successful_login(ip=request.remote_addr)
         db.session.commit()

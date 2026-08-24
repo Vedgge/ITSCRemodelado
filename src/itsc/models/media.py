@@ -46,9 +46,7 @@ class MediaAsset(TimestampMixin, db.Model):
     checksum_sha256: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
     #: Required, not optional: a decorative-only image should pass "".
     alt_text: Mapped[str] = mapped_column(String(255), nullable=False, server_default=text("''"))
-    uploaded_by_id: Mapped[int | None] = mapped_column(
-        ForeignKey("users.id", ondelete="SET NULL")
-    )
+    uploaded_by_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
 
     uploaded_by = relationship("User", lazy="joined")
 

@@ -37,7 +37,7 @@ def readyz():  # type: ignore[no-untyped-def]
             text("SELECT version_num FROM alembic_version LIMIT 1")
         ).scalar()
         checks["database"] = {"ok": True, "migration": revision}
-    except Exception as exc:  # noqa: BLE001 - report, never raise, from readiness
+    except Exception as exc:
         healthy = False
         checks["database"] = {"ok": False, "error": type(exc).__name__}
 
@@ -48,7 +48,7 @@ def readyz():  # type: ignore[no-untyped-def]
 
             redis.Redis.from_url(current_app.config["REDIS_URL"]).ping()
             checks["redis"] = {"ok": True}
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             healthy = False
             checks["redis"] = {"ok": False, "error": type(exc).__name__}
     else:
@@ -62,7 +62,7 @@ def readyz():  # type: ignore[no-untyped-def]
         probe.write_text("ok")
         probe.unlink()
         checks["uploads"] = {"ok": True, "path": str(root)}
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         healthy = False
         checks["uploads"] = {"ok": False, "error": type(exc).__name__}
 

@@ -34,7 +34,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from itsc.extensions import db
 from itsc.models.base import TimestampMixin
-from itsc.models.novedad import STATUS_DRAFT, STATUSES
+from itsc.models.novedad import STATUSES
 
 #: Seeded, not user-created, so URLs stay stable and routes can be registered
 #: from a known set rather than whatever a user typed.
@@ -107,9 +107,7 @@ class Document(TimestampMixin, db.Model):
     vigente_desde: Mapped[date | None] = mapped_column(Date)
     vigente_hasta: Mapped[date | None] = mapped_column(Date)
 
-    status: Mapped[str] = mapped_column(
-        String(16), nullable=False, server_default=text(f"'{STATUS_DRAFT}'")
-    )
+    status: Mapped[str] = mapped_column(String(16), nullable=False, server_default=text("'draft'"))
     published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     author_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
 

@@ -17,6 +17,7 @@ assets-src/ (gitignored) so derivatives can be regenerated later.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import shutil
@@ -75,12 +76,12 @@ def _open_flat(path: Path) -> Image.Image:
     """Open, apply EXIF orientation, and flatten transparency onto white."""
     im = Image.open(path)
     im.load()
-    try:
+    with contextlib.suppress(Exception):
         from PIL import ImageOps
 
+        # Orientation is best-effort: a corrupt EXIF block must not
+        # fail an otherwise valid upload.
         im = ImageOps.exif_transpose(im) or im
-    except Exception:  # noqa: BLE001 - orientation is best-effort
-        pass
     return im
 
 
@@ -167,9 +168,15 @@ def process_favicon(path: Path, res: Result, *, apply: bool) -> None:
     res.mapping[str(path.relative_to(ROOT / "static"))] = {
         "kind": "favicon",
         "slug": "favicon",
-        "srcset": {k: f"img/favicon/{v}" for k, v in
-                   {32: "favicon-32.png", 180: "apple-touch-icon.png",
-                    192: "icon-192.png", 512: "icon-512.png"}.items()},
+        "srcset": {
+            k: f"img/favicon/{v}"
+            for k, v in {
+                32: "favicon-32.png",
+                180: "apple-touch-icon.png",
+                192: "icon-192.png",
+                512: "icon-512.png",
+            }.items()
+        },
         "default": "img/favicon/favicon-32.png",
     }
 
@@ -196,8 +203,7 @@ def main() -> int:
     res = Result()
     seen: dict[str, str] = {}
     originals = sorted(
-        p for p in IMG.iterdir()
-        if p.is_file() and p.suffix.lower() in {".jpg", ".jpeg", ".png"}
+        p for p in IMG.iterdir() if p.is_file() and p.suffix.lower() in {".jpg", ".jpeg", ".png"}
     )
 
     if args.apply:

@@ -16,9 +16,11 @@ logger = logging.getLogger('alembic.env')
 
 
 def get_engine():
+    # Flask-SQLAlchemy 3.1 deprecated get_engine(); the generated template
+    # still calls it, so prefer the modern attribute and fall back.
     try:
         # this works with Flask-SQLAlchemy<3 and Alchemical
-        return current_app.extensions['migrate'].db.get_engine()
+        return current_app.extensions['migrate'].db.engine
     except (TypeError, AttributeError):
         # this works with Flask-SQLAlchemy>=3
         return current_app.extensions['migrate'].db.engine

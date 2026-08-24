@@ -51,9 +51,7 @@ class Novedad(TimestampMixin, db.Model):
     imagen_id: Mapped[int | None] = mapped_column(
         ForeignKey("media_assets.id", ondelete="SET NULL")
     )
-    status: Mapped[str] = mapped_column(
-        String(16), nullable=False, server_default=text(f"'{STATUS_DRAFT}'")
-    )
+    status: Mapped[str] = mapped_column(String(16), nullable=False, server_default=text("'draft'"))
     published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     author_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
 

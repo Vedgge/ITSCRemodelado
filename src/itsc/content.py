@@ -124,36 +124,58 @@ class Carrera:
 #: each field of study in general terms -- they deliberately do NOT state
 #: durations, subject lists or titles, none of which are available here.
 CARRERAS: tuple[Carrera, ...] = (
-    Carrera("Administración", "administracion",
-            "Formación en gestión administrativa, contable y organizacional para "
-            "empresas y organismos públicos."),
-    Carrera("Bromatología", "bromatologia",
-            "Control de calidad e inocuidad de los alimentos, higiene alimentaria y "
-            "normativa vigente."),
-    Carrera("Desarrollo de Software", "desarrollo-de-software",
-            "Programación, bases de datos y desarrollo de aplicaciones web y de "
-            "escritorio."),
-    Carrera("Enfermería", "enfermeria",
-            "Cuidado integral de la salud de las personas en instituciones "
-            "sanitarias y en la comunidad."),
-    Carrera("Gestión Ambiental", "gestion-ambiental",
-            "Gestión de recursos naturales, tratamiento de residuos y evaluación de "
-            "impacto ambiental."),
-    Carrera("Gestión y Mantenimiento", "gestion-y-mantenimiento",
-            "Planificación y mantenimiento de instalaciones, equipos y servicios "
-            "industriales."),
-    Carrera("Higiene y Seguridad", "higiene-y-seguridad",
-            "Prevención de riesgos laborales, seguridad e higiene en el trabajo y "
-            "normativa aplicable."),
-    Carrera("Instrumentación Quirúrgica", "instrumentacion-quirurgica",
-            "Asistencia instrumental en el quirófano, asepsia y preparación del "
-            "campo quirúrgico."),
-    Carrera("Óptica y Contactología", "optica-y-contactologia",
-            "Óptica oftálmica, adaptación de lentes de contacto y atención en "
-            "gabinete."),
-    Carrera("Prótesis Dental", "protesis-dental",
-            "Diseño y confección de prótesis dentales fijas y removibles en "
-            "laboratorio."),
+    Carrera(
+        "Administración",
+        "administracion",
+        "Formación en gestión administrativa, contable y organizacional para "
+        "empresas y organismos públicos.",
+    ),
+    Carrera(
+        "Bromatología",
+        "bromatologia",
+        "Control de calidad e inocuidad de los alimentos, higiene alimentaria y normativa vigente.",
+    ),
+    Carrera(
+        "Desarrollo de Software",
+        "desarrollo-de-software",
+        "Programación, bases de datos y desarrollo de aplicaciones web y de escritorio.",
+    ),
+    Carrera(
+        "Enfermería",
+        "enfermeria",
+        "Cuidado integral de la salud de las personas en instituciones "
+        "sanitarias y en la comunidad.",
+    ),
+    Carrera(
+        "Gestión Ambiental",
+        "gestion-ambiental",
+        "Gestión de recursos naturales, tratamiento de residuos y evaluación de impacto ambiental.",
+    ),
+    Carrera(
+        "Gestión y Mantenimiento",
+        "gestion-y-mantenimiento",
+        "Planificación y mantenimiento de instalaciones, equipos y servicios industriales.",
+    ),
+    Carrera(
+        "Higiene y Seguridad",
+        "higiene-y-seguridad",
+        "Prevención de riesgos laborales, seguridad e higiene en el trabajo y normativa aplicable.",
+    ),
+    Carrera(
+        "Instrumentación Quirúrgica",
+        "instrumentacion-quirurgica",
+        "Asistencia instrumental en el quirófano, asepsia y preparación del campo quirúrgico.",
+    ),
+    Carrera(
+        "Óptica y Contactología",
+        "optica-y-contactologia",
+        "Óptica oftálmica, adaptación de lentes de contacto y atención en gabinete.",
+    ),
+    Carrera(
+        "Prótesis Dental",
+        "protesis-dental",
+        "Diseño y confección de prótesis dentales fijas y removibles en laboratorio.",
+    ),
 )
 
 CARRERAS_BY_SLUG = {c.slug: c for c in CARRERAS}
@@ -169,19 +191,36 @@ class GalleryItem:
 #: The six captions already present on the homepage carousel, with their
 #: existing WebP assets.
 FOTOGALERIA: tuple[GalleryItem, ...] = (
-    GalleryItem("Visita a Fábrica INSTRELEC", "carrusel-fotogaleria-1",
-                "Estudiantes recorrieron la planta y conocieron sus procesos productivos."),
-    GalleryItem("Visita de la Asociación Cordobesa de Protesistas Dentales",
-                "carrusel-fotogaleria-2",
-                "Encuentro con profesionales del sector en el Instituto."),
-    GalleryItem("Prótesis visita el Museo Anatómico", "carrusel-fotogaleria-3",
-                "Actividad de formación práctica fuera del aula."),
-    GalleryItem("Practicando con prótesis", "carrusel-fotogaleria-4",
-                "Trabajo de laboratorio de la Tecnicatura en Prótesis Dental."),
-    GalleryItem("Prácticas en DENSO S.A.", "carrusel-fotogaleria-5",
-                "Prácticas profesionalizantes en planta industrial."),
-    GalleryItem("Jornada de RCP avanzada y primeros auxilios", "carrusel-fotogaleria-6",
-                "Capacitación abierta a estudiantes del Instituto."),
+    GalleryItem(
+        "Visita a Fábrica INSTRELEC",
+        "carrusel-fotogaleria-1",
+        "Estudiantes recorrieron la planta y conocieron sus procesos productivos.",
+    ),
+    GalleryItem(
+        "Visita de la Asociación Cordobesa de Protesistas Dentales",
+        "carrusel-fotogaleria-2",
+        "Encuentro con profesionales del sector en el Instituto.",
+    ),
+    GalleryItem(
+        "Prótesis visita el Museo Anatómico",
+        "carrusel-fotogaleria-3",
+        "Actividad de formación práctica fuera del aula.",
+    ),
+    GalleryItem(
+        "Practicando con prótesis",
+        "carrusel-fotogaleria-4",
+        "Trabajo de laboratorio de la Tecnicatura en Prótesis Dental.",
+    ),
+    GalleryItem(
+        "Prácticas en DENSO S.A.",
+        "carrusel-fotogaleria-5",
+        "Prácticas profesionalizantes en planta industrial.",
+    ),
+    GalleryItem(
+        "Jornada de RCP avanzada y primeros auxilios",
+        "carrusel-fotogaleria-6",
+        "Capacitación abierta a estudiantes del Instituto.",
+    ),
 )
 
 
@@ -191,7 +230,15 @@ FOTOGALERIA: tuple[GalleryItem, ...] = (
 #: using real people's likenesses. Avatars are now generated locally from
 #: initials, so no third-party request is made and no real person is depicted.
 TESTIMONIOS_DEMO = (
-    ("M. B.", "Enfermería", "Las prácticas desde el primer año me dieron una seguridad que no esperaba."),
+    (
+        "M. B.",
+        "Enfermería",
+        "Las prácticas desde el primer año me dieron una seguridad que no esperaba.",
+    ),
     ("J. R.", "Desarrollo de Software", "Entré sin saber programar y salí trabajando en el rubro."),
-    ("L. G.", "Bromatología", "Los laboratorios y el acompañamiento de los docentes hacen la diferencia."),
+    (
+        "L. G.",
+        "Bromatología",
+        "Los laboratorios y el acompañamiento de los docentes hacen la diferencia.",
+    ),
 )

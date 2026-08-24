@@ -49,7 +49,12 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101", "S105", "S106", "ARG001", "ARG002"]  # asserts & fake creds are the point
+"tests/**/*.py" = [
+    "S101", "S105", "S106",   # asserts and fake credentials are the point
+    "ARG001", "ARG002", "ARG005",  # stub callbacks legitimately ignore args
+    "DTZ011",  # date.today() is correct for calendar dates in fixtures
+    "SIM105", "S110",  # terse exception handling is fine in tests
+]
 "src/itsc/config.py" = ["S105"]
 "migrations/**/*.py" = ["ALL"]
 
@@ -89,7 +94,19 @@ markers = [
     "security: security regression tests, each named for the defect it guards",
     "slow: tests that hit the network or build images",
 ]
-filterwarnings = ["error", "ignore::DeprecationWarning:passlib.*"]
+# Warnings from our own code are errors. Third-party deprecations are
+# listed explicitly rather than blanket-ignored, so each one is a visible,
+# reviewable decision instead of silent drift.
+filterwarnings = [
+    "error",
+    # Flask-Session 0.8 deprecations; the Redis backend used in production is
+    # unaffected. Revisit when Flask-Session 1.0 lands.
+    "ignore:.*use_signer.*:DeprecationWarning",
+    "ignore:.*SESSION_FILE_DIR.*:DeprecationWarning",
+    "ignore:.*FileSystemSessionInterface.*:DeprecationWarning",
+    # SQLAlchemy/psycopg emit these during teardown of the test transaction.
+    "ignore::ResourceWarning",
+]
 
 [tool.coverage.run]
 source = ["src/itsc"]

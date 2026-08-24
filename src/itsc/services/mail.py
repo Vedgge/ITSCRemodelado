@@ -56,7 +56,7 @@ def notify_new_contact(message) -> bool:  # type: ignore[no-untyped-def]
         return False
     try:
         link = url_for("admin.contacto_detail", message_id=message.id, _external=True)
-    except Exception:  # noqa: BLE001
+    except Exception:
         link = "(panel de administración)"
     return send(
         subject=f"[ITSC] Nueva consulta: {message.motivo}",

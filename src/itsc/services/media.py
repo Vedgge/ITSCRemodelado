@@ -13,6 +13,7 @@ is dropped in the same step.
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import io
 import uuid
@@ -115,12 +116,12 @@ def process_image(storage: FileStorage) -> StoredFile:
         raise UploadError("No se admiten imágenes animadas.")
 
     # 3. Honour EXIF orientation before discarding EXIF.
-    try:
+    with contextlib.suppress(Exception):
         from PIL import ImageOps
 
+        # Orientation is best-effort: a corrupt EXIF block must not
+        # fail an otherwise valid upload.
         image = ImageOps.exif_transpose(image) or image
-    except Exception:  # noqa: BLE001 - orientation is best-effort
-        pass
 
     # 4. Bound the stored dimensions.
     if max(image.width, image.height) > MAX_DIMENSION:
@@ -182,9 +183,7 @@ def store_upload(
     """
     stored = process_image(storage) if kind == "image" else process_pdf(storage)
 
-    existing = (
-        db.session.query(MediaAsset).filter_by(checksum_sha256=stored.checksum).first()
-    )
+    existing = db.session.query(MediaAsset).filter_by(checksum_sha256=stored.checksum).first()
     if existing is not None:
         (_upload_root() / stored.storage_key).unlink(missing_ok=True)
         log.info("media_deduplicated", asset_id=existing.id)

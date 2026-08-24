@@ -95,10 +95,12 @@ def novedad_new():  # type: ignore[no-untyped-def]
             author_id=current_user.id,
             slug=unique_slug(
                 form.titulo.data or "",
-                lambda s: db.session.scalar(
-                    select(func.count()).select_from(Novedad).where(Novedad.slug == s)
-                )
-                > 0,
+                lambda s: (
+                    db.session.scalar(
+                        select(func.count()).select_from(Novedad).where(Novedad.slug == s)
+                    )
+                    > 0
+                ),
             ),
         )
         if form.status.data == STATUS_PUBLISHED:
@@ -230,12 +232,14 @@ def document_new(categoria: str):  # type: ignore[no-untyped-def]
             author_id=current_user.id,
             slug=unique_slug(
                 form.titulo.data or "",
-                lambda s: db.session.scalar(
-                    select(func.count())
-                    .select_from(Document)
-                    .where(Document.slug == s, Document.category_id == category.id)
-                )
-                > 0,
+                lambda s: (
+                    db.session.scalar(
+                        select(func.count())
+                        .select_from(Document)
+                        .where(Document.slug == s, Document.category_id == category.id)
+                    )
+                    > 0
+                ),
             ),
         )
         if form.status.data == STATUS_PUBLISHED:
@@ -256,9 +260,7 @@ def document_new(categoria: str):  # type: ignore[no-untyped-def]
         return render_template(
             "admin/document_form.html", form=form, category=category, document=None
         ), 400
-    return render_template(
-        "admin/document_form.html", form=form, category=category, document=None
-    )
+    return render_template("admin/document_form.html", form=form, category=category, document=None)
 
 
 @bp.post("/documentos/<int:document_id>/eliminar")

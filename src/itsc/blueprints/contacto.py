@@ -51,6 +51,9 @@ def contact_form():  # type: ignore[no-untyped-def]
 
     if request.method == "POST":
         flash("Revisá los campos marcados e intentá de nuevo.", "error")
+        # 400, not 200: the client sent invalid data. Re-rendering with a 200
+        # makes "was this accepted?" unanswerable to anything but a human.
+        return render_template("contacto/form.html", form=form), 400
     return render_template("contacto/form.html", form=form)
 
 
