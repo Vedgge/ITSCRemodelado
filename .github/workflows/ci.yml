@@ -115,7 +115,7 @@ jobs:
       - name: gitleaks
         # This is the check that would have caught the Font Awesome kit id
         # committed across 21 files.
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
