@@ -1,0 +1,14 @@
+{% from 'macros/icons.html' import icon %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {# aria-live so a screen reader announces the result of a form submission. #}
+  <div class="flashes" role="status" aria-live="polite">
+    {% for category, message in messages %}
+    <div class="flash flash--{{ category }}">
+      {{ icon('check' if category == 'success' else 'alert', 18) }}
+      <span>{{ message }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}

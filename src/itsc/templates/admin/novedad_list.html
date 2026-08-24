@@ -1,0 +1,34 @@
+{% extends 'admin/_layout.html' %}
+{% block title %}Novedades — Administración{% endblock %}
+{% block admin_content %}
+<div class="admin__head">
+  <h1>Novedades</h1>
+  <a class="btn btn--primary" href="{{ url_for('admin.novedad_new') }}">Nueva novedad</a>
+</div>
+
+{% if pagination.items %}
+<table class="table">
+  <thead><tr><th>Título</th><th>Estado</th><th>Publicada</th><th>Acciones</th></tr></thead>
+  <tbody>
+    {% for n in pagination.items %}
+    <tr>
+      <td><a href="{{ url_for('novedades.detail', slug=n.slug) }}">{{ n.titulo }}</a></td>
+      <td><span class="badge badge--{{ 'ok' if n.status == 'published' else 'muted' }}">{{ n.status }}</span></td>
+      <td>{{ n.published_at.strftime('%d/%m/%Y') if n.published_at else '—' }}</td>
+      <td class="table__actions">
+        <a class="btn btn--small" href="{{ url_for('admin.novedad_edit', novedad_id=n.id) }}">Editar</a>
+        {# A CSRF-protected POST form, not fetch(method:'DELETE'). The original
+           delete had no auth and no token, so any site could invoke it. #}
+        <form method="post" action="{{ url_for('admin.novedad_delete', novedad_id=n.id) }}"
+              data-confirm="¿Eliminar «{{ n.titulo }}»? Esta acción no se puede deshacer.">
+          {{ delete_form.csrf_token }}
+          <button class="btn btn--small btn--danger" type="submit">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% include 'partials/pagination.html' %}
+{% else %}<p class="muted">Todavía no hay novedades. <a href="{{ url_for('admin.novedad_new') }}">Creá la primera</a>.</p>{% endif %}
+{% endblock %}

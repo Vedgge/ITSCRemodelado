@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{{ code }} — {{ title }}{% endblock %}
+{% block body_class %}page-error{% endblock %}
+{% block content %}
+<section class="error-page">
+  <p class="error-page__code">{{ code }}</p>
+  <h1>{{ title }}</h1>
+  <p class="error-page__message">{{ message }}</p>
+  <p class="error-page__actions">
+    <a class="btn btn--primary" href="{{ url_for('public.index') }}">Volver al inicio</a>
+    <a class="btn btn--ghost" href="{{ url_for('contacto.form') }}">Contactanos</a>
+  </p>
+  {% if request_id %}
+  {# Shown so a user's screenshot maps to an exact log line. #}
+  <p class="error-page__ref">Referencia: <code>{{ request_id }}</code></p>
+  {% endif %}
+</section>
+{% endblock %}

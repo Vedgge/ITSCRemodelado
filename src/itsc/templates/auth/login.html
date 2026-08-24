@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% from 'macros/forms.html' import render_field %}
+{% block title %}Ingresar — {{ config.SITE_NAME }}{% endblock %}
+{% block body_class %}page-login{% endblock %}
+{% block content %}
+<section class="auth">
+  <div class="auth__card">
+    <h1>Ingresar</h1>
+    <p class="auth__intro">Acceso al panel de administración del sitio.</p>
+    <form method="post" action="{{ url_for('auth.login') }}" novalidate>
+      {{ form.csrf_token }}
+      {{ render_field(form.username, autocomplete='username') }}
+      {{ render_field(form.password, autocomplete='current-password') }}
+      <label class="checkbox">{{ form.remember() }} <span>{{ form.remember.label.text }}</span></label>
+      {{ form.submit(class_='btn btn--primary btn--block') }}
+    </form>
+  </div>
+</section>
+{% endblock %}

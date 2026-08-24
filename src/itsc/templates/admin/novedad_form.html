@@ -1,0 +1,19 @@
+{% extends 'admin/_layout.html' %}
+{% from 'macros/forms.html' import render_field %}
+{% block title %}{{ 'Editar' if novedad else 'Nueva' }} novedad — Administración{% endblock %}
+{% block admin_content %}
+<h1>{{ 'Editar novedad' if novedad else 'Nueva novedad' }}</h1>
+<form method="post" enctype="multipart/form-data" novalidate class="admin-form">
+  {{ form.csrf_token }}
+  {{ render_field(form.titulo) }}
+  {{ render_field(form.resumen, rows=3) }}
+  {{ render_field(form.cuerpo, rows=14) }}
+  {{ render_field(form.imagen) }}
+  {{ render_field(form.imagen_alt) }}
+  {{ render_field(form.status) }}
+  <div class="admin-form__actions">
+    {{ form.submit(class_='btn btn--primary') }}
+    <a class="btn btn--ghost" href="{{ url_for('admin.novedad_list') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

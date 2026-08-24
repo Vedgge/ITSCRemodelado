@@ -1,0 +1,34 @@
+{% extends 'admin/_layout.html' %}
+{% block title %}Panel — {{ config.SITE_NAME }}{% endblock %}
+{% block admin_content %}
+<h1>Panel</h1>
+<ul class="stat-grid">
+  <li class="stat"><span class="stat__num">{{ stats.novedades }}</span><span class="stat__label">Novedades</span></li>
+  <li class="stat"><span class="stat__num">{{ stats.publicadas }}</span><span class="stat__label">Publicadas</span></li>
+  <li class="stat"><span class="stat__num">{{ stats.documentos }}</span><span class="stat__label">Documentos</span></li>
+  <li class="stat {% if stats.mensajes_nuevos %}stat--alert{% endif %}">
+    <span class="stat__num">{{ stats.mensajes_nuevos }}</span><span class="stat__label">Mensajes sin leer</span></li>
+</ul>
+
+<div class="admin__actions">
+  <a class="btn btn--primary" href="{{ url_for('admin.novedad_new') }}">Nueva novedad</a>
+  <a class="btn btn--ghost" href="{{ url_for('admin.document_list') }}">Gestionar documentos</a>
+</div>
+
+<h2>Últimas novedades</h2>
+{% if recientes %}
+<table class="table">
+  <thead><tr><th>Título</th><th>Estado</th><th>Creada</th><th></th></tr></thead>
+  <tbody>
+    {% for n in recientes %}
+    <tr>
+      <td>{{ n.titulo }}</td>
+      <td><span class="badge badge--{{ 'ok' if n.status == 'published' else 'muted' }}">{{ n.status }}</span></td>
+      <td>{{ n.created_at.strftime('%d/%m/%Y') }}</td>
+      <td><a href="{{ url_for('admin.novedad_edit', novedad_id=n.id) }}">Editar</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}<p class="muted">Todavía no hay novedades.</p>{% endif %}
+{% endblock %}

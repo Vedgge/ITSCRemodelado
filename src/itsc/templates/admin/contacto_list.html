@@ -1,0 +1,21 @@
+{% extends 'admin/_layout.html' %}
+{% block title %}Mensajes — Administración{% endblock %}
+{% block admin_content %}
+<h1>Mensajes de contacto</h1>
+{% if pagination.items %}
+<table class="table">
+  <thead><tr><th>Estado</th><th>Asunto</th><th>Motivo</th><th>Recibido</th></tr></thead>
+  <tbody>
+    {% for m in pagination.items %}
+    <tr class="{% if m.status == 'new' %}is-unread{% endif %}">
+      <td><span class="badge badge--{{ 'ok' if m.status == 'new' else 'muted' }}">{{ m.status }}</span></td>
+      <td><a href="{{ url_for('admin.contacto_detail', message_id=m.id) }}">{{ m.asunto }}</a></td>
+      <td>{{ m.motivo }}</td>
+      <td>{{ m.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% include 'partials/pagination.html' %}
+{% else %}<p class="muted">No hay mensajes.</p>{% endif %}
+{% endblock %}

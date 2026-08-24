@@ -1,0 +1,19 @@
+{% extends 'admin/_layout.html' %}
+{% block title %}{{ message.asunto }} — Mensajes{% endblock %}
+{% block admin_content %}
+<p><a href="{{ url_for('admin.contacto_list') }}">&larr; Volver a mensajes</a></p>
+<h1>{{ message.asunto }}</h1>
+<dl class="meta-list">
+  <dt>De</dt><dd>{{ message.nombre }}</dd>
+  <dt>Email</dt><dd><a href="mailto:{{ message.email }}">{{ message.email }}</a></dd>
+  {% if message.telefono %}<dt>Teléfono</dt><dd>{{ message.telefono }}</dd>{% endif %}
+  <dt>Motivo</dt><dd>{{ message.motivo }}</dd>
+  <dt>Recibido</dt><dd>{{ message.created_at.strftime('%d/%m/%Y %H:%M') }}</dd>
+</dl>
+{# Rendered as text, never as markup: this is untrusted input from the public. #}
+<div class="message-body"><pre>{{ message.mensaje }}</pre></div>
+<p class="muted small">
+  Datos personales. Se eliminan automáticamente a los {{ retention_days }} días
+  ({{ (retention_days / 365) | round | int }} años) mediante <code>flask itsc purge-contact</code>.
+</p>
+{% endblock %}

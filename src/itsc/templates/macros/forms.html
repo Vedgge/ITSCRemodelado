@@ -1,0 +1,31 @@
+{# One field renderer for every form on the site.
+
+   The original had three hand-rolled form markups with inconsistent error
+   handling and no aria wiring at all. Errors are linked to their input via
+   aria-describedby, and aria-invalid marks the field itself. #}
+{% macro render_field(field, autocomplete=none, placeholder=none, rows=none) -%}
+<div class="field {% if field.errors %}field--error{% endif %}">
+  {{ field.label(class_='field__label') }}
+  {% set attrs = {'class': 'field__input', 'aria-describedby': field.id ~ '-help'} %}
+  {% if field.errors %}{% set _ = attrs.update({'aria-invalid': 'true'}) %}{% endif %}
+  {% if autocomplete %}{% set _ = attrs.update({'autocomplete': autocomplete}) %}{% endif %}
+  {% if placeholder %}{% set _ = attrs.update({'placeholder': placeholder}) %}{% endif %}
+  {% if rows %}{% set _ = attrs.update({'rows': rows}) %}{% endif %}
+  {{ field(**attrs) }}
+  <div id="{{ field.id }}-help" class="field__help">
+    {% if field.errors %}
+      {% for error in field.errors %}<p class="field__error">{{ error }}</p>{% endfor %}
+    {% elif field.description %}
+      <p class="field__hint">{{ field.description }}</p>
+    {% endif %}
+  </div>
+</div>
+{%- endmacro %}
+
+{# The honeypot: visually hidden, never announced, never auto-filled. A bot
+   that fills every input trips it; a human never sees it. #}
+{% macro render_honeypot(field) -%}
+<div class="hp" aria-hidden="true">
+  {{ field(tabindex='-1', autocomplete='off') }}
+</div>
+{%- endmacro %}

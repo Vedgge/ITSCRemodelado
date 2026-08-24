@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}{{ carrera.nombre }} — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ carrera.resumen }}{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <nav class="breadcrumbs" aria-label="Migas de pan">
+    <a href="{{ url_for('public.index') }}">Inicio</a> {{ icon('chevron-right', 12) }}
+    <a href="{{ url_for('public.carreras') }}">Carreras</a>
+  </nav>
+  <h1>Tecnicatura Superior en {{ carrera.nombre }}</h1>
+  <p class="lede">{{ carrera.resumen }}</p>
+</div></section>
+
+<section class="wrap prose">
+  <h2>Modalidad y costo</h2>
+  <ul class="facts">
+    <li>{{ icon('check', 18) }} <strong>Presencial.</strong> Todas las tecnicaturas se cursan de forma presencial.</li>
+    <li>{{ icon('check', 18) }} <strong>Gratuita.</strong> Se abona únicamente la cuota social de la cooperadora.</li>
+    <li>{{ icon('check', 18) }} <strong>Inscripción anual</strong> a través del Gobierno de Córdoba, con cuenta CiDi.</li>
+  </ul>
+
+  <div class="callout">
+    <h2>Plan de estudios</h2>
+    <p>
+      El plan de estudios, la duración y la titulación de esta carrera los define el
+      Ministerio de Educación de la Provincia de Córdoba y pueden actualizarse de un
+      ciclo a otro. Para no darte información desactualizada no los publicamos acá:
+      <a href="{{ url_for('contacto.form') }}">consultanos</a> y te pasamos el plan vigente.
+    </p>
+  </div>
+
+  <h2>Cómo inscribirte</h2>
+  <p>
+    Las inscripciones se realizan una vez al año, a través de la página del Gobierno de
+    Córdoba. Necesitás una cuenta de <strong>Ciudadano Digital (CiDi)</strong>; sin ella no
+    vas a poder inscribirte en ninguna institución pública, así que conviene tramitarla
+    con anticipación. Las fechas las indica el Ministerio de Educación provincial y se
+    publican en <a href="{{ url_for('novedades.list') }}">Novedades</a> cuando se confirman.
+  </p>
+  <p class="cta-row">
+    <a class="btn btn--primary" href="{{ url_for('contacto.form') }}">Consultar por esta carrera</a>
+    <a class="btn btn--ghost" href="{{ url_for('public.faq') }}">Preguntas frecuentes</a>
+  </p>
+</section>
+{% endblock %}

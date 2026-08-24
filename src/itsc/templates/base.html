@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{# lang="es": the original said lang="en" on an entirely Spanish site, which
+   makes screen readers apply English pronunciation to every word. #}
+<html lang="es">
+<head>
+  {% include 'partials/head.html' %}
+  {% block page_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {# Skip link: the nav is ~40 links deep, so keyboard users had no way past it. #}
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+  {% if config.SITE_IS_PORTFOLIO_DEMO %}{% include 'partials/disclaimer.html' %}{% endif %}
+  {% include 'partials/header.html' %}
+  {% include 'partials/flash.html' %}
+
+  <main id="contenido" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+  <script src="{{ asset('js/main.js') }}" defer></script>
+  {% block page_js %}{% endblock %}
+</body>
+</html>

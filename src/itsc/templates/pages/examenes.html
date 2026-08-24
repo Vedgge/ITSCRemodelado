@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}Mesas de examen — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Cronogramas de mesas de examen del Instituto Técnico Superior Córdoba.{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Mesas de examen</h1>
+  <p class="lede">Cronogramas publicados por el instituto.</p>
+</div></section>
+
+<section class="wrap">
+  {% if pagination and pagination.items %}
+  <ul class="doc-list">
+    {% for doc in pagination.items %}
+    <li class="doc">
+      <div class="doc__icon">{{ icon('calendar', 24) }}</div>
+      <div class="doc__body">
+        <h2 class="doc__title">
+          <a href="{{ url_for('documentos.detail', categoria='mesas-de-examen', slug=doc.slug) }}">{{ doc.titulo }}</a>
+        </h2>
+        <p class="doc__meta">
+          <time datetime="{{ doc.fecha_documento.isoformat() }}">{{ doc.fecha_documento.strftime('%d/%m/%Y') }}</time>
+          {% if doc.vigente %}<span class="badge badge--ok">Vigente</span>{% endif %}
+        </p>
+      </div>
+      {% if doc.files %}
+      <div class="doc__files">
+        {% for f in doc.files %}
+        <a class="btn btn--small" href="{{ url_for('media.serve', public_id=f.media.public_id) }}">
+          {{ icon('download', 16) }} Descargar
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  {# Honest: this project has no access to ITSC's real exam calendar, and
+     inventing dates would send students on the wrong day. #}
+  {% with icon_name='calendar',
+          title='No hay cronogramas publicados en este momento',
+          message='Las fechas de mesas las publica el instituto al cierre de cada período. Cuando haya un cronograma vigente, vas a poder descargarlo desde acá.' %}
+    {% include 'partials/empty_state.html' %}
+  {% endwith %}
+  {% endif %}
+
+  <div class="callout">
+    <h2>Consultas sobre fechas</h2>
+    <p>
+      Si necesitás confirmar la fecha de una mesa antes de que se publique el
+      cronograma, comunicate al
+      <a href="tel:{{ config.SITE_PHONE_E164 }}">{{ config.SITE_PHONE }}</a> o
+      <a href="{{ url_for('contacto.form') }}">escribinos</a>. No publicamos fechas sin
+      confirmación oficial.
+    </p>
+  </div>
+</section>
+{% endblock %}

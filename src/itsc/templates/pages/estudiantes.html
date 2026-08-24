@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}Estudiantes — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Información para estudiantes del ITSC: mesas de examen, egresados y vida académica.{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Estudiantes</h1>
+  <p class="lede">Todo lo que necesitás durante tu cursado.</p>
+</div></section>
+
+<section class="wrap">
+  <ul class="link-cards">
+    <li><a href="{{ url_for('public.examenes') }}">
+      {{ icon('calendar', 28) }}<h2>Mesas de examen</h2>
+      <p>Cronogramas de mesas publicados por el instituto.</p></a></li>
+    <li><a href="{{ url_for('public.egresados') }}">
+      {{ icon('check', 28) }}<h2>Egresados</h2>
+      <p>Trámites de título y qué sigue después de recibirte.</p></a></li>
+    <li><a href="{{ url_for('public.ser_tecnico') }}">
+      {{ icon('file', 28) }}<h2>Ser técnico</h2>
+      <p>Qué significa formarse como técnico superior.</p></a></li>
+    <li><a href="{{ url_for('documentos.list', categoria='materiales-para-descargar') }}">
+      {{ icon('download', 28) }}<h2>Material para descargar</h2>
+      <p>Formularios, instructivos y material de consulta.</p></a></li>
+    <li><a href="{{ url_for('documentos.list', categoria='resoluciones') }}">
+      {{ icon('gavel', 28) }}<h2>Resoluciones</h2>
+      <p>Resoluciones institucionales publicadas.</p></a></li>
+    <li><a href="{{ url_for('public.cooperadora') }}">
+      {{ icon('clipboard', 28) }}<h2>Cooperadora</h2>
+      <p>Qué cubre la cuota social.</p></a></li>
+  </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}{% if query %}Resultados para "{{ query }}"{% else %}Buscar{% endif %} — {{ config.SITE_NAME }}{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Buscar en el sitio</h1>
+  <form class="search-big" role="search" action="{{ url_for('public.buscar') }}" method="get">
+    <label class="visually-hidden" for="q-big">Términos de búsqueda</label>
+    <input id="q-big" name="q" type="search" value="{{ query }}" placeholder="Ej: inscripción, cooperadora, resolución" maxlength="100" autofocus>
+    <button class="btn btn--primary" type="submit">{{ icon('search', 18) }} Buscar</button>
+  </form>
+</div></section>
+
+<section class="wrap">
+  {% if not query %}
+    <p class="muted">Escribí un término para buscar en novedades y documentos.</p>
+  {% elif total == 0 %}
+    <div class="empty-state">
+      {{ icon('search', 40, cls='empty-state__icon') }}
+      <h2>Sin resultados para "{{ query }}"</h2>
+      <p>Probá con otras palabras, o <a href="{{ url_for('contacto.form') }}">hacenos la consulta directamente</a>.</p>
+    </div>
+  {% else %}
+    <p class="search-count">{{ total }} resultado{{ 's' if total != 1 }} para "{{ query }}"</p>
+
+    {% if novedades %}
+    <h2>Novedades</h2>
+    <ul class="result-list">
+      {% for n in novedades %}
+      <li>
+        <h3><a href="{{ url_for('novedades.detail', slug=n.slug) }}">{{ n.titulo }}</a></h3>
+        <p>{{ n.resumen }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if documentos %}
+    <h2>Documentos</h2>
+    <ul class="result-list">
+      {% for d in documentos %}
+      <li>
+        <h3><a href="{{ url_for('documentos.detail', categoria=d.category.slug, slug=d.slug) }}">
+          {% if d.numero %}{{ d.numero }} — {% endif %}{{ d.titulo }}</a></h3>
+        <p>{{ d.category.nombre }} · {{ d.fecha_documento.strftime('%d/%m/%Y') }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  {% endif %}
+</section>
+{% endblock %}

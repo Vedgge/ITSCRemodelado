@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block body_class %}page-admin{% endblock %}
+{% block content %}
+<div class="admin">
+  <aside class="admin__nav">
+    <h2>Administración</h2>
+    <ul>
+      <li><a href="{{ url_for('admin.dashboard') }}" {% if request.endpoint == 'admin.dashboard' %}aria-current="page"{% endif %}>Panel</a></li>
+      <li><a href="{{ url_for('admin.novedad_list') }}" {% if 'novedad' in request.endpoint %}aria-current="page"{% endif %}>Novedades</a></li>
+      <li><a href="{{ url_for('admin.document_list') }}" {% if 'document' in request.endpoint %}aria-current="page"{% endif %}>Documentos</a></li>
+      <li><a href="{{ url_for('admin.contacto_list') }}" {% if 'contacto' in request.endpoint %}aria-current="page"{% endif %}>Mensajes</a></li>
+    </ul>
+    <div class="admin__user">
+      <p>{{ current_user.username }} <span class="badge">{{ current_user.role }}</span></p>
+      {# POST, not a link: a GET logout can be triggered by any <img> on any site. #}
+      <form method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn--small btn--ghost" type="submit">Cerrar sesión</button>
+      </form>
+    </div>
+  </aside>
+  <div class="admin__main">{% block admin_content %}{% endblock %}</div>
+</div>
+{% endblock %}

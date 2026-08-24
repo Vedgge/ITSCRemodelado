@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}{{ document.titulo }} — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ document.descripcion | excerpt(160) }}{% endblock %}
+{% block content %}
+<article class="article wrap">
+  <nav class="breadcrumbs" aria-label="Migas de pan">
+    <a href="{{ url_for('public.index') }}">Inicio</a> {{ icon('chevron-right', 12) }}
+    <a href="{{ url_for('documentos.list', categoria=document.category.slug) }}">{{ document.category.nombre }}</a>
+  </nav>
+  <h1>{% if document.numero %}<span class="doc__numero">{{ document.numero }}</span> {% endif %}{{ document.titulo }}</h1>
+
+  <dl class="meta-list">
+    <dt>Fecha del documento</dt>
+    <dd><time datetime="{{ document.fecha_documento.isoformat() }}">{{ document.fecha_documento | fecha }}</time></dd>
+    {% if document.category.has_vigencia %}
+    <dt>Vigencia</dt>
+    <dd>
+      {% if document.vigente %}<span class="badge badge--ok">Vigente</span>
+      {% else %}<span class="badge badge--muted">No vigente</span>{% endif %}
+      {% if document.vigente_hasta %}<span> — hasta el {{ document.vigente_hasta | fecha }}</span>{% endif %}
+    </dd>
+    {% endif %}
+  </dl>
+
+  {% if document.descripcion %}
+  <div class="article__body">{{ document.descripcion | markdown }}</div>
+  {% endif %}
+
+  {% if document.files %}
+  <h2>Archivos</h2>
+  <ul class="file-list">
+    {% for f in document.files %}
+    <li>
+      <a class="btn btn--primary" href="{{ url_for('media.serve', public_id=f.media.public_id) }}">
+        {{ icon('download', 16) }} {{ f.label or 'Descargar PDF' }}
+      </a>
+      <span class="file-list__size">{{ (f.media.byte_size / 1024) | round | int }} KB</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</article>
+{% endblock %}

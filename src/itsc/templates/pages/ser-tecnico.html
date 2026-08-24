@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}Ser técnico — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Qué es una tecnicatura superior y qué significa formarse como técnico o técnica.{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Ser técnico</h1>
+  <p class="lede">Qué significa formarse como técnico o técnica superior.</p>
+</div></section>
+
+<section class="wrap prose">
+  <h2>Una formación orientada a la práctica</h2>
+  <p>
+    Una tecnicatura superior es una carrera de nivel superior centrada en el
+    <strong>saber hacer</strong>. A diferencia de una formación exclusivamente teórica,
+    buena parte del tiempo se dedica a laboratorios, talleres y prácticas
+    profesionalizantes en instituciones y empresas reales.
+  </p>
+  <p>
+    Eso tiene una consecuencia concreta: se egresa con experiencia práctica
+    acreditable, no solo con un título. Nuestros estudiantes hacen prácticas en plantas
+    industriales, laboratorios e instituciones de salud según la carrera.
+  </p>
+
+  <h2>Por qué el cursado es presencial</h2>
+  <p>
+    Todas nuestras tecnicaturas son de <strong>carácter presencial</strong>, y eso no es un
+    detalle administrativo: no se aprende a instrumentar una cirugía, a confeccionar una
+    prótesis o a operar equipamiento de laboratorio a distancia. La virtualidad es la
+    excepción, no el formato habitual.
+  </p>
+
+  <h2>Quiénes pueden estudiar</h2>
+  <p>
+    El ingreso habitual requiere el secundario completo. Además, existe una vía de
+    ingreso para <strong>mayores de 25 años</strong>: si tenés la primaria completa y
+    trabajás en algo afín a la carrera que querés estudiar, y podés acreditarlo, podés
+    inscribirte y rendir un <strong>examen de idoneidad</strong>. Si lo aprobás, cursás la
+    carrera ese mismo año.
+  </p>
+
+  <p class="cta-row">
+    <a class="btn btn--primary" href="{{ url_for('public.carreras') }}">Ver las carreras</a>
+    <a class="btn btn--ghost" href="{{ url_for('public.faq') }}">Preguntas frecuentes</a>
+  </p>
+</section>
+{% endblock %}

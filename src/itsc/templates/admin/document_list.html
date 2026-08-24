@@ -1,0 +1,43 @@
+{% extends 'admin/_layout.html' %}
+{% block title %}Documentos — Administración{% endblock %}
+{% block admin_content %}
+<div class="admin__head"><h1>Documentos</h1></div>
+
+<nav class="filters" aria-label="Filtrar por categoría">
+  <a class="filter {% if not categoria %}is-active{% endif %}" href="{{ url_for('admin.document_list') }}">Todos</a>
+  {% for cat in categories %}
+  <a class="filter {% if categoria == cat.slug %}is-active{% endif %}"
+     href="{{ url_for('admin.document_list', categoria=cat.slug) }}">{{ cat.nombre }}</a>
+  {% endfor %}
+</nav>
+
+<div class="admin__actions">
+  {% for cat in categories %}
+  <a class="btn btn--small" href="{{ url_for('admin.document_new', categoria=cat.slug) }}">+ {{ cat.nombre }}</a>
+  {% endfor %}
+</div>
+
+{% if pagination.items %}
+<table class="table">
+  <thead><tr><th>Título</th><th>Categoría</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+  <tbody>
+    {% for d in pagination.items %}
+    <tr>
+      <td>{% if d.numero %}<strong>{{ d.numero }}</strong> — {% endif %}{{ d.titulo }}</td>
+      <td>{{ d.category.nombre }}</td>
+      <td>{{ d.fecha_documento.strftime('%d/%m/%Y') }}</td>
+      <td><span class="badge badge--{{ 'ok' if d.status == 'published' else 'muted' }}">{{ d.status }}</span></td>
+      <td class="table__actions">
+        <form method="post" action="{{ url_for('admin.document_delete', document_id=d.id) }}"
+              data-confirm="¿Eliminar «{{ d.titulo }}»?">
+          {{ delete_form.csrf_token }}
+          <button class="btn btn--small btn--danger" type="submit">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% include 'partials/pagination.html' %}
+{% else %}<p class="muted">No hay documentos en esta vista.</p>{% endif %}
+{% endblock %}

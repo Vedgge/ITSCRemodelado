@@ -1,0 +1,24 @@
+{% macro picture(slug, alt, sizes='100vw', cls='', widths=[400, 800, 1600], loading='lazy', width=none, height=none) -%}
+{#- Explicit width/height attributes reserve layout space, eliminating the
+    cumulative layout shift the original background-image divs caused. -#}
+<img src="{{ url_for('static', filename='img/' ~ slug ~ '-' ~ widths[1] ~ '.webp') }}"
+     srcset="{% for w in widths %}{{ url_for('static', filename='img/' ~ slug ~ '-' ~ w ~ '.webp') }} {{ w }}w{% if not loop.last %}, {% endif %}{% endfor %}"
+     sizes="{{ sizes }}" alt="{{ alt }}" class="{{ cls }}" loading="{{ loading }}"
+     decoding="async"{% if width %} width="{{ width }}"{% endif %}{% if height %} height="{{ height }}"{% endif %}>
+{%- endmacro %}
+
+{% macro media_img(asset, alt=none, cls='', loading='lazy') -%}
+{#- Uploaded media. The URL is built from a server-generated UUID, so it
+    contains no attacker-controlled bytes -- which is what closes the
+    background-image:url() CSS-injection sink in the original listings. -#}
+{% if asset %}
+<img src="{{ url_for('media.serve', public_id=asset.public_id) }}"
+     alt="{{ alt if alt is not none else asset.alt_text }}" class="{{ cls }}"
+     loading="{{ loading }}" decoding="async"
+     {% if asset.width %}width="{{ asset.width }}"{% endif %}
+     {% if asset.height %}height="{{ asset.height }}"{% endif %}>
+{% else %}
+<img src="{{ url_for('static', filename='img/placeholder-novedad.webp') }}"
+     alt="" class="{{ cls }}" loading="{{ loading }}" decoding="async" width="800" height="450">
+{% endif %}
+{%- endmacro %}

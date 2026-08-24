@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Preguntas frecuentes — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Inscripciones, costos, cursado, pases y requisitos para mayores de 25 años.{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Preguntas frecuentes</h1>
+  <p class="lede">Si tu consulta no está acá, <a href="{{ url_for('contacto.form') }}">escribinos</a>.</p>
+</div></section>
+
+<section class="wrap faq-page">
+  <nav class="faq-toc" aria-label="Categorías">
+    <ul>{% for cat in categorias %}<li><a href="#{{ cat | lower | replace(' ', '-') }}">{{ cat }}</a></li>{% endfor %}</ul>
+  </nav>
+
+  <div class="faq-body">
+    {% for cat, items in categorias.items() %}
+    <section class="faq-group" id="{{ cat | lower | replace(' ', '-') }}">
+      <h2>{{ cat }}</h2>
+      <div class="accordion">
+        {% for item in items %}
+        <details class="accordion__item">
+          <summary>{{ item.pregunta }}</summary>
+          <div class="accordion__body">{{ item.respuesta | markdown }}</div>
+        </details>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

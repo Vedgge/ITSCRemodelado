@@ -1,0 +1,11 @@
+{% from 'macros/icons.html' import icon %}
+{# An honest empty state. These sections ship as working features with nothing
+   in them yet, rather than with invented documents. #}
+<div class="empty-state">
+  {{ icon(icon_name | default('file'), 40, cls='empty-state__icon') }}
+  <h2>{{ title | default('Todavía no hay publicaciones') }}</h2>
+  <p>{{ message | default('Cuando el instituto publique contenido en esta sección, vas a verlo acá.') }}</p>
+  <p class="empty-state__actions">
+    <a class="btn btn--ghost" href="{{ url_for('contacto.form') }}">Hacer una consulta</a>
+  </p>
+</div>

@@ -1,0 +1,11 @@
+{# Renders an icon from the self-hosted sprite.
+
+   `title` makes the icon meaningful to assistive technology; omit it for
+   decorative icons and the SVG is hidden from the accessibility tree, which
+   is what the original <i class="fa-..."> markup could never express. #}
+{% macro icon(name, size=20, cls='', title=none) -%}
+<svg class="icon {{ cls }}" width="{{ size }}" height="{{ size }}"
+     {% if title %}role="img" aria-label="{{ title }}"{% else %}aria-hidden="true" focusable="false"{% endif %}>
+  <use href="{{ url_for('static', filename='icons/sprite.svg') }}#i-{{ name }}"></use>
+</svg>
+{%- endmacro %}

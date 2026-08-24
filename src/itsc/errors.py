@@ -83,9 +83,17 @@ def register_error_handlers(app: Flask) -> None:
 
     @app.errorhandler(Exception)
     def _unhandled(exc: Exception):  # type: ignore[no-untyped-def]
-        # exc_info=True gives the operator the traceback; the user gets a code.
-        log.error("unhandled_exception", error=str(exc), exc_info=True)
-        from itsc.extensions import db
+        # Every step here is defensive. An exception raised *inside* the error
+        # handler escapes to the WSGI server as a bare traceback -- exactly the
+        # leak this handler exists to prevent.
+        try:
+            log.error("unhandled_exception", error=str(exc), exc_info=True)
+        except Exception:  # noqa: BLE001,S110
+            app.logger.exception("unhandled exception (structlog unavailable)")
+        try:
+            from itsc.extensions import db
 
-        db.session.rollback()
+            db.session.rollback()
+        except Exception:  # noqa: BLE001,S110
+            pass
         return _render(500)

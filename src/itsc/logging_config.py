@@ -38,8 +38,7 @@ def configure_logging(app: Flask) -> None:
 
     shared: list[Any] = [
         structlog.contextvars.merge_contextvars,
-        structlog.stdlib.add_log_level,
-        structlog.stdlib.add_logger_name,
+        structlog.processors.add_log_level,
         _add_request_context,
         structlog.processors.TimeStamper(fmt="iso", utc=True),
         structlog.processors.StackInfoRenderer(),
@@ -75,13 +74,18 @@ def configure_logging(app: Flask) -> None:
         response.headers["X-Request-ID"] = getattr(g, "request_id", "-")
         # Health checks would otherwise dominate the log volume.
         if request.endpoint not in {"health.healthz", "health.readyz", "static"}:
-            log.info(
-                "request",
-                status=response.status_code,
-                # Deliberately NOT request.query_string: the contact form used
-                # to carry names, emails and phone numbers in the URL, and
-                # logging query strings would reintroduce that leak.
-                content_length=response.calculated_content_length,
-            )
+            try:
+                log.info(
+                    "request",
+                    status=response.status_code,
+                    # Deliberately NOT request.query_string: the contact form
+                    # used to carry names, emails and phone numbers in the URL,
+                    # and logging query strings would reintroduce that leak.
+                    bytes=response.content_length,
+                )
+            except Exception:  # noqa: BLE001,S110
+                # after_request runs on error responses too; a logging failure
+                # here would replace the user's error page with a traceback.
+                pass
         structlog.contextvars.clear_contextvars()
         return response

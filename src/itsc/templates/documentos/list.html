@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}{{ category.nombre }} — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ category.descripcion }}{% endblock %}
+{% block body_class %}page-documentos{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div class="wrap">
+    <h1>{{ category.nombre }}</h1>
+    <p class="lede">{{ category.descripcion }}</p>
+  </div>
+</section>
+
+<section class="wrap">
+  {% if category.has_vigencia %}
+  {# Two filters over one table. These were two separately-maintained HTML
+     files that could disagree with each other; vigencia is now derived from
+     dates in SQL and cannot go stale. #}
+  <nav class="filters" aria-label="Filtrar por vigencia">
+    <a class="filter {% if not vigencia %}is-active{% endif %}"
+       href="{{ url_for('documentos.list', categoria=category.slug) }}">Todas</a>
+    <a class="filter {% if vigencia == 'vigentes' %}is-active{% endif %}"
+       href="{{ url_for('documentos.list', categoria=category.slug, vigencia='vigentes') }}">Vigentes</a>
+    <a class="filter {% if vigencia == 'no-vigentes' %}is-active{% endif %}"
+       href="{{ url_for('documentos.list', categoria=category.slug, vigencia='no-vigentes') }}">No vigentes</a>
+  </nav>
+  {% endif %}
+
+  {% if pagination.items %}
+  <ul class="doc-list">
+    {% for doc in pagination.items %}
+    <li class="doc">
+      <div class="doc__icon">{{ icon(category.icon, 24) }}</div>
+      <div class="doc__body">
+        <h2 class="doc__title">
+          <a href="{{ url_for('documentos.detail', categoria=category.slug, slug=doc.slug) }}">
+            {% if doc.numero %}<span class="doc__numero">{{ doc.numero }}</span>{% endif %}
+            {{ doc.titulo }}
+          </a>
+        </h2>
+        <p class="doc__meta">
+          <time datetime="{{ doc.fecha_documento.isoformat() }}">{{ doc.fecha_documento.strftime('%d/%m/%Y') }}</time>
+          {% if category.has_vigencia %}
+            {% if doc.vigente %}<span class="badge badge--ok">Vigente</span>
+            {% else %}<span class="badge badge--muted">No vigente</span>{% endif %}
+          {% endif %}
+        </p>
+        {% if doc.descripcion %}<p class="doc__desc">{{ doc.descripcion | excerpt(180) }}</p>{% endif %}
+      </div>
+      {% if doc.files %}
+      <div class="doc__files">
+        {% for f in doc.files %}
+        <a class="btn btn--small" href="{{ url_for('media.serve', public_id=f.media.public_id) }}">
+          {{ icon('download', 16) }} {{ f.label or 'Descargar' }}
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% include 'partials/pagination.html' %}
+  {% else %}
+    {% with icon_name=category.icon,
+            title='Todavía no hay ' ~ category.nombre | lower ~ ' publicadas',
+            message='Esta sección está activa y lista para recibir publicaciones. Cuando el instituto cargue documentos, van a listarse acá.' %}
+      {% include 'partials/empty_state.html' %}
+    {% endwith %}
+  {% endif %}
+</section>
+{% endblock %}

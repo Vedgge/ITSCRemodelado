@@ -12,7 +12,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from flask import Flask
+from flask import Flask, url_for
 
 __all__ = ["create_app"]
 
@@ -62,6 +62,7 @@ def create_app(config_name: str | None = None) -> Flask:
     _register_extensions(app)
     _register_static(app)
     _register_blueprints(app)
+    _register_security(app)
     _register_errors(app)
     _register_context(app)
     _register_cli(app)
@@ -144,9 +145,28 @@ def _register_static(app: Flask) -> None:
 
 
 def _register_blueprints(app: Flask) -> None:
+    from itsc.blueprints import admin, auth, contacto, documentos, legacy, media, novedades, public
+    from itsc.blueprints.api.v1 import bp as api_v1_bp
     from itsc.blueprints.health import bp as health_bp
 
     app.register_blueprint(health_bp)
+    app.register_blueprint(public.bp)
+    app.register_blueprint(novedades.bp)
+    app.register_blueprint(contacto.bp)
+    app.register_blueprint(auth.bp)
+    app.register_blueprint(admin.bp)
+    app.register_blueprint(media.bp)
+    app.register_blueprint(api_v1_bp)
+    # Registered last: its "/<categoria>/" rule is the broadest on the site and
+    # must not shadow the specific routes above.
+    app.register_blueprint(documentos.bp)
+    legacy.register(app)
+
+
+def _register_security(app: Flask) -> None:
+    from itsc.security import init_security
+
+    init_security(app)
 
 
 def _register_errors(app: Flask) -> None:
@@ -156,9 +176,55 @@ def _register_errors(app: Flask) -> None:
 
 
 def _register_context(app: Flask) -> None:
+    from datetime import UTC, datetime
+    from hashlib import blake2b
+
     from itsc.navigation import nav_context
 
     app.context_processor(nav_context)
+
+    static_dir = Path(app.config["STATIC_DIR"])
+    _hashes: dict[str, str] = {}
+
+    def asset(filename: str) -> str:
+        """Return a static URL with a content-hash query string.
+
+        Lets nginx serve /static with `Cache-Control: immutable` for a year:
+        the URL changes whenever the bytes do, so a stale cache is impossible.
+        """
+        if filename not in _hashes:
+            path = static_dir / filename
+            try:
+                digest = blake2b(path.read_bytes(), digest_size=4).hexdigest()
+            except OSError:
+                digest = "dev"
+            _hashes[filename] = digest
+        return url_for("static", filename=filename, v=_hashes[filename])
+
+    from itsc.services.rendering import excerpt, render_markdown
+
+    app.jinja_env.filters["markdown"] = render_markdown
+    app.jinja_env.filters["excerpt"] = excerpt
+
+    MESES = (
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+    )
+
+    @app.template_filter("fecha")
+    def _fecha(value) -> str:  # type: ignore[no-untyped-def]
+        """Spanish long date. strftime('%B') would emit an English month name
+        unless the container happens to have an es_AR locale installed."""
+        if value is None:
+            return ""
+        return f"{value.day} de {MESES[value.month - 1]} de {value.year}"
+
+    @app.context_processor
+    def _globals() -> dict:
+        return {
+            "asset": asset,
+            "current_year": datetime.now(UTC).year,
+        }
 
 
 def _register_cli(app: Flask) -> None:

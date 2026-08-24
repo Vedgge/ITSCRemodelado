@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% from 'macros/media.html' import media_img %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}{{ novedad.titulo }} — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ novedad.resumen }}{% endblock %}
+{% block body_class %}page-novedad{% endblock %}
+{% block content %}
+<article class="article">
+  <header class="article__header wrap">
+    <nav class="breadcrumbs" aria-label="Migas de pan">
+      <a href="{{ url_for('public.index') }}">Inicio</a> {{ icon('chevron-right', 12) }}
+      <a href="{{ url_for('novedades.list') }}">Novedades</a>
+    </nav>
+    <h1>{{ novedad.titulo }}</h1>
+    {% if novedad.published_at %}
+    <p class="article__meta">
+      {{ icon('calendar', 16) }}
+      <time datetime="{{ novedad.published_at.isoformat() }}">
+        {{ novedad.published_at | fecha }}
+      </time>
+    </p>
+    {% endif %}
+  </header>
+
+  {% if novedad.imagen %}
+  <figure class="article__figure">
+    {{ media_img(novedad.imagen, cls='article__img', loading='eager') }}
+    {% if novedad.imagen.alt_text %}<figcaption>{{ novedad.imagen.alt_text }}</figcaption>{% endif %}
+  </figure>
+  {% endif %}
+
+  <div class="article__body wrap">
+    {# The ONE place in the template tree where HTML is not escaped by Jinja.
+       The value passed through nh3 sanitisation in services/rendering.py, and
+       a test asserts |safe appears nowhere else. #}
+    {{ novedad.cuerpo | markdown }}
+  </div>
+</article>
+
+{% if relacionadas %}
+<section class="wrap related">
+  <h2>Más novedades</h2>
+  <div class="card-grid">
+    {# `set` rather than a loop variable named `novedad`: the card partial reads
+       `novedad`, and reusing that name here would shadow the article itself. #}
+    {% for otra in relacionadas if otra.slug != novedad.slug %}
+      {% with novedad = otra %}{% include 'partials/novedad_card.html' %}{% endwith %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

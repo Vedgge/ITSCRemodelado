@@ -1,0 +1,72 @@
+{% from 'macros/icons.html' import icon %}
+<header class="site-header">
+  <div class="header-top">
+    <div class="header-top__inner">
+      <ul class="header-top__links">
+        <li>
+          <a href="tel:{{ config.SITE_PHONE_E164 }}">{{ icon('phone', 16) }}<span>{{ config.SITE_PHONE }}</span></a>
+        </li>
+        <li>
+          <a href="{{ url_for('public.mapa_del_sitio') }}">{{ icon('sitemap', 16) }}<span>Mapa del sitio</span></a>
+        </li>
+        <li>
+          <a href="{{ url_for('novedades.feed') }}">{{ icon('rss', 16) }}<span>RSS</span></a>
+        </li>
+      </ul>
+
+      {# The original search box had no action, no method and no name on its
+         input, so submitting it silently reloaded the page. It is now wired to
+         the Postgres full-text index. #}
+      <form class="site-search" role="search" action="{{ url_for('public.buscar') }}" method="get">
+        <label class="visually-hidden" for="q">Buscar en el sitio</label>
+        <input id="q" name="q" type="search" placeholder="Buscar en el sitio"
+               value="{{ request.args.get('q', '') }}" maxlength="100">
+        <button type="submit">{{ icon('search', 18, title='Buscar') }}</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="header-main">
+    <div class="header-main__inner">
+      <a class="brand" href="{{ url_for('public.index') }}">
+        <img src="{{ url_for('static', filename='img/logo-itsc-600.webp') }}"
+             srcset="{{ url_for('static', filename='img/logo-itsc-600.webp') }} 600w,
+                     {{ url_for('static', filename='img/logo-itsc-1200.webp') }} 1200w"
+             sizes="(max-width: 768px) 200px, 280px"
+             alt="{{ config.SITE_NAME }}" width="280" height="75" fetchpriority="high" decoding="async">
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principal"
+              aria-label="Abrir menú de navegación">
+        {{ icon('menu', 24) }}
+      </button>
+
+      <nav id="nav-principal" class="nav" aria-label="Navegación principal">
+        <ul class="nav__list">
+          {% for item in main_nav %}
+          <li class="nav__item {% if item.children %}has-children{% endif %} {% if item.is_active() %}is-active{% endif %}">
+            <a href="{{ item.url() }}"
+               {% if item.is_active() %}aria-current="page"{% endif %}
+               {% if item.children %}aria-expanded="false" aria-haspopup="true"{% endif %}>
+              {{ item.label }}{% if item.children %}{{ icon('chevron-down', 14, cls='nav__caret') }}{% endif %}
+            </a>
+            {% if item.children %}
+            <ul class="nav__submenu">
+              {% for child in item.children %}
+              <li><a href="{{ child.url() }}" {% if child.is_active() %}aria-current="page"{% endif %}>{{ child.label }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </li>
+          {% endfor %}
+
+          {% if current_user.is_authenticated %}
+          <li class="nav__item nav__item--admin">
+            <a href="{{ url_for('admin.dashboard') }}">Administración</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,14 @@
+{% from 'macros/icons.html' import icon %}
+{# Permanent, visible attribution. This site reproduces a real institution's
+   name and branding; a visitor must never mistake it for the official site. #}
+<div class="disclaimer" role="note">
+  <div class="disclaimer__inner">
+    {{ icon('alert', 18) }}
+    <p>
+      <strong>Proyecto de portafolio.</strong>
+      Este sitio es una recreación con fines educativos y <strong>no está afiliado</strong>
+      al Instituto Técnico Superior Córdoba.
+      <a href="{{ config.SITE_OFFICIAL_URL }}" rel="noopener nofollow external">Ir al sitio oficial</a>
+    </p>
+  </div>
+</div>

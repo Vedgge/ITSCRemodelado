@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Novedades — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Novedades y comunicados del Instituto Técnico Superior Córdoba.{% endblock %}
+{% block body_class %}page-novedades{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div class="wrap">
+    <h1>Novedades</h1>
+    <p class="lede">Comunicados, actividades y noticias del instituto.</p>
+  </div>
+</section>
+
+<section class="wrap">
+  {% if pagination.items %}
+  <div class="card-grid">
+    {% for novedad in pagination.items %}
+      {% include 'partials/novedad_card.html' %}
+    {% endfor %}
+  </div>
+  {% include 'partials/pagination.html' %}
+  {% else %}
+    {% with title='Todavía no hay novedades publicadas',
+            message='Cuando el instituto publique novedades, van a aparecer en esta página.' %}
+      {% include 'partials/empty_state.html' %}
+    {% endwith %}
+  {% endif %}
+</section>
+{% endblock %}

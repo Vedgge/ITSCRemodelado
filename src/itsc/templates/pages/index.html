@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% from 'macros/media.html' import picture %}
+{% block title %}Instituto Técnico Superior Córdoba{% endblock %}
+{% block meta_description %}Tecnicaturas superiores gratuitas en Córdoba. Diez carreras técnicas de cursado presencial. Río Negro 77, Córdoba.{% endblock %}
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero__media">
+    {{ picture('main-banner', '', sizes='100vw', cls='hero__img', loading='eager', widths=[400,800,1600]) }}
+  </div>
+  <div class="hero__content">
+    <h1>Instituto Técnico Superior Córdoba</h1>
+    <p>Diez tecnicaturas superiores, gratuitas y de cursado presencial, en el centro de Córdoba.</p>
+    <p class="hero__actions">
+      <a class="btn btn--primary" href="{{ url_for('public.carreras') }}">Ver las carreras</a>
+      <a class="btn btn--ghost" href="{{ url_for('public.faq') }}">Cómo inscribirme</a>
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Novedades de la institución</h2>
+      <a class="link-more" href="{{ url_for('novedades.list') }}">Ver todas {{ icon('chevron-right', 14) }}</a>
+    </div>
+    {% if novedades %}
+    <div class="card-grid">
+      {% for novedad in novedades %}{% include 'partials/novedad_card.html' %}{% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">Todavía no hay novedades publicadas.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Explorá las carreras que ofrecemos</h2>
+      <a class="link-more" href="{{ url_for('public.carreras') }}">Ver todas {{ icon('chevron-right', 14) }}</a>
+    </div>
+    <ul class="carrera-grid">
+      {% for c in carreras %}
+      <li class="carrera-tile">
+        <a href="{{ url_for('public.carrera', slug=c.slug) }}">
+          <h3>{{ c.nombre }}</h3>
+          <p>{{ c.resumen }}</p>
+          <span class="carrera-tile__more">Ver más {{ icon('chevron-right', 14) }}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Fotogalería</h2>
+      <a class="link-more" href="{{ url_for('public.fotogaleria') }}">Ver la galería {{ icon('chevron-right', 14) }}</a>
+    </div>
+    <ul class="gallery-strip">
+      {% for foto in fotogaleria[:4] %}
+      <li>
+        <img src="{{ url_for('static', filename='img/fotogaleria/' ~ foto.slug ~ '.webp') }}"
+             alt="{{ foto.titulo }}" loading="lazy" decoding="async" width="520" height="390">
+        <h3>{{ foto.titulo }}</h3>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="wrap faq-home">
+    <div>
+      <h2>Preguntas frecuentes</h2>
+      <div class="accordion">
+        {% for item in faq %}
+        <details class="accordion__item">
+          <summary>{{ item.pregunta }}</summary>
+          <div class="accordion__body">{{ item.respuesta | markdown }}</div>
+        </details>
+        {% endfor %}
+      </div>
+      <a class="link-more" href="{{ url_for('public.faq') }}">Ver todas las preguntas {{ icon('chevron-right', 14) }}</a>
+    </div>
+    <aside class="faq-home__cta">
+      <h2>Hacé tu consulta</h2>
+      <p>Si la respuesta no está arriba, escribinos y te contestamos.</p>
+      <a class="btn btn--primary" href="{{ url_for('contacto.form') }}">Ir al formulario</a>
+      <ul class="contact-details">
+        <li>{{ icon('map-pin', 18) }}<span>{{ config.SITE_ADDRESS }}</span></li>
+        <li>{{ icon('phone', 18) }}<a href="tel:{{ config.SITE_PHONE_E164 }}">{{ config.SITE_PHONE }}</a></li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>Testimonios de estudiantes</h2>
+    {# Clearly labelled as sample content. The original pulled a real
+       photograph and a real person's name from randomuser.me on every page
+       load and attached an invented quote to it. #}
+    <p class="sample-notice">{{ icon('alert', 16) }} Contenido de muestra: testimonios de ejemplo, no atribuidos a personas reales.</p>
+    <ul class="testimonial-grid">
+      {% for iniciales, carrera, texto in testimonios %}
+      <li class="testimonial">
+        {# Avatar generated locally from initials: no third-party request, no
+           real person's likeness, and nothing for the CSP to allow. #}
+        <span class="avatar" aria-hidden="true" data-initials="{{ iniciales }}">{{ iniciales }}</span>
+        <blockquote>{{ texto }}</blockquote>
+        <p class="testimonial__who"><strong>{{ iniciales }}</strong> — {{ carrera }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section cta-final">
+  <div class="wrap">
+    <h2>Dá el siguiente paso</h2>
+    <p>Las inscripciones son anuales y se realizan a través del Gobierno de Córdoba con cuenta de Ciudadano Digital.</p>
+    <a class="btn btn--primary" href="{{ url_for('public.faq') }}">Cómo inscribirme</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'admin/_layout.html' %}
+{% from 'macros/forms.html' import render_field %}
+{% block title %}Nuevo documento — Administración{% endblock %}
+{% block admin_content %}
+<h1>Nuevo documento en {{ category.nombre }}</h1>
+<form method="post" enctype="multipart/form-data" novalidate class="admin-form">
+  {{ form.csrf_token }}
+  {{ render_field(form.titulo) }}
+  {{ render_field(form.numero) }}
+  {{ render_field(form.descripcion, rows=6) }}
+  {{ render_field(form.fecha_documento) }}
+  {% if category.has_vigencia %}
+    {{ render_field(form.vigente_desde) }}
+    {{ render_field(form.vigente_hasta) }}
+  {% endif %}
+  {{ render_field(form.archivo) }}
+  {{ render_field(form.status) }}
+  <div class="admin-form__actions">
+    {{ form.submit(class_='btn btn--primary') }}
+    <a class="btn btn--ghost" href="{{ url_for('admin.document_list', categoria=category.slug) }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

@@ -94,6 +94,14 @@ def seed_categories() -> None:
             "has_vigencia": False,
         },
         {
+            "slug": "mesas-de-examen",
+            "nombre": "Mesas de examen",
+            "descripcion": "Cronogramas de mesas de examen publicados por el instituto.",
+            "icon": "calendar",
+            "orden": 5,
+            "has_vigencia": True,
+        },
+        {
             "slug": "materiales-para-descargar",
             "nombre": "Material para descargar",
             "descripcion": "Formularios, instructivos y material de consulta.",

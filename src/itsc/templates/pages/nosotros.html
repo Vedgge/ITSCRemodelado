@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}Nosotros — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Quiénes somos: instituto público de nivel superior en Córdoba, con diez tecnicaturas de cursado presencial.{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Nosotros</h1>
+  <p class="lede">Un instituto público de nivel superior en el centro de Córdoba.</p>
+</div></section>
+
+<section class="wrap prose">
+  <h2>Qué somos</h2>
+  <p>
+    El Instituto Técnico Superior Córdoba es una institución pública de nivel superior
+    que dicta <strong>tecnicaturas de carácter presencial</strong>. Nuestras carreras son
+    gratuitas: se solicita únicamente la contribución de la cuota social de la
+    <a href="{{ url_for('public.cooperadora') }}">cooperadora</a>, que cubre el seguro y el
+    servicio de urgencias para estudiantes.
+  </p>
+  <p>
+    Formamos técnicos y técnicas superiores en diez campos distintos, desde la salud
+    hasta el desarrollo de software, la gestión ambiental y la seguridad e higiene
+    laboral. Podés ver la oferta completa en la sección
+    <a href="{{ url_for('public.carreras') }}">Carreras</a>.
+  </p>
+
+  <h2>Formación con vínculo real con el sector productivo</h2>
+  <p>
+    Buena parte de la formación ocurre fuera del aula. Nuestros estudiantes realizan
+    visitas y prácticas profesionalizantes en empresas e instituciones del medio —
+    entre otras, la fábrica INSTRELEC y la planta de DENSO S.A. — y participan de
+    encuentros con entidades profesionales como la Asociación Cordobesa de
+    Protesistas Dentales. También organizamos capacitaciones abiertas, como la
+    jornada de RCP avanzada y primeros auxilios.
+  </p>
+  <p><a class="link-more" href="{{ url_for('public.fotogaleria') }}">Ver la fotogalería {{ icon('chevron-right', 14) }}</a></p>
+
+  <h2>Cómo se ingresa</h2>
+  <p>
+    Las inscripciones son anuales y se realizan a través de la página del Gobierno de
+    Córdoba, para lo que necesitás una cuenta de Ciudadano Digital (CiDi). Las fechas
+    las define el Ministerio de Educación de la Provincia y se publican en este sitio
+    cuando se confirman. Si terminaste la primaria, tenés más de 25 años y trabajás en
+    un área afín a la carrera, podés ingresar rindiendo un examen de idoneidad.
+  </p>
+  <p><a class="link-more" href="{{ url_for('public.faq') }}">Ver todas las preguntas frecuentes {{ icon('chevron-right', 14) }}</a></p>
+
+  <h2>Dónde estamos</h2>
+  <ul class="contact-details">
+    <li>{{ icon('map-pin', 18) }}<span>{{ config.SITE_ADDRESS }}</span></li>
+    <li>{{ icon('phone', 18) }}<a href="tel:{{ config.SITE_PHONE_E164 }}">{{ config.SITE_PHONE }}</a></li>
+  </ul>
+</section>
+{% endblock %}

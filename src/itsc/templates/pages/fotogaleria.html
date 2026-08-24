@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Fotogalería — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Visitas, prácticas profesionalizantes y jornadas del Instituto Técnico Superior Córdoba.{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Fotogalería</h1>
+  <p class="lede">Visitas, prácticas profesionalizantes y jornadas del instituto.</p>
+</div></section>
+
+<section class="wrap">
+  <ul class="gallery-grid">
+    {% for foto in fotos %}
+    <li class="gallery-item">
+      <img src="{{ url_for('static', filename='img/fotogaleria/' ~ foto.slug ~ '.webp') }}"
+           alt="{{ foto.titulo }}" loading="lazy" decoding="async" width="640" height="480">
+      <div class="gallery-item__body">
+        <h2>{{ foto.titulo }}</h2>
+        {% if foto.descripcion %}<p>{{ foto.descripcion }}</p>{% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

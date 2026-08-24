@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}Cooperadora — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Qué es la cooperadora del ITSC y para qué se destina la cuota social.{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Cooperadora</h1>
+  <p class="lede">Qué es, y para qué se usa la cuota social.</p>
+</div></section>
+
+<section class="wrap prose">
+  <h2>Por qué existe la cuota</h2>
+  <p>
+    Las carreras del instituto son <strong>gratuitas</strong>. Lo que se solicita a los
+    estudiantes es la contribución de la <strong>cuota social de la cooperadora</strong>,
+    que no es un arancel de la carrera.
+  </p>
+  <p>
+    Esa cuota se destina, entre otras cosas, a cubrir el <strong>seguro</strong> y el
+    <strong>servicio de urgencias</strong> — dos prestaciones indispensables, sobre todo en
+    las carreras con prácticas en laboratorios, talleres e instituciones de salud.
+  </p>
+
+  <div class="callout">
+    <h2>Monto y forma de pago</h2>
+    <p>
+      El monto de la cuota y las formas de pago disponibles se informan directamente en
+      el instituto, y pueden variar de un ciclo lectivo a otro. Para consultar el valor
+      vigente, comunicate al <a href="tel:{{ config.SITE_PHONE_E164 }}">{{ config.SITE_PHONE }}</a>
+      o <a href="{{ url_for('contacto.form') }}">escribinos indicando "Cooperadora" como motivo</a>.
+    </p>
+  </div>
+
+  <h2>Documentación</h2>
+  <p>
+    Las actas, balances y resoluciones que la cooperadora publique van a estar
+    disponibles en <a href="{{ url_for('documentos.list', categoria='actas-dictamenes') }}">Actas y dictámenes</a>.
+  </p>
+</section>
+{% endblock %}

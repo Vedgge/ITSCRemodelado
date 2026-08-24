@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}Consulta enviada — {{ config.SITE_NAME }}{% endblock %}
+{% block content %}
+{# Deliberately echoes nothing from the query string. Its predecessor,
+   mostrar-datos-contacto.html, interpolated six URL parameters straight into
+   innerHTML -- a reflected XSS on the site's own origin -- under a heading
+   claiming the data had been "sent correctly" when nothing had been sent. #}
+<section class="confirmation wrap">
+  <div class="confirmation__icon">{{ icon('check', 40) }}</div>
+  <h1>Recibimos tu consulta</h1>
+  <p>Gracias por escribirnos. Vamos a responderte al correo que nos indicaste.</p>
+  <p class="confirmation__actions">
+    <a class="btn btn--primary" href="{{ url_for('public.index') }}">Volver al inicio</a>
+    <a class="btn btn--ghost" href="{{ url_for('public.faq') }}">Ver preguntas frecuentes</a>
+  </p>
+</section>
+{% endblock %}

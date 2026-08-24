@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% from 'macros/icons.html' import icon %}
+{% block title %}Egresados — {{ config.SITE_NAME }}{% endblock %}
+{% block meta_description %}Información para egresados del ITSC: trámite de título y contacto.{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap">
+  <h1>Egresados</h1>
+  <p class="lede">Terminaste de cursar. Esto es lo que sigue.</p>
+</div></section>
+
+<section class="wrap prose">
+  <h2>Trámite del título</h2>
+  <p>
+    Una vez que aprobaste la totalidad de los espacios curriculares y las prácticas
+    profesionalizantes de tu carrera, corresponde iniciar el trámite de título. El
+    circuito administrativo y la documentación requerida se gestionan en el instituto:
+    acercate a <strong>{{ config.SITE_ADDRESS }}</strong> o comunicate al
+    <a href="tel:{{ config.SITE_PHONE_E164 }}">{{ config.SITE_PHONE }}</a> para conocer los
+    pasos y los horarios de atención vigentes.
+  </p>
+
+  <div class="callout">
+    <h2>Certificados y constancias</h2>
+    <p>
+      Las constancias de alumno regular, los certificados analíticos y las constancias
+      de título en trámite se solicitan directamente en el instituto. Si necesitás una,
+      <a href="{{ url_for('contacto.form') }}">escribinos indicando qué documento
+      necesitás y para qué organismo</a>, y te indicamos cómo gestionarlo.
+    </p>
+  </div>
+
+  <h2>Seguí formándote</h2>
+  <p>
+    El instituto organiza capacitaciones y jornadas abiertas dirigidas también a
+    egresados — por ejemplo, propuestas de especialización y jornadas de actualización
+    profesional. Se anuncian en
+    <a href="{{ url_for('novedades.list') }}">Novedades</a> y en
+    <a href="{{ url_for('documentos.list', categoria='convocatorias') }}">Convocatorias</a>.
+  </p>
+  <p class="cta-row">
+    <a class="btn btn--primary" href="{{ url_for('contacto.form') }}">Consultar por un trámite</a>
+  </p>
+</section>
+{% endblock %}

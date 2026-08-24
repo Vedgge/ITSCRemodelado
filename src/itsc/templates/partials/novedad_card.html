@@ -1,0 +1,20 @@
+{% from 'macros/media.html' import media_img %}
+{# Replaces four near-identical JS loops that built this card by concatenating
+   database values into innerHTML. Jinja escapes every value automatically, so
+   the stored-XSS sink cannot be reintroduced by forgetting to escape. #}
+<article class="card">
+  <a class="card__media" href="{{ url_for('novedades.detail', slug=novedad.slug) }}" tabindex="-1" aria-hidden="true">
+    {{ media_img(novedad.imagen, alt='', cls='card__img') }}
+  </a>
+  <div class="card__body">
+    {% if novedad.published_at %}
+    <time class="card__date" datetime="{{ novedad.published_at.isoformat() }}">
+      {{ novedad.published_at.strftime('%d/%m/%Y') }}
+    </time>
+    {% endif %}
+    <h3 class="card__title">
+      <a href="{{ url_for('novedades.detail', slug=novedad.slug) }}">{{ novedad.titulo }}</a>
+    </h3>
+    <p class="card__excerpt">{{ novedad.resumen }}</p>
+  </div>
+</article>

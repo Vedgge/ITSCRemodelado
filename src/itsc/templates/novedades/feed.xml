@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ config.SITE_NAME }} — Novedades</title>
+    <link>{{ url_for('public.index', _external=True) }}</link>
+    <description>Novedades del Instituto Técnico Superior Córdoba.</description>
+    <language>es-AR</language>
+    <atom:link href="{{ url_for('novedades.feed', _external=True) }}" rel="self" type="application/rss+xml"/>
+    {% for item in items %}
+    <item>
+      <title>{{ item.titulo }}</title>
+      <link>{{ url_for('novedades.detail', slug=item.slug, _external=True) }}</link>
+      <guid isPermaLink="true">{{ url_for('novedades.detail', slug=item.slug, _external=True) }}</guid>
+      <description>{{ item.resumen }}</description>
+      {% if item.published_at %}<pubDate>{{ item.published_at.strftime('%a, %d %b %Y %H:%M:%S +0000') }}</pubDate>{% endif %}
+    </item>
+    {% endfor %}
+  </channel>
+</rss>

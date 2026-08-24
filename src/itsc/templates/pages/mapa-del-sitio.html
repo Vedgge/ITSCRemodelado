@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Mapa del sitio — {{ config.SITE_NAME }}{% endblock %}
+{% block content %}
+<section class="page-header"><div class="wrap"><h1>Mapa del sitio</h1></div></section>
+<section class="wrap sitemap">
+  <div class="sitemap__col">
+    <h2>Institucional</h2>
+    <ul>
+      <li><a href="{{ url_for('public.index') }}">Inicio</a></li>
+      <li><a href="{{ url_for('public.nosotros') }}">Nosotros</a></li>
+      <li><a href="{{ url_for('public.fotogaleria') }}">Fotogalería</a></li>
+      <li><a href="{{ url_for('public.cooperadora') }}">Cooperadora</a></li>
+      <li><a href="{{ url_for('contacto.form') }}">Contacto</a></li>
+    </ul>
+  </div>
+  <div class="sitemap__col">
+    <h2>Carreras</h2>
+    <ul>
+      <li><a href="{{ url_for('public.carreras') }}">Todas las carreras</a></li>
+      {% for c in carreras %}<li><a href="{{ url_for('public.carrera', slug=c.slug) }}">{{ c.nombre }}</a></li>{% endfor %}
+    </ul>
+  </div>
+  <div class="sitemap__col">
+    <h2>Estudiantes</h2>
+    <ul>
+      <li><a href="{{ url_for('public.estudiantes') }}">Estudiantes</a></li>
+      <li><a href="{{ url_for('public.examenes') }}">Mesas de examen</a></li>
+      <li><a href="{{ url_for('public.egresados') }}">Egresados</a></li>
+      <li><a href="{{ url_for('public.ser_tecnico') }}">Ser técnico</a></li>
+      <li><a href="{{ url_for('public.faq') }}">Preguntas frecuentes</a></li>
+    </ul>
+  </div>
+  <div class="sitemap__col">
+    <h2>Documentos</h2>
+    <ul>
+      <li><a href="{{ url_for('novedades.list') }}">Novedades</a></li>
+      {% for cat in categories %}
+      <li><a href="{{ url_for('documentos.list', categoria=cat.slug) }}">{{ cat.nombre }}</a></li>
+      {% endfor %}
+      <li><a href="{{ url_for('novedades.feed') }}">RSS de novedades</a></li>
+    </ul>
+  </div>
+</section>
+{% endblock %}
