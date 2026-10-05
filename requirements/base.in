@@ -1,14 +1,14 @@
 # Core web stack
 Flask>=3.1,<4
-Werkzeug>=3.1,<4
+Werkzeug>=3.1.9,<4
 Jinja2>=3.1,<4
 
 # Database
-SQLAlchemy>=2.0,<3
+SQLAlchemy>=2.1.1,<3
 Flask-SQLAlchemy>=3.1,<4
 Flask-Migrate>=4.0,<5
-alembic>=1.13,<2
-psycopg[binary]>=3.2,<4
+alembic>=1.20.0,<2
+psycopg[binary]>=3.3.6,<4
 
 # Auth / forms / CSRF
 Flask-Login>=0.6,<0.7
@@ -19,19 +19,19 @@ argon2-cffi>=23.1
 
 # Sessions / rate limiting (Redis-backed)
 Flask-Session>=0.8,<1
-redis>=5.0,<6
-Flask-Limiter>=3.8,<4
+redis>=8.1.0,<9
+Flask-Limiter>=4.1.1,<5
 
 # Security headers
 flask-talisman>=1.1,<2
 
 # Content handling
 Pillow>=12.3
-markdown>=3.6,<4
+markdown>=3.11,<4
 nh3>=0.2.18
 
 # Observability
 structlog>=24.4
 
 # Server
-gunicorn>=23.0,<24
+gunicorn>=26.2.0,<27
